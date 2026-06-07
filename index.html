@@ -3,546 +3,909 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Street Kitchen — Complete Business Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Call Centre Productivity Dashboard</title>
 <style>
-:root{--orange:#D4611E;--orange-light:#FDEBD0;--orange-mid:#EF9F27;--dark:#1A0A00;--cream:#FFFBF5;--text:#2C1810;--muted:#7A5A48;--border:#E8D5C4;--green:#2D6A2D;--green-bg:#E9F7EF;--red-bg:#FDEDEC;--blue-bg:#E6F1FB;--yellow-bg:#FEFCE8;--gray:#F5F0EB}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);line-height:1.7}
-@media print{.no-print{display:none}body{background:white}.edit-bar{display:none!important}[contenteditable]{border:none!important;background:transparent!important}}
-.nav{position:sticky;top:0;background:rgba(255,251,245,0.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:100;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px}
-.nav-brand{font-family:'Playfair Display',serif;font-size:18px;color:var(--orange)}
-.nav-links{display:flex;gap:4px}
-.nav-links a{font-size:12px;padding:5px 10px;border-radius:6px;color:var(--muted);text-decoration:none;transition:all .15s}
-.nav-links a:hover{background:var(--orange-light);color:var(--orange)}
-.nav-actions{display:flex;gap:8px;align-items:center}
-.btn{font-size:12px;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;font-weight:500}
-.btn-outline{border:1px solid var(--border);background:transparent;color:var(--muted)}
-.btn-outline:hover{background:var(--orange-light);color:var(--orange);border-color:var(--orange)}
-.btn-edit{border:1px solid var(--orange);background:var(--orange-light);color:var(--orange)}
-.btn-edit.on{background:var(--orange);color:white}
-.btn-save{border:1px solid var(--green);background:var(--green-bg);color:var(--green);display:none}
-.btn-save:hover{background:var(--green);color:white}
-.edit-bar{display:none;background:var(--orange);color:white;text-align:center;padding:8px 16px;font-size:13px;position:sticky;top:56px;z-index:99}
-.edit-bar.on{display:block}
-body.editing [contenteditable="true"]:hover{background:rgba(212,97,30,.07);border-radius:3px}
-body.editing [contenteditable="true"]:focus{background:rgba(212,97,30,.12);border-radius:3px;outline:1.5px solid var(--orange)}
-.cover{background:var(--dark);color:white;padding:80px 2rem;text-align:center;position:relative;overflow:hidden}
-.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(212,97,30,.15) 0%,transparent 70%),radial-gradient(ellipse at 70% 20%,rgba(239,159,39,.1) 0%,transparent 60%)}
-.cover-tag{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--orange-mid);margin-bottom:16px;position:relative}
-.cover-title{font-family:'Playfair Display',serif;font-size:clamp(40px,8vw,80px);font-weight:900;color:white;line-height:1.05;margin-bottom:12px;position:relative}
-.cover-title span{color:var(--orange-mid)}
-.cover-sub{font-size:16px;color:rgba(255,255,255,.5);margin-bottom:48px;position:relative}
-.cover-cards{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
-.cover-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px 24px;text-align:center}
-.cover-card-val{font-size:22px;font-weight:500;color:var(--orange-mid)}
-.cover-card-label{font-size:11px;color:rgba(255,255,255,.4);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
-.container{max-width:860px;margin:0 auto;padding:0 2rem}
-.toc{background:white;border:1px solid var(--border);border-radius:16px;padding:2rem;margin:2.5rem auto;max-width:860px}
-.toc-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--dark);margin-bottom:1rem}
-.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.toc-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;text-decoration:none;color:var(--text);font-size:13px;transition:all .15s}
-.toc-item:hover{background:var(--orange-light);color:var(--orange)}
-.toc-num{font-size:11px;font-weight:500;color:var(--orange);background:var(--orange-light);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.section{padding:3rem 0 1rem}
-.section-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:2rem}
-.section-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--orange-light);line-height:1;flex-shrink:0;width:56px}
-.section-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,32px);font-weight:700;color:var(--dark);line-height:1.2}
-.section-sub{font-size:14px;color:var(--muted);margin-top:4px}
-.divider{height:1px;background:var(--border);margin:2.5rem 0}
-h2{font-family:'Playfair Display',serif;font-size:20px;color:var(--dark);margin:1.8rem 0 .8rem}
-h3{font-size:15px;font-weight:500;color:var(--orange);margin:1.2rem 0 .5rem;text-transform:uppercase;letter-spacing:.06em}
-p{font-size:15px;color:var(--text);margin-bottom:.8rem}
-.tbl-wrap{overflow-x:auto;margin:1rem 0 1.5rem;border-radius:12px;border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-th{background:var(--dark);color:white;padding:10px 14px;text-align:left;font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
-td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
-tr:last-child td{border-bottom:none}
-tr:nth-child(even) td{background:var(--gray)}
-tr:hover td{background:var(--orange-light)}
-.callout{border-radius:12px;padding:1rem 1.25rem;margin:1rem 0 1.5rem;font-size:14px;line-height:1.6}
-.co{background:var(--orange-light);border-left:3px solid var(--orange);color:var(--dark)}
-.cg{background:var(--green-bg);border-left:3px solid var(--green);color:#1A3D1A}
-.cr{background:var(--red-bg);border-left:3px solid #C0392B;color:#5C1A1A}
-.cb{background:var(--blue-bg);border-left:3px solid #2471A3;color:#0D3B6E}
-.cy{background:var(--yellow-bg);border-left:3px solid var(--orange-mid);color:#5A4000}
-.callout strong{font-weight:500}
-ul.guide{list-style:none;padding:0;margin:.5rem 0 1.2rem}
-ul.guide li{display:flex;align-items:flex-start;gap:10px;padding:5px 0;font-size:14px;color:var(--text)}
-ul.guide li::before{content:'→';color:var(--orange);font-weight:500;flex-shrink:0;margin-top:1px}
-ol.guide{padding-left:0;list-style:none;counter-reset:step;margin:.5rem 0 1.2rem}
-ol.guide li{counter-increment:step;display:flex;gap:12px;padding:8px 0;font-size:14px;border-bottom:1px solid var(--border)}
-ol.guide li:last-child{border-bottom:none}
-ol.guide li::before{content:counter(step);background:var(--orange);color:white;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:2px}
-ol.guide li strong{font-weight:500;color:var(--orange)}
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:1rem 0 1.5rem}
-.card{background:white;border:1px solid var(--border);border-radius:12px;padding:1.25rem}
-.card-label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
-.card-val{font-size:22px;font-weight:500;color:var(--dark)}
-.card-sub{font-size:12px;color:var(--muted);margin-top:3px}
-.co-card .card-val{color:var(--orange)}
-.cg-card .card-val{color:var(--green)}
-.recipe-block{background:white;border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1rem 0 1.5rem}
-.recipe-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--dark);margin-bottom:.3rem}
-.recipe-sub{font-size:13px;color:var(--muted);margin-bottom:1rem}
-.recipe-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.rst{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--orange);margin-bottom:8px}
-.ing-list{list-style:none;padding:0}
-.ing-list li{font-size:13px;padding:5px 0;border-bottom:1px solid var(--border);color:var(--text);display:flex;justify-content:space-between}
-.ing-list li:last-child{border-bottom:none}
-.ing-amt{color:var(--muted)}
-.risk-grid{display:grid;gap:10px;margin:1rem 0}
-.risk-card{border-radius:0;padding:12px 16px}
-.rh{background:#FDEDEC;border-left:3px solid #E74C3C}
-.rm{background:var(--yellow-bg);border-left:3px solid var(--orange-mid)}
-.rl{background:var(--green-bg);border-left:3px solid var(--green)}
-.risk-label{font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:500;margin-bottom:4px}
-.rh .risk-label{color:#C0392B}
-.rm .risk-label{color:#D4611E}
-.rl .risk-label{color:var(--green)}
-.risk-title{font-size:14px;font-weight:500;color:var(--dark)}
-.risk-fix{font-size:12px;color:var(--muted);margin-top:3px}
-.timeline{position:relative;padding-left:24px;margin:1rem 0}
-.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--border)}
-.tl-item{position:relative;margin-bottom:1.2rem}
-.tl-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--orange);border:2px solid white;box-shadow:0 0 0 2px var(--orange)}
-.tl-period{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);margin-bottom:2px}
-.tl-title{font-size:14px;font-weight:500;color:var(--dark)}
-.tl-desc{font-size:13px;color:var(--muted);margin-top:2px}
-.week-plan{display:grid;gap:8px;margin:1rem 0}
-.day-block{background:white;border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;gap:14px;align-items:flex-start}
-.day-num{width:36px;height:36px;border-radius:8px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--orange);flex-shrink:0;text-align:center;line-height:1.2}
-.day-title{font-size:14px;font-weight:500;color:var(--dark)}
-.day-desc{font-size:12px;color:var(--muted);margin-top:3px}
-.day-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.tag{font-size:10px;padding:2px 7px;border-radius:20px}
-.tr{background:#EEEDFE;color:#3C3489}
-.tm{background:#E1F5EE;color:#085041}
-.tf{background:#FAEEDA;color:#633806}
-.to{background:#FAECE7;color:#4A1B0C}
-.sign-box{border:2px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;margin:1.5rem 0}
-.sign-label{font-size:13px;color:var(--muted);margin-bottom:1rem}
-.sign-line{border-bottom:2px solid var(--dark);width:280px;margin:0 auto 8px;height:32px}
-.sign-sub{font-size:12px;color:var(--muted)}
-footer{background:var(--dark);color:rgba(255,255,255,.4);text-align:center;padding:2rem;font-size:13px;margin-top:4rem}
-footer span{color:var(--orange-mid)}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--green);color:white;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}
-.toast.on{opacity:1}
-@media(max-width:600px){.nav-links{display:none}.toc-grid{grid-template-columns:1fr}.container{padding:0 1rem}.recipe-cols{grid-template-columns:1fr}}
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0c10;
+    --surface: #12151c;
+    --surface2: #1a1f2b;
+    --border: #252a38;
+    --accent: #00e5a0;
+    --accent2: #ff6b35;
+    --accent3: #6c63ff;
+    --warn: #ffb800;
+    --danger: #ff3b3b;
+    --text: #e8eaf0;
+    --text2: #8891a8;
+    --text3: #4a5568;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Syne',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* LOGIN */
+  #loginScreen {
+    position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:1000;
+  }
+  .login-box {
+    background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:48px 40px; width:380px;
+    box-shadow:0 0 60px rgba(0,229,160,0.07);
+  }
+  .login-logo { font-size:28px; font-weight:800; letter-spacing:-1px; margin-bottom:8px; }
+  .login-logo span { color:var(--accent); }
+  .login-sub { color:var(--text2); font-size:13px; margin-bottom:32px; }
+  .login-label { font-size:12px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text2); margin-bottom:6px; display:block; }
+  .login-input {
+    width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px 14px;
+    color:var(--text); font-family:'Syne',sans-serif; font-size:15px; outline:none; margin-bottom:16px;
+    transition:border-color .2s;
+  }
+  .login-input:focus { border-color:var(--accent); }
+  .login-btn {
+    width:100%; background:var(--accent); color:#000; border:none; border-radius:8px; padding:13px;
+    font-family:'Syne',sans-serif; font-size:15px; font-weight:700; cursor:pointer; transition:opacity .2s;
+    letter-spacing:.5px;
+  }
+  .login-btn:hover { opacity:.88; }
+  .login-error { color:var(--danger); font-size:13px; margin-top:10px; text-align:center; display:none; }
+  .login-hint { color:var(--text3); font-size:11px; text-align:center; margin-top:14px; }
+
+  /* APP SHELL */
+  #app { display:none; }
+  .topbar {
+    background:var(--surface); border-bottom:1px solid var(--border); padding:0 28px; height:60px;
+    display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100;
+  }
+  .topbar-brand { font-size:18px; font-weight:800; letter-spacing:-0.5px; }
+  .topbar-brand span { color:var(--accent); }
+  .topbar-right { display:flex; align-items:center; gap:14px; }
+  .topbar-user { font-size:13px; color:var(--text2); }
+  .logout-btn {
+    background:transparent; border:1px solid var(--border); color:var(--text2); border-radius:6px;
+    padding:6px 14px; font-family:'Syne',sans-serif; font-size:12px; cursor:pointer; transition:all .2s;
+  }
+  .logout-btn:hover { border-color:var(--danger); color:var(--danger); }
+
+  /* TABS */
+  .tabs { display:flex; gap:2px; padding:16px 28px 0; background:var(--surface); border-bottom:1px solid var(--border); }
+  .tab {
+    padding:10px 22px; font-size:13px; font-weight:600; cursor:pointer; border-radius:8px 8px 0 0;
+    color:var(--text2); transition:all .15s; letter-spacing:.3px;
+  }
+  .tab.active { background:var(--bg); color:var(--accent); border:1px solid var(--border); border-bottom:1px solid var(--bg); }
+  .tab:hover:not(.active) { color:var(--text); }
+
+  /* MAIN */
+  .main { padding:28px; max-width:1400px; }
+
+  /* CARDS */
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+  .kpi-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px 22px;
+  }
+  .kpi-label { font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text2); margin-bottom:6px; }
+  .kpi-val { font-size:28px; font-weight:800; line-height:1.1; }
+  .kpi-sub { font-size:11px; color:var(--text2); margin-top:4px; }
+  .kpi-accent { color:var(--accent); }
+  .kpi-warn { color:var(--warn); }
+  .kpi-danger { color:var(--danger); }
+
+  /* SECTION */
+  .section { background:var(--surface); border:1px solid var(--border); border-radius:12px; margin-bottom:20px; }
+  .section-head {
+    padding:18px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;
+  }
+  .section-title { font-size:15px; font-weight:700; }
+  .section-body { padding:22px; }
+
+  /* TABLE */
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { font-size:11px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; color:var(--text2); padding:10px 12px; text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
+  td { padding:10px 12px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:rgba(255,255,255,.02); }
+
+  .badge {
+    display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px;
+    font-size:11px; font-weight:700; letter-spacing:.5px;
+  }
+  .badge-green { background:rgba(0,229,160,.15); color:var(--accent); }
+  .badge-yellow { background:rgba(255,184,0,.15); color:var(--warn); }
+  .badge-red { background:rgba(255,59,59,.15); color:var(--danger); }
+  .badge-blue { background:rgba(108,99,255,.15); color:var(--accent3); }
+
+  /* FOLLOW-UP BOX */
+  .followup-box {
+    background:rgba(255,107,53,.08); border:1px solid rgba(255,107,53,.25); border-radius:10px; padding:14px 18px; margin-top:10px;
+  }
+  .followup-box h4 { font-size:13px; font-weight:700; color:var(--accent2); margin-bottom:8px; }
+  .followup-box p { font-size:12px; color:var(--text2); line-height:1.6; }
+  .followup-box ul { font-size:12px; color:var(--text2); line-height:1.8; padding-left:18px; }
+  .followup-action {
+    display:inline-block; background:var(--accent2); color:#fff; border-radius:6px; padding:5px 12px;
+    font-size:11px; font-weight:700; margin-top:8px; cursor:pointer; border:none; font-family:'Syne',sans-serif;
+    letter-spacing:.5px;
+  }
+
+  /* FILTERS */
+  .filter-row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; margin-bottom:20px; }
+  select, input[type=text], input[type=number], input[type=date], textarea {
+    background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 13px;
+    color:var(--text); font-family:'Syne',sans-serif; font-size:13px; outline:none; transition:border .2s;
+  }
+  select:focus, input:focus, textarea:focus { border-color:var(--accent); }
+  select { cursor:pointer; }
+  label { font-size:11px; font-weight:600; letter-spacing:.8px; text-transform:uppercase; color:var(--text2); display:block; margin-bottom:4px; }
+  .btn {
+    padding:9px 20px; border-radius:8px; font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+    cursor:pointer; letter-spacing:.3px; transition:all .15s; border:none;
+  }
+  .btn-primary { background:var(--accent); color:#000; }
+  .btn-primary:hover { opacity:.88; }
+  .btn-secondary { background:var(--surface2); color:var(--text); border:1px solid var(--border); }
+  .btn-secondary:hover { border-color:var(--accent); color:var(--accent); }
+  .btn-danger { background:var(--danger); color:#fff; }
+  .btn-warn { background:var(--warn); color:#000; }
+
+  /* CHART BARS */
+  .mini-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+  .mini-bar-fill { height:100%; border-radius:3px; transition:width .4s; }
+
+  /* FORM */
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-group { display:flex; flex-direction:column; gap:6px; }
+  .form-group.full { grid-column:1/-1; }
+  textarea { resize:vertical; min-height:80px; font-size:13px; }
+
+  /* INSIGHTS */
+  .insight-card {
+    background:var(--surface2); border-radius:10px; padding:16px 18px; margin-bottom:12px; border-left:3px solid var(--accent);
+  }
+  .insight-card.warn { border-left-color:var(--warn); }
+  .insight-card.danger { border-left-color:var(--danger); }
+  .insight-title { font-size:13px; font-weight:700; margin-bottom:4px; }
+  .insight-body { font-size:12px; color:var(--text2); line-height:1.6; }
+
+  /* PRINT */
+  @media print {
+    .topbar, .tabs, .no-print { display:none !important; }
+    body { background:#fff; color:#000; }
+    .section { border:1px solid #ccc; }
+    .kpi-card { border:1px solid #ccc; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+  .empty-state { text-align:center; padding:40px; color:var(--text2); font-size:14px; }
+
+  /* Tooltip */
+  [data-tip] { position:relative; cursor:help; }
+  [data-tip]:hover::after {
+    content:attr(data-tip); position:absolute; bottom:120%; left:50%; transform:translateX(-50%);
+    background:#1a1f2b; border:1px solid var(--border); color:var(--text); font-size:11px; padding:6px 10px;
+    border-radius:6px; white-space:nowrap; z-index:99; pointer-events:none;
+  }
 </style>
 </head>
 <body>
-<div class="toast" id="toast">Changes saved</div>
-<nav class="nav no-print">
-  <div class="nav-brand">Street Kitchen</div>
-  <div class="nav-links">
-    <a href="#s1">Why start</a><a href="#s2">Concept</a><a href="#s3">Budget</a><a href="#s4">Menu</a><a href="#s5">Recipes</a><a href="#s6">Week 1</a><a href="#s7">Timeline</a><a href="#s8">Risks</a><a href="#s9">Income</a><a href="#s10">Marketing</a><a href="#s11">Rolexes</a><a href="#s12">Mindset</a>
-  </div>
-  <div class="nav-actions">
-    <button class="btn btn-edit" id="editBtn" onclick="toggleEdit()">✏ Edit mode</button>
-    <button class="btn btn-save" id="saveBtn" onclick="doSave()">💾 Save</button>
-    <button class="btn btn-outline" onclick="window.print()">🖨 Print / PDF</button>
-  </div>
-</nav>
-<div class="edit-bar" id="editBar">✏ Edit mode ON — click any text to edit it. Click "Save" when done.</div>
 
-<div class="cover">
-  <div class="cover-tag">Complete business guide — Kampala 2025</div>
-  <div class="cover-title">Street<br><span>Kitchen</span></div>
-  <div class="cover-sub">Rolex Stand · Fried Chicken · Loaded Fries</div>
-  <div class="cover-cards">
-    <div class="cover-card"><div class="cover-card-val" id="e1">300k–800k</div><div class="cover-card-label">Startup (UGX)</div></div>
-    <div class="cover-card"><div class="cover-card-val" id="e2">July 2025</div><div class="cover-card-label">Launch target</div></div>
-    <div class="cover-card"><div class="cover-card-val" id="e3">600k/mo</div><div class="cover-card-label">Month 1 profit target</div></div>
-    <div class="cover-card"><div class="cover-card-val" id="e4">Kampala</div><div class="cover-card-label">Location</div></div>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Call<span>Pulse</span></div>
+    <p class="login-sub">Productivity Dashboard · Secure Access</p>
+    <label class="login-label">Username</label>
+    <input class="login-input" id="loginUser" type="text" placeholder="Enter username" autocomplete="username"/>
+    <label class="login-label">Password</label>
+    <input class="login-input" id="loginPass" type="password" placeholder="Enter password" autocomplete="current-password"/>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="loginError">Invalid credentials. Try again.</div>
+    <p class="login-hint">Default: admin / admin123 · manager / manager1</p>
   </div>
 </div>
 
-<div class="container">
-<div class="toc no-print">
-  <div class="toc-title">What's inside</div>
-  <div class="toc-grid">
-    <a href="#s1" class="toc-item"><span class="toc-num">1</span>Why this business works</a>
-    <a href="#s2" class="toc-item"><span class="toc-num">2</span>Your business concept</a>
-    <a href="#s3" class="toc-item"><span class="toc-num">3</span>Startup costs & budget</a>
-    <a href="#s4" class="toc-item"><span class="toc-num">4</span>Full menu & pricing</a>
-    <a href="#s5" class="toc-item"><span class="toc-num">5</span>Signature recipes</a>
-    <a href="#s6" class="toc-item"><span class="toc-num">6</span>Week 1 action plan</a>
-    <a href="#s7" class="toc-item"><span class="toc-num">7</span>Customer growth timeline</a>
-    <a href="#s8" class="toc-item"><span class="toc-num">8</span>Risks & how to handle them</a>
-    <a href="#s9" class="toc-item"><span class="toc-num">9</span>Daily income projections</a>
-    <a href="#s10" class="toc-item"><span class="toc-num">10</span>Marketing your business</a>
-    <a href="#s11" class="toc-item"><span class="toc-num">11</span>Unique rolex variations</a>
-    <a href="#s12" class="toc-item"><span class="toc-num">12</span>Mindset & discipline</a>
-  </div>
-</div>
-</div>
-
-<div class="container" id="s1">
-<div class="section">
-<div class="section-header"><div class="section-num">01</div><div><div class="section-title">Why this business works</div><div class="section-sub">Honest assessment of the opportunity</div></div></div>
-<p>Street food in Kampala is one of the most resilient businesses you can start. Low barriers to entry, immediate daily cash flow, and a customer base that eats out every single day.</p>
-<div class="card-grid">
-  <div class="card co-card"><div class="card-label">Startup budget</div><div class="card-val">300,000</div><div class="card-sub">UGX minimum</div></div>
-  <div class="card"><div class="card-label">Target: Month 1 profit</div><div class="card-val">500,000+</div><div class="card-sub">UGX per month</div></div>
-  <div class="card cg-card"><div class="card-label">Daily profit target</div><div class="card-val">~20,000</div><div class="card-sub">UGX/day</div></div>
-  <div class="card"><div class="card-label">Break-even</div><div class="card-val">Week 2–3</div><div class="card-sub">Typical for rolex stands</div></div>
-</div>
-<h2>Realistic growth trajectory</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Timeline</th><th>Where you will be</th><th>Monthly income potential</th></tr>
-  <tr><td>Month 1–2</td><td>Rolex stand running</td><td>500k–1M UGX/month</td></tr>
-  <tr><td>Month 3–6</td><td>Add chicken + fries</td><td>1M–2M UGX/month</td></tr>
-  <tr><td>Month 6–12</td><td>Growing customer base + full menu</td><td>1.5M–3M+ UGX/month</td></tr>
-  <tr><td>Year 1–2</td><td>Save to expand brand or depot</td><td>Income on your terms</td></tr>
-  <tr><td>Year 3–5</td><td>Full business owner</td><td>Your income, your future</td></tr>
-</table></div>
-<div class="callout co"><strong>Remember:</strong> The goal of the first 90 days is not maximum profit — it is maximum impressions and consistency. Every person who tastes your food in month one is a potential daily customer for the next 3 years.</div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s2">
-<div class="section">
-<div class="section-header"><div class="section-num">02</div><div><div class="section-title">Your business concept</div><div class="section-sub">What you are building and why it works</div></div></div>
-<p>A street food brand combining three things nobody in your area does together — KFC-style fried chicken at street prices, CJ's-style loaded fries, and unique rolexes.</p>
-<h2>Your edge over KFC and CJ's</h2>
-<div class="tbl-wrap"><table>
-  <tr><th></th><th>KFC / CJ's</th><th>You</th><th>Your advantage</th></tr>
-  <tr><td>Price</td><td>25,000–35,000 UGX</td><td>12,000–18,000 UGX</td><td>Half the price</td></tr>
-  <tr><td>Location</td><td>Far, need transport</td><td>Near their door</td><td>Zero travel cost</td></tr>
-  <tr><td>Ordering</td><td>Queue in person</td><td>WhatsApp in seconds</td><td>Convenience</td></tr>
-  <tr><td>Menu</td><td>No rolex</td><td>Chicken + rolex combo</td><td>Unique offering</td></tr>
-  <tr><td>Relationship</td><td>Impersonal</td><td>They know YOU</td><td>Loyalty & trust</td></tr>
-</table></div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s3">
-<div class="section">
-<div class="section-header"><div class="section-num">03</div><div><div class="section-title">Startup costs & budget</div><div class="section-sub">Phase by phase — start small, scale smart</div></div></div>
-<h2>Phase 1 — Rolex stand only</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Item</th><th>Cost (UGX)</th><th>Notes</th></tr>
-  <tr><td>Charcoal stove (jiko)</td><td>25,000</td><td>One good jiko lasts months</td></tr>
-  <tr><td>Frying pan and cooking pot</td><td>30,000</td><td>Buy quality — cheap ones warp</td></tr>
-  <tr><td>First week ingredients</td><td>120,000</td><td>Flour, eggs, cabbage, tomatoes, oil</td></tr>
-  <tr><td>Plates, knives, cutting board</td><td>20,000</td><td>Keep clean at all times</td></tr>
-  <tr><td>Packaging (foil/paper wraps)</td><td>15,000</td><td>Branded wrapping = premium feel</td></tr>
-  <tr><td>Charcoal — first week</td><td>20,000</td><td>Buy in bulk to save money</td></tr>
-  <tr><td>Small menu sign/board</td><td>5,000</td><td>Write prices clearly and visibly</td></tr>
-  <tr><td><strong>Emergency float — never touch</strong></td><td><strong>65,000</strong></td><td>For slow days in week 1–2</td></tr>
-  <tr><td><strong>TOTAL</strong></td><td><strong>300,000</strong></td><td>Ready to launch</td></tr>
-</table></div>
-<h2>Phase 2 — Add chicken & fries</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Item</th><th>Cost (UGX)</th><th>Notes</th></tr>
-  <tr><td>Deep fryer or large deep pot</td><td>150,000</td><td>A deep pot works fine to start</td></tr>
-  <tr><td>Cooking oil (large quantity)</td><td>80,000</td><td>Buy wholesale for better price</td></tr>
-  <tr><td>Frying pans, tongs, equipment</td><td>80,000</td><td>Keep separate from rolex equipment</td></tr>
-  <tr><td>Packaging — boxes, bags, foil</td><td>60,000</td><td>Branded boxes = premium price</td></tr>
-  <tr><td>First week chicken + potatoes</td><td>250,000</td><td>Start with 20 portions per day</td></tr>
-  <tr><td>Signage or banner</td><td>40,000</td><td>Place outside your gate or room</td></tr>
-  <tr><td><strong>TOTAL</strong></td><td><strong>~660,000</strong></td><td>Save from rolex profits over 2–3 months</td></tr>
-</table></div>
-<div class="callout cg">Launch Phase 1 with 300k, save rolex profits for 2–3 months, then self-fund Phase 2. Your rolex stand pays for your chicken business.</div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s4">
-<div class="section">
-<div class="section-header"><div class="section-num">04</div><div><div class="section-title">Full menu & pricing</div><div class="section-sub">Every item with cost, price, and margin</div></div></div>
-<h2>Rolex menu</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Item</th><th>Ingredients</th><th>Cost</th><th>Price</th><th>Margin</th></tr>
-  <tr><td>Classic rolex</td><td>Chapati, egg, cabbage, tomato</td><td>900</td><td>2,500</td><td>64%</td></tr>
-  <tr><td>Double egg rolex</td><td>Chapati, 2 eggs, veggies</td><td>1,400</td><td>3,000</td><td>53%</td></tr>
-  <tr><td>Chicken rolex</td><td>Chapati, egg, shredded chicken</td><td>2,000</td><td>5,000</td><td>60%</td></tr>
-  <tr><td>Avocado spicy rolex</td><td>Chapati, egg, avocado, piri piri</td><td>1,600</td><td>4,000</td><td>60%</td></tr>
-  <tr><td>Beef rolex</td><td>Chapati, egg, minced beef</td><td>1,800</td><td>4,500</td><td>60%</td></tr>
-  <tr><td>Mini rolexes x3</td><td>Small chapatis, party size</td><td>1,200</td><td>3,000</td><td>60%</td></tr>
-</table></div>
-<h2>Chicken & fries menu</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Item</th><th>Description</th><th>Cost</th><th>Price</th><th>Margin</th></tr>
-  <tr><td>Fried chicken 2 pcs</td><td>Double-coated, overnight marinated</td><td>6,000</td><td>12,000</td><td>50%</td></tr>
-  <tr><td>Spicy wings 5 pcs</td><td>Piri piri glazed, extra crispy</td><td>6,500</td><td>15,000</td><td>57%</td></tr>
-  <tr><td>Chicken burger</td><td>Crispy fillet, house sauce, coleslaw</td><td>5,500</td><td>14,000</td><td>61%</td></tr>
-  <tr><td>Plain fries</td><td>Double-fried, golden crispy</td><td>2,500</td><td>7,000</td><td>64%</td></tr>
-  <tr><td>Sauced fries</td><td>House signature sauce drizzle</td><td>3,000</td><td>9,000</td><td>67%</td></tr>
-  <tr><td>Fully loaded fries</td><td>Sauce, meat, cheese, spring onions</td><td>4,500</td><td>12,000</td><td>63%</td></tr>
-  <tr><td>Fresh juice or soda</td><td>Passion, mango, or soda</td><td>800</td><td>2,000</td><td>60%</td></tr>
-</table></div>
-<h2>Combo deals</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Combo</th><th>What's included</th><th>Price (UGX)</th></tr>
-  <tr><td>Signature combo</td><td>Chicken 2 pcs + loaded fries + soda</td><td>20,000 (save 4,000)</td></tr>
-  <tr><td>Rolex breakfast combo</td><td>Classic rolex + passion juice</td><td>3,500 (save 1,000)</td></tr>
-  <tr><td>Lunch special</td><td>Chicken burger + sauced fries</td><td>19,000 (save 2,000)</td></tr>
-  <tr><td>Office bundle x5</td><td>5 classic rolexes</td><td>10,000 (save 2,500)</td></tr>
-</table></div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s5">
-<div class="section">
-<div class="section-header"><div class="section-num">05</div><div><div class="section-title">Signature recipes</div><div class="section-sub">The exact method that makes your food stand out</div></div></div>
-<div class="recipe-block">
-  <div class="recipe-title">KFC-Style Crispy Fried Chicken</div>
-  <div class="recipe-sub">Serves 4 · 8 pieces · The two secrets: overnight marination and double-coating</div>
-  <div class="recipe-cols">
-    <div>
-      <div class="rst">Ingredients</div>
-      <ul class="ing-list">
-        <li><span>Chicken pieces</span><span class="ing-amt">8 pcs</span></li>
-        <li><span>Plain flour</span><span class="ing-amt">2 cups</span></li>
-        <li><span>Cornflour</span><span class="ing-amt">4 tbsp</span></li>
-        <li><span>Eggs</span><span class="ing-amt">2</span></li>
-        <li><span>Milk or water</span><span class="ing-amt">½ cup</span></li>
-        <li><span>Garlic powder</span><span class="ing-amt">2 tsp</span></li>
-        <li><span>Onion powder</span><span class="ing-amt">2 tsp</span></li>
-        <li><span>Paprika</span><span class="ing-amt">2 tsp</span></li>
-        <li><span>White + black pepper</span><span class="ing-amt">1 tsp each</span></li>
-        <li><span>Cayenne pepper</span><span class="ing-amt">½ tsp</span></li>
-        <li><span>Dried thyme + oregano</span><span class="ing-amt">1 tsp each</span></li>
-        <li><span>Salt</span><span class="ing-amt">2 tsp</span></li>
-        <li><span>Chicken stock cube</span><span class="ing-amt">1</span></li>
-        <li><span>Cooking oil</span><span class="ing-amt">1 litre</span></li>
-      </ul>
-    </div>
-    <div>
-      <div class="rst">Steps</div>
-      <ol class="guide">
-        <li><strong>Marinate overnight:</strong> Score chicken deeply. Mix all spices + stock cube. Rub all over. Refrigerate 4+ hours.</li>
-        <li><strong>Make coating:</strong> Mix flour + cornflour + spices. Whisk eggs + milk separately.</li>
-        <li><strong>Double coat:</strong> Egg wash → flour → egg wash → flour. Press hard to create craggy clumps.</li>
-        <li><strong>Rest 15 mins:</strong> Let coated pieces rest uncovered — dries the coating.</li>
-        <li><strong>Fry medium heat:</strong> 3–4 pieces at a time, 12–15 mins. Deep golden brown. Rest 5 mins before serving.</li>
-      </ol>
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-brand">Call<span>Pulse</span></div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="topbarUser"></span>
+      <button class="logout-btn" onclick="doLogout()">Sign Out</button>
     </div>
   </div>
-</div>
-<div class="recipe-block">
-  <div class="recipe-title">CJ's-Style Loaded Fries</div>
-  <div class="recipe-sub">Serves 4 · The double-fry method is everything</div>
-  <div class="recipe-cols">
-    <div>
-      <div class="rst">Ingredients</div>
-      <ul class="ing-list">
-        <li><span>Large potatoes</span><span class="ing-amt">~1 kg</span></li>
-        <li><span>Cooking oil</span><span class="ing-amt">500ml</span></li>
-        <li><span>Salt</span><span class="ing-amt">1.5 tsp</span></li>
-        <li><span>Garlic powder</span><span class="ing-amt">1 tsp</span></li>
-        <li><span>Mayonnaise</span><span class="ing-amt">4 tbsp</span></li>
-        <li><span>Tomato ketchup</span><span class="ing-amt">3 tbsp</span></li>
-        <li><span>Chili sauce / piri piri</span><span class="ing-amt">2 tbsp</span></li>
-        <li><span>Garlic minced</span><span class="ing-amt">1 tsp</span></li>
-        <li><span>Soy sauce</span><span class="ing-amt">1 tsp</span></li>
-        <li><span>Shredded chicken or beef</span><span class="ing-amt">100g</span></li>
-        <li><span>Onion + tomatoes</span><span class="ing-amt">1 + 2</span></li>
-        <li><span>Cheese</span><span class="ing-amt">50g</span></li>
-        <li><span>Spring onions</span><span class="ing-amt">2</span></li>
-      </ul>
-    </div>
-    <div>
-      <div class="rst">Steps</div>
-      <ol class="guide">
-        <li><strong>Soak 30 mins:</strong> Cut potatoes into thick strips. Soak in cold salted water. Drain and pat dry.</li>
-        <li><strong>First fry:</strong> Medium heat, 4 minutes — cooked but NOT golden. Cool completely.</li>
-        <li><strong>Make house sauce:</strong> Mix mayo + ketchup + chili + garlic + soy sauce. This is your secret signature.</li>
-        <li><strong>Second fry:</strong> High heat, 3–4 mins until deeply golden. Season immediately.</li>
-        <li><strong>Load and serve:</strong> Fries → sauce → meat → cheese → spring onions. Serve immediately.</li>
-      </ol>
-    </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('dashboard')">📊 Dashboard</div>
+    <div class="tab" onclick="showTab('agents')">👥 Agents</div>
+    <div class="tab" onclick="showTab('metrics')">📥 Enter Metrics</div>
+    <div class="tab" onclick="showTab('followups')">🔔 Follow-Ups</div>
+    <div class="tab" onclick="showTab('report')">🖨 Reports</div>
   </div>
-</div>
-</div><div class="divider"></div></div>
 
-<div class="container" id="s6">
-<div class="section">
-<div class="section-header"><div class="section-num">06</div><div><div class="section-title">Week 1 action plan</div><div class="section-sub">Day by day from launch to first loyal customers</div></div></div>
-<div class="callout cb">The goal of Week 1 is not maximum profit. It is maximum impressions. Treat every customer this week as a 3-year investment.</div>
-<div class="week-plan">
-  <div class="day-block"><div class="day-num">Day<br>1</div><div><div class="day-title">Launch day — open by 7am, free tastes to first 5 people</div><div class="day-desc">Make 2–3 rolexes visibly — the smell attracts people. Smile and greet everyone. Tell each customer you are here every day.</div><div class="day-tags"><span class="tag to">operations</span><span class="tag tm">marketing</span></div></div></div>
-  <div class="day-block"><div class="day-num">Day<br>2–3</div><div><div class="day-title">Build familiarity — same time, recognise returning faces</div><div class="day-desc">Post WhatsApp status with food photo. Set up WhatsApp Business. Introduce combo deal — rolex + juice = 3,500 UGX.</div><div class="day-tags"><span class="tag tm">marketing</span><span class="tag tf">finance</span></div></div></div>
-  <div class="day-block"><div class="day-num">Day<br>4–5</div><div><div class="day-title">Create a signature — launch your unique rolex</div><div class="day-desc">Tell every customer about your chicken or avocado rolex. Take a great photo. Make a sign highlighting your special item.</div><div class="day-tags"><span class="tag tr">recipe</span><span class="tag tm">marketing</span></div></div></div>
-  <div class="day-block"><div class="day-num">Day<br>6–7</div><div><div class="day-title">Push word of mouth — referral deals and boda network</div><div class="day-desc">Bring a friend and both get a discount. Feed nearby boda guys well — each one sends you 5–10 customers. Count week profit, protect 40%.</div><div class="day-tags"><span class="tag tm">marketing</span><span class="tag tf">finance</span></div></div></div>
+  <div class="main" id="mainContent"></div>
 </div>
-<h2>Daily routine</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Time</th><th>Action</th></tr>
-  <tr><td>6:30am</td><td>Prep ingredients, light stove</td></tr>
-  <tr><td>7:00am</td><td>Open — catch morning commuters</td></tr>
-  <tr><td>12:00pm</td><td>Peak lunch rush — be fully stocked</td></tr>
-  <tr><td>5:00pm</td><td>Evening rush — office and school crowd</td></tr>
-  <tr><td>7:30pm</td><td>Close, count money, write restock list</td></tr>
-  <tr><td>8:00pm</td><td>Post WhatsApp status for next day</td></tr>
-</table></div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s7">
-<div class="section">
-<div class="section-header"><div class="section-num">07</div><div><div class="section-title">Customer growth timeline</div><div class="section-sub">Honest expectations from Week 1 to Month 3</div></div></div>
-<div class="timeline">
-  <div class="tl-item"><div class="tl-dot"></div><div class="tl-period">Week 1</div><div class="tl-title">5–15 customers per day</div><div class="tl-desc">Curious passersby. Focus entirely on taste and speed. Give free tastes.</div></div>
-  <div class="tl-item"><div class="tl-dot"></div><div class="tl-period">Week 2–3</div><div class="tl-title">15–30 customers per day</div><div class="tl-desc">Word of mouth begins. Week 1 customers return and tell their friends.</div></div>
-  <div class="tl-item"><div class="tl-dot"></div><div class="tl-period">Week 4</div><div class="tl-title">30–50 customers per day</div><div class="tl-desc">Your first real rush. Morning commuters, lunch crowd, evening rush forming.</div></div>
-  <div class="tl-item"><div class="tl-dot"></div><div class="tl-period">Month 2–3</div><div class="tl-title">50–80+ customers per day</div><div class="tl-desc">Storming begins. You become a landmark. People say "meet me at the rolex stall."</div></div>
-</div>
-<div class="callout cr"><strong>Warning:</strong> Most rolex businesses that fail do so in Week 2 or 3 — right before the customers would have flooded in. Slow days feel permanent but they are almost always temporary. Push through Week 3.</div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s8">
-<div class="section">
-<div class="section-header"><div class="section-num">08</div><div><div class="section-title">Risks & how to handle them</div><div class="section-sub">Every risk you will face — and what to do about it</div></div></div>
-<h3>High probability risks</h3>
-<div class="risk-grid">
-  <div class="risk-card rh"><div class="risk-label">High risk</div><div class="risk-title">Slow first weeks</div><div class="risk-fix">Keep 100k emergency float. Do not quit before Week 4.</div></div>
-  <div class="risk-card rh"><div class="risk-label">High risk</div><div class="risk-title">Rain and bad weather cutting customers by 70%</div><div class="risk-fix">Budget 15k–25k for a tarpaulin canopy from Week 1.</div></div>
-  <div class="risk-card rh"><div class="risk-label">High risk</div><div class="risk-title">Running out of ingredients during peak hours</div><div class="risk-fix">Always prep 20% more than your expected daily sales.</div></div>
-  <div class="risk-card rh"><div class="risk-label">High risk</div><div class="risk-title">Inconsistent taste losing repeat customers</div><div class="risk-fix">Never compromise on quality to save money. Raise prices if costs increase.</div></div>
-</div>
-<h3>Medium probability risks</h3>
-<div class="risk-grid">
-  <div class="risk-card rm"><div class="risk-label">Medium risk</div><div class="risk-title">Council fees and permits</div><div class="risk-fix">Ask nearby vendors about fees BEFORE choosing your spot.</div></div>
-  <div class="risk-card rm"><div class="risk-label">Medium risk</div><div class="risk-title">Theft of daily cash</div><div class="risk-fix">Use Mobile Money — bank earnings daily via MTN or Airtel.</div></div>
-  <div class="risk-card rm"><div class="risk-label">Medium risk</div><div class="risk-title">Copycat vendors copying your signature items</div><div class="risk-fix">Keep your sauce recipe secret. Keep innovating.</div></div>
-  <div class="risk-card rm"><div class="risk-label">Medium risk</div><div class="risk-title">Personal illness — you are the business</div><div class="risk-fix">Train one trusted backup person who knows the full recipes.</div></div>
-</div>
-<h3>Lower but serious risks</h3>
-<div class="risk-grid">
-  <div class="risk-card rl"><div class="risk-label">Lower risk</div><div class="risk-title">Location loss — asked to move</div><div class="risk-fix">Never invest heavily in a fixed setup until you own or lease the spot.</div></div>
-  <div class="risk-card rl"><div class="risk-label">Lower risk</div><div class="risk-title">Food spoilage in Kampala heat</div><div class="risk-fix">Buy fresh daily — never over-prep perishables.</div></div>
-</div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s9">
-<div class="section">
-<div class="section-header"><div class="section-num">09</div><div><div class="section-title">Daily income projections</div><div class="section-sub">Realistic numbers for slow, average, and good days</div></div></div>
-<h2>Rolex stand only</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Scenario</th><th>Rolexes sold</th><th>Avg price</th><th>Revenue</th><th>Daily profit</th></tr>
-  <tr><td>Slow day</td><td>15</td><td>2,500</td><td>37,500</td><td>~18,000</td></tr>
-  <tr><td>Average day</td><td>30</td><td>3,000</td><td>90,000</td><td>~49,000</td></tr>
-  <tr><td>Good day</td><td>50</td><td>3,200</td><td>160,000</td><td>~85,000</td></tr>
-  <tr><td>Great day</td><td>70</td><td>3,500</td><td>245,000</td><td>~130,000</td></tr>
-</table></div>
-<div class="callout cg">Monthly potential from rolex stand alone: <strong>500,000 — 1,500,000 UGX</strong></div>
-<h2>Full menu (rolex + chicken + fries)</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Scenario</th><th>Orders/day</th><th>Avg order</th><th>Revenue</th><th>Daily profit</th></tr>
-  <tr><td>Slow day</td><td>20</td><td>8,000</td><td>160,000</td><td>~72,000</td></tr>
-  <tr><td>Average day</td><td>40</td><td>10,000</td><td>400,000</td><td>~180,000</td></tr>
-  <tr><td>Good day</td><td>60</td><td>12,000</td><td>720,000</td><td>~320,000</td></tr>
-</table></div>
-<div class="callout cg">Monthly potential with full menu: <strong>1,500,000 — 4,000,000 UGX</strong></div>
-<div class="callout co"><strong>Profit rule:</strong> From Day 1, put 40% of daily profit back into stock and savings. Never touch it.</div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s10">
-<div class="section">
-<div class="section-header"><div class="section-num">10</div><div><div class="section-title">Marketing your business</div><div class="section-sub">Free and low-cost ways to fill your stall</div></div></div>
-<h2>Free marketing — start Day 1</h2>
-<ul class="guide">
-  <li>WhatsApp status every morning — photo of food, price, and location</li>
-  <li>WhatsApp Business account — catalogue feature to display your full menu</li>
-  <li>Send personal messages to 50 contacts on launch day — first 10 orders get a discount</li>
-  <li>Post in Kampala Facebook groups — Buy and Sell, neighbourhood, campus groups</li>
-  <li>Feed your neighbours for free on Day 1 — they become your first marketers</li>
-</ul>
-<h2>Week 2–4 marketing</h2>
-<ul class="guide">
-  <li>Make a menu graphic on Canva — clean with photos and prices</li>
-  <li>Ask every happy customer to share your number with one friend</li>
-  <li>Post TikTok or Instagram Reels — 30-second frying video gets huge reach for free</li>
-  <li>Put a small sign or banner outside your room or gate</li>
-  <li>Partner with boda riders — they bring orders, you give them commission or discount</li>
-</ul>
-<h2>Month 2 and beyond</h2>
-<ul class="guide">
-  <li>List on Jumia Food or local delivery platforms — instant visibility to thousands</li>
-  <li>Create a loyalty card — buy 5 meals get 1 free</li>
-  <li>Target office lunch delivery — one office of 20 people = 20 daily orders</li>
-  <li>Weekly special every Friday — new item keeps people checking your status</li>
-</ul>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s11">
-<div class="section">
-<div class="section-header"><div class="section-num">11</div><div><div class="section-title">Unique rolex variations</div><div class="section-sub">Keep your menu exciting and hard to copy</div></div></div>
-<h2>Chapati variations</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Type</th><th>Why it works</th></tr>
-  <tr><td>Classic plain chapati</td><td>Always on the menu — your base</td></tr>
-  <tr><td>Whole wheat chapati</td><td>Market as the "health rolex" — charge premium</td></tr>
-  <tr><td>Turmeric chapati</td><td>Golden colour, visually striking</td></tr>
-  <tr><td>Spinach chapati</td><td>Green dough — health-conscious customers love it</td></tr>
-  <tr><td>Chili chapati</td><td>Spiced dough for heat lovers</td></tr>
-  <tr><td>Thin crispy chapati</td><td>More like a wrap — easier to eat on the go</td></tr>
-</table></div>
-<h2>Signature filling combinations</h2>
-<div class="tbl-wrap"><table>
-  <tr><th>Rolex name</th><th>Filling combination</th></tr>
-  <tr><td>Classic</td><td>Egg, cabbage, tomato, onion</td></tr>
-  <tr><td>Double egg</td><td>2 eggs, veggies, light mayo</td></tr>
-  <tr><td>Chicken rolex</td><td>Shredded spiced chicken, coleslaw, chili sauce</td></tr>
-  <tr><td>Beef & mushroom</td><td>Minced beef, mushrooms, garlic</td></tr>
-  <tr><td>Avocado rolex</td><td>Avocado, tomato, spring onion</td></tr>
-  <tr><td>Gonja sweet rolex</td><td>Fried plantain, egg, tomato — sweet and savory</td></tr>
-  <tr><td>Gym rolex</td><td>Egg white, chicken, veggies, no sauce — high protein</td></tr>
-</table></div>
-</div><div class="divider"></div></div>
-
-<div class="container" id="s12">
-<div class="section">
-<div class="section-header"><div class="section-num">12</div><div><div class="section-title">Mindset & discipline</div><div class="section-sub">The only variable left is you</div></div></div>
-<p>The food, the recipes, and the plan are all ready. The only remaining variable is you.</p>
-<div class="risk-grid">
-  <div class="risk-card" style="background:var(--orange-light);border-left:3px solid var(--orange)"><div class="risk-label" style="color:var(--orange)">Discipline 1</div><div class="risk-title">Consistency above everything</div><div class="risk-fix">Open at the same time every single day. Rain or shine. People build their routines around you. Miss two days and they find someone else forever.</div></div>
-  <div class="risk-card" style="background:var(--green-bg);border-left:3px solid var(--green)"><div class="risk-label" style="color:var(--green)">Discipline 2</div><div class="risk-title">The 40% profit rule</div><div class="risk-fix">Put 40% of every day's profit into a separate Mobile Money wallet. Never touch it. The vendors who stay poor spend their profits.</div></div>
-  <div class="risk-card" style="background:var(--blue-bg);border-left:3px solid #2471A3"><div class="risk-label" style="color:#2471A3">Discipline 3</div><div class="risk-title">Taste above everything</div><div class="risk-fix">One bad meal loses you 5 potential customers. Never reduce quality to save money.</div></div>
-</div>
-<div class="sign-box">
-  <div class="sign-label">I commit to launching my Street Kitchen and giving it 90 days of full consistency. I will open on:</div>
-  <div class="sign-line"></div>
-  <div class="sign-sub">Sign it. Keep this guide. Show up on that date.</div>
-</div>
-<div class="callout co" style="font-size:15px"><strong>Your Street Kitchen starts with one decision — to begin.</strong> Low startup cost, high daily cash flow, and a plan that is already written. The only question is whether you will start.</div>
-</div></div>
-
-<footer>Built for <span>Kampala</span> · Street Kitchen 2025 · Your business, your future</footer>
 
 <script>
-var editing=false;
-var editables=[];
-function toggleEdit(){
-  editing=!editing;
-  var btn=document.getElementById('editBtn');
-  var saveBtn=document.getElementById('saveBtn');
-  var bar=document.getElementById('editBar');
-  if(editing){
-    btn.textContent='✏ Exit edit';btn.classList.add('on');
-    saveBtn.style.display='inline-block';bar.classList.add('on');
-    document.body.classList.add('editing');
-    document.querySelectorAll('td,th,p,.day-title,.day-desc,.tl-title,.tl-desc,.risk-title,.risk-fix,.card-val,.card-sub,.section-sub,.ing-amt,li,.cover-card-val,.recipe-title,.recipe-sub').forEach(function(el){
-      if(!el.querySelector('table')&&!el.querySelector('ul')&&!el.querySelector('ol')){
-        el.setAttribute('contenteditable','true');
-      }
-    });
+// ============================================================
+// EMBEDDED DATA
+// ============================================================
+const RAW_DATA = [{"Agent": "Mercy  Atusasiire", "Cycle": 202511, "Type": "Call attempts", "Actual": 11025}, {"Agent": "Babirye Violla", "Cycle": 202604, "Type": "Call attempts", "Actual": 9559}, {"Agent": "Flavia Nangonzi", "Cycle": 202604, "Type": "Call attempts", "Actual": 9315}, {"Agent": "Flavia Nangonzi", "Cycle": 202603, "Type": "Call attempts", "Actual": 8846}, {"Agent": "Mercy  Atusasiire", "Cycle": 202603, "Type": "Call attempts", "Actual": 8746}, {"Agent": "Mercy  Atusasiire", "Cycle": 202512, "Type": "Call attempts", "Actual": 8644}, {"Agent": "Beatrice Nakkazi", "Cycle": 202511, "Type": "Call attempts", "Actual": 8620}, {"Agent": "Kenneth Birungi", "Cycle": 202511, "Type": "Call attempts", "Actual": 8600}, {"Agent": "Mercy  Atusasiire", "Cycle": 202604, "Type": "Call attempts", "Actual": 8444}, {"Agent": "Babirye Violla", "Cycle": 202603, "Type": "Call attempts", "Actual": 8323}, {"Agent": "Mercy  Atusasiire", "Cycle": 202510, "Type": "Call attempts", "Actual": 8157}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202511, "Type": "Call attempts", "Actual": 7785}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202603, "Type": "Call attempts", "Actual": 7679}, {"Agent": "Mercy  Atusasiire", "Cycle": 202509, "Type": "Call attempts", "Actual": 7591}, {"Agent": "Babirye Violla", "Cycle": 202605, "Type": "Call attempts", "Actual": 7587}, {"Agent": "Flavia Nangonzi", "Cycle": 202507, "Type": "Call attempts", "Actual": 7580}, {"Agent": "Kenneth Birungi", "Cycle": 202509, "Type": "Call attempts", "Actual": 7447}, {"Agent": "Gloria Nahirya", "Cycle": 202603, "Type": "Call attempts", "Actual": 7413}, {"Agent": "Mercy  Atusasiire", "Cycle": 202605, "Type": "Call attempts", "Actual": 7355}, {"Agent": "Rittah Namataka", "Cycle": 202511, "Type": "Call attempts", "Actual": 7332}, {"Agent": "Rachael Nankya", "Cycle": 202511, "Type": "Call attempts", "Actual": 7324}, {"Agent": "Milly Nakkazi", "Cycle": 202604, "Type": "Call attempts", "Actual": 7323}, {"Agent": "Natasha Nakiyaga", "Cycle": 202511, "Type": "Call attempts", "Actual": 7302}, {"Agent": "Angella Athieno", "Cycle": 202605, "Type": "Call attempts", "Actual": 7260}, {"Agent": "Daphine Nanyonjo", "Cycle": 202511, "Type": "Call attempts", "Actual": 7218}, {"Agent": "Oliver Natoolo", "Cycle": 202603, "Type": "Call attempts", "Actual": 7212}, {"Agent": "Kenneth Birungi", "Cycle": 202604, "Type": "Call attempts", "Actual": 7187}, {"Agent": "Flavia Nangonzi", "Cycle": 202509, "Type": "Call attempts", "Actual": 7183}, {"Agent": "Milly Nakkazi", "Cycle": 202603, "Type": "Call attempts", "Actual": 7120}, {"Agent": "Patience Nyamwiza", "Cycle": 202511, "Type": "Call attempts", "Actual": 7112}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202509, "Type": "Call attempts", "Actual": 7082}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202604, "Type": "Call attempts", "Actual": 7064}, {"Agent": "Natasha Nakiyaga", "Cycle": 202604, "Type": "Call attempts", "Actual": 7054}, {"Agent": "Flavia Nangonzi", "Cycle": 202511, "Type": "Call attempts", "Actual": 7049}, {"Agent": "Patience Nyamwiza", "Cycle": 202603, "Type": "Call attempts", "Actual": 7017}, {"Agent": "Natasha Nakiyaga", "Cycle": 202603, "Type": "Call attempts", "Actual": 6978}, {"Agent": "Kenneth Birungi", "Cycle": 202507, "Type": "Call attempts", "Actual": 6978}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202511, "Type": "Call attempts", "Actual": 6965}, {"Agent": "Elizabeth Akampurira", "Cycle": 202603, "Type": "Call attempts", "Actual": 6907}, {"Agent": "Daphine Nanyonjo", "Cycle": 202512, "Type": "Call attempts", "Actual": 6897}, {"Agent": "Elizabeth Akampurira", "Cycle": 202604, "Type": "Call attempts", "Actual": 6873}, {"Agent": "Jonathan  Luyima", "Cycle": 202511, "Type": "Call attempts", "Actual": 6872}, {"Agent": "Kenneth Birungi", "Cycle": 202603, "Type": "Call attempts", "Actual": 6868}, {"Agent": "Milly Nakkazi", "Cycle": 202507, "Type": "Call attempts", "Actual": 6864}, {"Agent": "Flavia Nangonzi", "Cycle": 202605, "Type": "Call attempts", "Actual": 6829}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202510, "Type": "Call attempts", "Actual": 6819}, {"Agent": "Milly Nakkazi", "Cycle": 202509, "Type": "Call attempts", "Actual": 6788}, {"Agent": "Daphine Nanyonjo", "Cycle": 202603, "Type": "Call attempts", "Actual": 6784}, {"Agent": "Natasha Nakiyaga", "Cycle": 202512, "Type": "Call attempts", "Actual": 6763}, {"Agent": "Milly Nakkazi", "Cycle": 202510, "Type": "Call attempts", "Actual": 6753}, {"Agent": "Birungi Nuwagaba", "Cycle": 202510, "Type": "Call attempts", "Actual": 6752}, {"Agent": "Beatrice Nakkazi", "Cycle": 202512, "Type": "Call attempts", "Actual": 6744}, {"Agent": "GraceMary Nakabiito", "Cycle": 202603, "Type": "Call attempts", "Actual": 6734}, {"Agent": "Manita Joan", "Cycle": 202603, "Type": "Call attempts", "Actual": 6716}, {"Agent": "Rachael Nankya", "Cycle": 202507, "Type": "Call attempts", "Actual": 6668}, {"Agent": "Kenneth Birungi", "Cycle": 202605, "Type": "Call attempts", "Actual": 6647}, {"Agent": "Oliver Natoolo", "Cycle": 202604, "Type": "Call attempts", "Actual": 6641}, {"Agent": "Jonathan  Luyima", "Cycle": 202512, "Type": "Call attempts", "Actual": 6636}, {"Agent": "Beatrice Nakkazi", "Cycle": 202603, "Type": "Call attempts", "Actual": 6634}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202512, "Type": "Call attempts", "Actual": 6627}, {"Agent": "Masinde Nisha", "Cycle": 202511, "Type": "Call attempts", "Actual": 6578}, {"Agent": "David Wasen", "Cycle": 202603, "Type": "Call attempts", "Actual": 6558}, {"Agent": "Rittah Namataka", "Cycle": 202512, "Type": "Call attempts", "Actual": 6556}, {"Agent": "Flavia Nangonzi", "Cycle": 202512, "Type": "Call attempts", "Actual": 6534}, {"Agent": "Birungi Nuwagaba", "Cycle": 202511, "Type": "Call attempts", "Actual": 6523}, {"Agent": "Rachael Nankya", "Cycle": 202509, "Type": "Call attempts", "Actual": 6522}, {"Agent": "Flavia Nangonzi", "Cycle": 202508, "Type": "Call attempts", "Actual": 6520}, {"Agent": "Gloria Nahirya", "Cycle": 202512, "Type": "Call attempts", "Actual": 6471}, {"Agent": "Mercy  Atusasiire", "Cycle": 202602, "Type": "Call attempts", "Actual": 6438}, {"Agent": "Milly Nakkazi", "Cycle": 202512, "Type": "Call attempts", "Actual": 6401}, {"Agent": "Milly Nakkazi", "Cycle": 202605, "Type": "Call attempts", "Actual": 6394}, {"Agent": "Flavia Nangonzi", "Cycle": 202510, "Type": "Call attempts", "Actual": 6393}, {"Agent": "Mercy  Atusasiire", "Cycle": 202601, "Type": "Call attempts", "Actual": 6358}, {"Agent": "Birungi Nuwagaba", "Cycle": 202603, "Type": "Call attempts", "Actual": 6313}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202508, "Type": "Call attempts", "Actual": 6301}, {"Agent": "Beatrice Nakkazi", "Cycle": 202604, "Type": "Call attempts", "Actual": 6293}, {"Agent": "Gloria Nahirya", "Cycle": 202511, "Type": "Call attempts", "Actual": 6288}, {"Agent": "Patience Nyamwiza", "Cycle": 202512, "Type": "Call attempts", "Actual": 6287}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202603, "Type": "Call attempts", "Actual": 6279}, {"Agent": "Manita Joan", "Cycle": 202511, "Type": "Call attempts", "Actual": 6275}, {"Agent": "Calvin Ssematimba", "Cycle": 202507, "Type": "Call attempts", "Actual": 6271}, {"Agent": "Milly Nakkazi", "Cycle": 202508, "Type": "Call attempts", "Actual": 6267}, {"Agent": "Gloria Nahirya", "Cycle": 202510, "Type": "Call attempts", "Actual": 6256}, {"Agent": "Latifa Apio", "Cycle": 202511, "Type": "Call attempts", "Actual": 6181}, {"Agent": "Natasha Nakiyaga", "Cycle": 202510, "Type": "Call attempts", "Actual": 6164}, {"Agent": "Gloria Nahirya", "Cycle": 202604, "Type": "Call attempts", "Actual": 6152}, {"Agent": "Milly Nakkazi", "Cycle": 202511, "Type": "Call attempts", "Actual": 6099}, {"Agent": "Latifa Apio", "Cycle": 202510, "Type": "Call attempts", "Actual": 6080}, {"Agent": "Kenneth Birungi", "Cycle": 202601, "Type": "Call attempts", "Actual": 6044}, {"Agent": "Sarah Akello Flishia", "Cycle": 202510, "Type": "Call attempts", "Actual": 5987}, {"Agent": "GraceMary Nakabiito", "Cycle": 202511, "Type": "Call attempts", "Actual": 5976}, {"Agent": "Latifa Apio", "Cycle": 202507, "Type": "Call attempts", "Actual": 5971}, {"Agent": "Sarah Akello Flishia", "Cycle": 202512, "Type": "Call attempts", "Actual": 5967}, {"Agent": "Latifa Apio", "Cycle": 202512, "Type": "Call attempts", "Actual": 5956}, {"Agent": "Kenneth Birungi", "Cycle": 202508, "Type": "Call attempts", "Actual": 5949}, {"Agent": "Rittah Namataka", "Cycle": 202508, "Type": "Call attempts", "Actual": 5932}, {"Agent": "Emily Namara", "Cycle": 202603, "Type": "Call attempts", "Actual": 5893}, {"Agent": "Latifa Apio", "Cycle": 202508, "Type": "Call attempts", "Actual": 5888}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202510, "Type": "Call attempts", "Actual": 5888}, {"Agent": "Birungi Nuwagaba", "Cycle": 202507, "Type": "Call attempts", "Actual": 5886}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202604, "Type": "Call attempts", "Actual": 5874}, {"Agent": "Gloria Kwagala", "Cycle": 202507, "Type": "Call attempts", "Actual": 5862}, {"Agent": "Raymond Twinomugisha", "Cycle": 202507, "Type": "Call attempts", "Actual": 5840}, {"Agent": "Daphine Nanyonjo", "Cycle": 202510, "Type": "Call attempts", "Actual": 5835}, {"Agent": "Rachael Nankya", "Cycle": 202510, "Type": "Call attempts", "Actual": 5796}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202605, "Type": "Call attempts", "Actual": 5787}, {"Agent": "Birungi Nuwagaba", "Cycle": 202604, "Type": "Call attempts", "Actual": 5785}, {"Agent": "GraceMary Nakabiito", "Cycle": 202604, "Type": "Call attempts", "Actual": 5784}, {"Agent": "Daphine Nanyonjo", "Cycle": 202507, "Type": "Call attempts", "Actual": 5777}, {"Agent": "Emily Namara", "Cycle": 202510, "Type": "Call attempts", "Actual": 5755}, {"Agent": "Gloria Nahirya", "Cycle": 202605, "Type": "Call attempts", "Actual": 5754}, {"Agent": "Oliver Natoolo", "Cycle": 202605, "Type": "Call attempts", "Actual": 5742}, {"Agent": "Flavia Nangonzi", "Cycle": 202602, "Type": "Call attempts", "Actual": 5740}, {"Agent": "Kenneth Birungi", "Cycle": 202510, "Type": "Call attempts", "Actual": 5740}, {"Agent": "Daphine Nanyonjo", "Cycle": 202604, "Type": "Call attempts", "Actual": 5734}, {"Agent": "Daphine Nanyonjo", "Cycle": 202508, "Type": "Call attempts", "Actual": 5716}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202605, "Type": "Call attempts", "Actual": 5680}, {"Agent": "Sarah Akello Flishia", "Cycle": 202511, "Type": "Call attempts", "Actual": 5673}, {"Agent": "Milly Nakkazi", "Cycle": 202601, "Type": "Call attempts", "Actual": 5667}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202603, "Type": "Call attempts", "Actual": 5633}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202511, "Type": "Call attempts", "Actual": 5630}, {"Agent": "Gloria Nahirya", "Cycle": 202509, "Type": "Call attempts", "Actual": 5615}, {"Agent": "Patience Nyamwiza", "Cycle": 202509, "Type": "Call attempts", "Actual": 5615}, {"Agent": "Beatrice Nakkazi", "Cycle": 202507, "Type": "Call attempts", "Actual": 5614}, {"Agent": "Manita Joan", "Cycle": 202604, "Type": "Call attempts", "Actual": 5613}, {"Agent": "Jonathan  Luyima", "Cycle": 202510, "Type": "Call attempts", "Actual": 5603}, {"Agent": "Rachael Nankya", "Cycle": 202508, "Type": "Call attempts", "Actual": 5581}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202604, "Type": "Call attempts", "Actual": 5552}, {"Agent": "Sheila Wenene Mate", "Cycle": 202509, "Type": "Call attempts", "Actual": 5545}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202512, "Type": "Call attempts", "Actual": 5538}, {"Agent": "Flavia Nangonzi", "Cycle": 202601, "Type": "Call attempts", "Actual": 5532}, {"Agent": "Patience Nyamwiza", "Cycle": 202604, "Type": "Call attempts", "Actual": 5527}, {"Agent": "Sarah Akello Flishia", "Cycle": 202509, "Type": "Call attempts", "Actual": 5509}, {"Agent": "Natasha Nakiyaga", "Cycle": 202509, "Type": "Call attempts", "Actual": 5485}, {"Agent": "Masinde Nisha", "Cycle": 202512, "Type": "Call attempts", "Actual": 5471}, {"Agent": "Gloria Nahirya", "Cycle": 202507, "Type": "Call attempts", "Actual": 5443}, {"Agent": "Rachael Nankya", "Cycle": 202601, "Type": "Call attempts", "Actual": 5436}, {"Agent": "Masinde Nisha", "Cycle": 202507, "Type": "Call attempts", "Actual": 5379}, {"Agent": "Anitah Nalugwa", "Cycle": 202603, "Type": "Call attempts", "Actual": 5347}, {"Agent": "David Wasen", "Cycle": 202605, "Type": "Call attempts", "Actual": 5338}, {"Agent": "Gloria Kwagala", "Cycle": 202511, "Type": "Call attempts", "Actual": 5303}, {"Agent": "Kenneth Birungi", "Cycle": 202512, "Type": "Call attempts", "Actual": 5288}, {"Agent": "Natasha Nakiyaga", "Cycle": 202507, "Type": "Call attempts", "Actual": 5287}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202601, "Type": "Call attempts", "Actual": 5280}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202512, "Type": "Call attempts", "Actual": 5250}, {"Agent": "Natasha Nakiyaga", "Cycle": 202605, "Type": "Call attempts", "Actual": 5236}, {"Agent": "Masinde Nisha", "Cycle": 202601, "Type": "Call attempts", "Actual": 5236}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202507, "Type": "Call attempts", "Actual": 5218}, {"Agent": "Emily Namara", "Cycle": 202511, "Type": "Call attempts", "Actual": 5211}, {"Agent": "Jonathan  Luyima", "Cycle": 202509, "Type": "Call attempts", "Actual": 5202}, {"Agent": "Patience Nyamwiza", "Cycle": 202510, "Type": "Call attempts", "Actual": 5202}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202601, "Type": "Call attempts", "Actual": 5201}, {"Agent": "Elizabeth Akampurira", "Cycle": 202605, "Type": "Call attempts", "Actual": 5198}, {"Agent": "Daphine Nanyonjo", "Cycle": 202509, "Type": "Call attempts", "Actual": 5193}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202509, "Type": "Call attempts", "Actual": 5192}, {"Agent": "Jupiter Atuhaire", "Cycle": 202507, "Type": "Call attempts", "Actual": 5188}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202510, "Type": "Call attempts", "Actual": 5186}, {"Agent": "Patience Nyamwiza", "Cycle": 202605, "Type": "Call attempts", "Actual": 5178}, {"Agent": "Birungi Nuwagaba", "Cycle": 202508, "Type": "Call attempts", "Actual": 5162}, {"Agent": "Emily Namara", "Cycle": 202604, "Type": "Call attempts", "Actual": 5142}, {"Agent": "Jonathan  Luyima", "Cycle": 202507, "Type": "Call attempts", "Actual": 5137}, {"Agent": "Emily Namara", "Cycle": 202509, "Type": "Call attempts", "Actual": 5104}, {"Agent": "Rittah Namataka", "Cycle": 202510, "Type": "Call attempts", "Actual": 5102}, {"Agent": "Latifa Apio", "Cycle": 202601, "Type": "Call attempts", "Actual": 5093}, {"Agent": "GraceMary Nakabiito", "Cycle": 202510, "Type": "Call attempts", "Actual": 5084}, {"Agent": "Anitah Nalugwa", "Cycle": 202604, "Type": "Call attempts", "Actual": 5059}, {"Agent": "GraceMary Nakabiito", "Cycle": 202512, "Type": "Call attempts", "Actual": 5052}, {"Agent": "Ankwatsiibwe Angel", "Cycle": 202604, "Type": "Call attempts", "Actual": 5037}, {"Agent": "Natasha Nakiyaga", "Cycle": 202601, "Type": "Call attempts", "Actual": 5028}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202601, "Type": "Call attempts", "Actual": 5028}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202603, "Type": "Call attempts", "Actual": 5023}, {"Agent": "Milly Nakkazi", "Cycle": 202602, "Type": "Call attempts", "Actual": 4989}, {"Agent": "Patience Nyamwiza", "Cycle": 202508, "Type": "Call attempts", "Actual": 4951}, {"Agent": "Gloria Kwagala", "Cycle": 202512, "Type": "Call attempts", "Actual": 4947}, {"Agent": "Beatrice Nakkazi", "Cycle": 202601, "Type": "Call attempts", "Actual": 4936}, {"Agent": "Emily Namara", "Cycle": 202507, "Type": "Call attempts", "Actual": 4921}, {"Agent": "Birungi Nuwagaba", "Cycle": 202512, "Type": "Call attempts", "Actual": 4918}, {"Agent": "Masinde Nisha", "Cycle": 202509, "Type": "Call attempts", "Actual": 4886}, {"Agent": "Sarah Akello Flishia", "Cycle": 202604, "Type": "Call attempts", "Actual": 4874}, {"Agent": "Manita Joan", "Cycle": 202512, "Type": "Call attempts", "Actual": 4869}, {"Agent": "Sarah Akello Flishia", "Cycle": 202603, "Type": "Call attempts", "Actual": 4860}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202507, "Type": "Call attempts", "Actual": 4853}, {"Agent": "Natasha Nakiyaga", "Cycle": 202602, "Type": "Call attempts", "Actual": 4810}, {"Agent": "Latifa Apio", "Cycle": 202509, "Type": "Call attempts", "Actual": 4807}, {"Agent": "Sarah Akello Flishia", "Cycle": 202601, "Type": "Call attempts", "Actual": 4765}, {"Agent": "Gloria Nahirya", "Cycle": 202508, "Type": "Call attempts", "Actual": 4755}, {"Agent": "Masinde Nisha", "Cycle": 202508, "Type": "Call attempts", "Actual": 4754}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202605, "Type": "Call attempts", "Actual": 4752}, {"Agent": "Peter Kakuru", "Cycle": 202603, "Type": "Call attempts", "Actual": 4751}, {"Agent": "Birungi Nuwagaba", "Cycle": 202509, "Type": "Call attempts", "Actual": 4738}, {"Agent": "Sarah Akello Flishia", "Cycle": 202602, "Type": "Call attempts", "Actual": 4735}, {"Agent": "Gloria Kwagala", "Cycle": 202508, "Type": "Call attempts", "Actual": 4726}, {"Agent": "Emily Namara", "Cycle": 202605, "Type": "Call attempts", "Actual": 4720}, {"Agent": "Gloria Kwagala", "Cycle": 202509, "Type": "Call attempts", "Actual": 4712}, {"Agent": "Manita Joan", "Cycle": 202510, "Type": "Call attempts", "Actual": 4701}, {"Agent": "Natasha Nakiyaga", "Cycle": 202508, "Type": "Call attempts", "Actual": 4675}, {"Agent": "Gloria Nahirya", "Cycle": 202601, "Type": "Call attempts", "Actual": 4672}, {"Agent": "David Wasen", "Cycle": 202604, "Type": "Call attempts", "Actual": 4658}, {"Agent": "Jupiter Atuhaire", "Cycle": 202508, "Type": "Call attempts", "Actual": 4625}, {"Agent": "Rinah Kabahuma", "Cycle": 202508, "Type": "Call attempts", "Actual": 4609}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202602, "Type": "Call attempts", "Actual": 4579}, {"Agent": "Birungi Nuwagaba", "Cycle": 202601, "Type": "Call attempts", "Actual": 4578}, {"Agent": "Apio Cissy", "Cycle": 202605, "Type": "Call attempts", "Actual": 4552}, {"Agent": "GraceMary Nakabiito", "Cycle": 202509, "Type": "Call attempts", "Actual": 4529}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202604, "Type": "Call attempts", "Actual": 4488}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202602, "Type": "Call attempts", "Actual": 4475}, {"Agent": "Rittah Namataka", "Cycle": 202507, "Type": "Call attempts", "Actual": 4439}, {"Agent": "Patience Nyamwiza", "Cycle": 202601, "Type": "Call attempts", "Actual": 4419}, {"Agent": "Kenneth Birungi", "Cycle": 202602, "Type": "Call attempts", "Actual": 4419}, {"Agent": "Fortunate Nahurira", "Cycle": 202508, "Type": "Call attempts", "Actual": 4417}, {"Agent": "Manita Joan", "Cycle": 202605, "Type": "Call attempts", "Actual": 4410}, {"Agent": "Emily Namara", "Cycle": 202512, "Type": "Call attempts", "Actual": 4400}, {"Agent": "Apio Cissy", "Cycle": 202603, "Type": "Call attempts", "Actual": 4391}, {"Agent": "Beatrice Nakkazi", "Cycle": 202602, "Type": "Call attempts", "Actual": 4386}, {"Agent": "Gloria Nahirya", "Cycle": 202602, "Type": "Call attempts", "Actual": 4380}, {"Agent": "Brian Kiiza", "Cycle": 202603, "Type": "Call attempts", "Actual": 4380}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202605, "Type": "Call attempts", "Actual": 4340}, {"Agent": "Patience Nyamwiza", "Cycle": 202507, "Type": "Call attempts", "Actual": 4269}, {"Agent": "Gloria Kwagala", "Cycle": 202510, "Type": "Call attempts", "Actual": 4265}, {"Agent": "Anitah Nalugwa", "Cycle": 202605, "Type": "Call attempts", "Actual": 4217}, {"Agent": "Birungi Nuwagaba", "Cycle": 202602, "Type": "Call attempts", "Actual": 4192}, {"Agent": "Sarah Akello Flishia", "Cycle": 202508, "Type": "Call attempts", "Actual": 4151}, {"Agent": "Sarah Akello Flishia", "Cycle": 202605, "Type": "Call attempts", "Actual": 4138}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202509, "Type": "Call attempts", "Actual": 4123}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202603, "Type": "Call attempts", "Actual": 4094}, {"Agent": "Patience Nyamwiza", "Cycle": 202602, "Type": "Call attempts", "Actual": 4092}, {"Agent": "Jonathan  Luyima", "Cycle": 202508, "Type": "Call attempts", "Actual": 4071}, {"Agent": "Manita Joan", "Cycle": 202509, "Type": "Call attempts", "Actual": 4065}, {"Agent": "Emily Namara", "Cycle": 202602, "Type": "Call attempts", "Actual": 4059}, {"Agent": "GraceMary Nakabiito", "Cycle": 202508, "Type": "Call attempts", "Actual": 4053}, {"Agent": "Daphine Nanyonjo", "Cycle": 202601, "Type": "Call attempts", "Actual": 4040}, {"Agent": "Sheila Wenene Mate", "Cycle": 202508, "Type": "Call attempts", "Actual": 4010}, {"Agent": "Masinde Nisha", "Cycle": 202510, "Type": "Call attempts", "Actual": 4006}, {"Agent": "Beatrice Nakkazi", "Cycle": 202605, "Type": "Call attempts", "Actual": 3979}, {"Agent": "Gloria Kwagala", "Cycle": 202602, "Type": "Call attempts", "Actual": 3936}, {"Agent": "Sheila Wenene Mate", "Cycle": 202510, "Type": "Call attempts", "Actual": 3887}, {"Agent": "Latifa Apio", "Cycle": 202603, "Type": "Call attempts", "Actual": 3881}, {"Agent": "Rittah Namataka", "Cycle": 202509, "Type": "Call attempts", "Actual": 3873}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202602, "Type": "Call attempts", "Actual": 3867}, {"Agent": "Manita Joan", "Cycle": 202601, "Type": "Call attempts", "Actual": 3861}, {"Agent": "Daphine Nanyonjo", "Cycle": 202602, "Type": "Call attempts", "Actual": 3847}, {"Agent": "Gloria Kwagala", "Cycle": 202601, "Type": "Call attempts", "Actual": 3818}, {"Agent": "Birungi Nuwagaba", "Cycle": 202605, "Type": "Call attempts", "Actual": 3789}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202605, "Type": "Call attempts", "Actual": 3714}, {"Agent": "Martin  Tweteise", "Cycle": 202603, "Type": "Call attempts", "Actual": 3687}, {"Agent": "Peter Kakuru", "Cycle": 202604, "Type": "Call attempts", "Actual": 3673}, {"Agent": "Peter Kakuru", "Cycle": 202512, "Type": "Call attempts", "Actual": 3651}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202601, "Type": "Call attempts", "Actual": 3632}, {"Agent": "Latifa Apio", "Cycle": 202604, "Type": "Call attempts", "Actual": 3620}, {"Agent": "Peter Kakuru", "Cycle": 202511, "Type": "Call attempts", "Actual": 3588}, {"Agent": "Peter Kakuru", "Cycle": 202601, "Type": "Call attempts", "Actual": 3570}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202602, "Type": "Call attempts", "Actual": 3531}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202508, "Type": "Call attempts", "Actual": 3524}, {"Agent": "Godivah Ampumuza", "Cycle": 202603, "Type": "Call attempts", "Actual": 3524}, {"Agent": "Emily Namara", "Cycle": 202601, "Type": "Call attempts", "Actual": 3476}, {"Agent": "GraceMary Nakabiito", "Cycle": 202602, "Type": "Call attempts", "Actual": 3469}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202511, "Type": "Call attempts", "Actual": 3461}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202604, "Type": "Call attempts", "Actual": 3443}, {"Agent": "Brian Kiiza", "Cycle": 202605, "Type": "Call attempts", "Actual": 3438}, {"Agent": "Apio Cissy", "Cycle": 202511, "Type": "Call attempts", "Actual": 3433}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202605, "Type": "Call attempts", "Actual": 3424}, {"Agent": "Fatumah Arinaitwe", "Cycle": 202512, "Type": "Call attempts", "Actual": 3397}, {"Agent": "Brian Kiiza", "Cycle": 202604, "Type": "Call attempts", "Actual": 3394}, {"Agent": "GraceMary Nakabiito", "Cycle": 202601, "Type": "Call attempts", "Actual": 3377}, {"Agent": "Emily Namara", "Cycle": 202508, "Type": "Call attempts", "Actual": 3373}, {"Agent": "Latifa Apio", "Cycle": 202605, "Type": "Call attempts", "Actual": 3348}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202604, "Type": "Call attempts", "Actual": 3305}, {"Agent": "Gloria Kwagala", "Cycle": 202603, "Type": "Call attempts", "Actual": 3282}, {"Agent": "Jupiter Atuhaire", "Cycle": 202603, "Type": "Call attempts", "Actual": 3270}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202511, "Type": "Call attempts", "Actual": 3238}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202512, "Type": "Call attempts", "Actual": 3238}, {"Agent": "GraceMary Nakabiito", "Cycle": 202605, "Type": "Call attempts", "Actual": 3234}, {"Agent": "Peter Kakuru", "Cycle": 202605, "Type": "Call attempts", "Actual": 3232}, {"Agent": "Raymond Twinomugisha", "Cycle": 202512, "Type": "Call attempts", "Actual": 3222}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202507, "Type": "Call attempts", "Actual": 3208}, {"Agent": "Apio Cissy", "Cycle": 202604, "Type": "Call attempts", "Actual": 3161}, {"Agent": "Namatovu Rachel", "Cycle": 202604, "Type": "Call attempts", "Actual": 3120}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202601, "Type": "Call attempts", "Actual": 3120}, {"Agent": "Manita Joan", "Cycle": 202602, "Type": "Call attempts", "Actual": 3094}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202603, "Type": "Call attempts", "Actual": 3071}, {"Agent": "Brian Kiiza", "Cycle": 202511, "Type": "Call attempts", "Actual": 3068}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202512, "Type": "Call attempts", "Actual": 3057}, {"Agent": "Ankwatsiibwe Angel", "Cycle": 202605, "Type": "Call attempts", "Actual": 3050}, {"Agent": "Apio Cissy", "Cycle": 202512, "Type": "Call attempts", "Actual": 3038}, {"Agent": "Brian Kiiza", "Cycle": 202512, "Type": "Call attempts", "Actual": 3006}, {"Agent": "Godivah Ampumuza", "Cycle": 202512, "Type": "Call attempts", "Actual": 2981}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202510, "Type": "Call attempts", "Actual": 2972}, {"Agent": "Godivah Ampumuza", "Cycle": 202604, "Type": "Call attempts", "Actual": 2903}, {"Agent": "Jupiter Atuhaire", "Cycle": 202603, "Type": "Connects", "Actual": 2897}, {"Agent": "Godivah Ampumuza", "Cycle": 202511, "Type": "Call attempts", "Actual": 2829}, {"Agent": "Godivah Ampumuza", "Cycle": 202605, "Type": "Call attempts", "Actual": 2785}, {"Agent": "Fatumah Arinaitwe", "Cycle": 202511, "Type": "Call attempts", "Actual": 2745}, {"Agent": "Jackline Nyangoma", "Cycle": 202511, "Type": "Call attempts", "Actual": 2729}, {"Agent": "Brian Kiiza", "Cycle": 202510, "Type": "Call attempts", "Actual": 2674}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202601, "Type": "Call attempts", "Actual": 2665}, {"Agent": "Martin  Tweteise", "Cycle": 202511, "Type": "Call attempts", "Actual": 2653}, {"Agent": "Oliver Natoolo", "Cycle": 202602, "Type": "Call attempts", "Actual": 2637}, {"Agent": "Martin  Tweteise", "Cycle": 202512, "Type": "Call attempts", "Actual": 2595}, {"Agent": "Peter Kakuru", "Cycle": 202510, "Type": "Call attempts", "Actual": 2573}, {"Agent": "Fatumah Arinaitwe", "Cycle": 202601, "Type": "Call attempts", "Actual": 2572}, {"Agent": "Apio Cissy", "Cycle": 202601, "Type": "Call attempts", "Actual": 2523}, {"Agent": "Raymond Twinomugisha", "Cycle": 202511, "Type": "Call attempts", "Actual": 2509}, {"Agent": "David Wasen", "Cycle": 202602, "Type": "Call attempts", "Actual": 2508}, {"Agent": "Irene Nabaggala", "Cycle": 202508, "Type": "Call attempts", "Actual": 2488}, {"Agent": "Angella Athieno", "Cycle": 202604, "Type": "Call attempts", "Actual": 2483}, {"Agent": "Godivah Ampumuza", "Cycle": 202601, "Type": "Call attempts", "Actual": 2434}, {"Agent": "Martin  Tweteise", "Cycle": 202601, "Type": "Call attempts", "Actual": 2416}, {"Agent": "Martin  Tweteise", "Cycle": 202605, "Type": "Call attempts", "Actual": 2410}, {"Agent": "Latifa Apio", "Cycle": 202602, "Type": "Call attempts", "Actual": 2402}, {"Agent": "Raymond Twinomugisha", "Cycle": 202512, "Type": "Connects", "Actual": 2362}, {"Agent": "Namatovu Rachel", "Cycle": 202605, "Type": "Call attempts", "Actual": 2359}, {"Agent": "Raymond Twinomugisha", "Cycle": 202601, "Type": "Call attempts", "Actual": 2321}, {"Agent": "Raymond Twinomugisha", "Cycle": 202508, "Type": "Call attempts", "Actual": 2296}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202510, "Type": "Call attempts", "Actual": 2291}, {"Agent": "GraceMary Nakabiito", "Cycle": 202507, "Type": "Call attempts", "Actual": 2256}, {"Agent": "Jupiter Atuhaire", "Cycle": 202511, "Type": "Call attempts", "Actual": 2256}, {"Agent": "Martin  Tweteise", "Cycle": 202604, "Type": "Call attempts", "Actual": 2233}, {"Agent": "Anitah Nalugwa", "Cycle": 202602, "Type": "Call attempts", "Actual": 2205}, {"Agent": "Peter Kakuru", "Cycle": 202602, "Type": "Call attempts", "Actual": 2186}, {"Agent": "Rittah Namataka", "Cycle": 202601, "Type": "Call attempts", "Actual": 2178}, {"Agent": "Jupiter Atuhaire", "Cycle": 202601, "Type": "Call attempts", "Actual": 2173}, {"Agent": "Jupiter Atuhaire", "Cycle": 202604, "Type": "Call attempts", "Actual": 2145}, {"Agent": "Flavia Nangonzi", "Cycle": 202507, "Type": "Connects", "Actual": 2138}, {"Agent": "Fortunate Nahurira", "Cycle": 202509, "Type": "Call attempts", "Actual": 2114}, {"Agent": "Brian Kiiza", "Cycle": 202601, "Type": "Call attempts", "Actual": 2103}, {"Agent": "Raymond Twinomugisha", "Cycle": 202510, "Type": "Call attempts", "Actual": 2084}, {"Agent": "Apio Cissy", "Cycle": 202510, "Type": "Call attempts", "Actual": 2083}, {"Agent": "Fortunate Nahurira", "Cycle": 202510, "Type": "Call attempts", "Actual": 2062}, {"Agent": "Jupiter Atuhaire", "Cycle": 202509, "Type": "Call attempts", "Actual": 2022}, {"Agent": "Flavia Nangonzi", "Cycle": 202603, "Type": "Connects", "Actual": 2003}, {"Agent": "Elizabeth Akampurira", "Cycle": 202603, "Type": "Connects", "Actual": 1994}, {"Agent": "Flavia Nangonzi", "Cycle": 202604, "Type": "Connects", "Actual": 1984}, {"Agent": "Jupiter Atuhaire", "Cycle": 202512, "Type": "Call attempts", "Actual": 1981}, {"Agent": "Milly Nakkazi", "Cycle": 202507, "Type": "Connects", "Actual": 1973}, {"Agent": "Babirye Violla", "Cycle": 202603, "Type": "Connects", "Actual": 1941}, {"Agent": "Mercy  Atusasiire", "Cycle": 202508, "Type": "Call attempts", "Actual": 1917}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202602, "Type": "Call attempts", "Actual": 1897}, {"Agent": "David Wasen", "Cycle": 202603, "Type": "Connects", "Actual": 1882}, {"Agent": "Fortunate Nahurira", "Cycle": 202511, "Type": "Call attempts", "Actual": 1879}, {"Agent": "Elizabeth Akampurira", "Cycle": 202604, "Type": "Connects", "Actual": 1877}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202602, "Type": "Call attempts", "Actual": 1874}, {"Agent": "Jackline Nyangoma", "Cycle": 202510, "Type": "Call attempts", "Actual": 1872}, {"Agent": "Rinah Kabahuma", "Cycle": 202512, "Type": "Call attempts", "Actual": 1871}, {"Agent": "Martin  Tweteise", "Cycle": 202510, "Type": "Call attempts", "Actual": 1865}, {"Agent": "Mercy  Atusasiire", "Cycle": 202512, "Type": "Connects", "Actual": 1854}, {"Agent": "Apio Cissy", "Cycle": 202602, "Type": "Call attempts", "Actual": 1845}, {"Agent": "Mercy  Atusasiire", "Cycle": 202603, "Type": "Connects", "Actual": 1839}, {"Agent": "Mercy  Atusasiire", "Cycle": 202509, "Type": "Connects", "Actual": 1825}, {"Agent": "Mercy  Atusasiire", "Cycle": 202510, "Type": "Connects", "Actual": 1822}, {"Agent": "Flavia Nangonzi", "Cycle": 202509, "Type": "Connects", "Actual": 1813}, {"Agent": "Oliver Natoolo", "Cycle": 202603, "Type": "Connects", "Actual": 1798}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202509, "Type": "Connects", "Actual": 1792}, {"Agent": "Mercy  Atusasiire", "Cycle": 202511, "Type": "Connects", "Actual": 1780}, {"Agent": "Jupiter Atuhaire", "Cycle": 202605, "Type": "Call attempts", "Actual": 1780}, {"Agent": "Raymond Twinomugisha", "Cycle": 202509, "Type": "Call attempts", "Actual": 1760}, {"Agent": "Jupiter Atuhaire", "Cycle": 202510, "Type": "Call attempts", "Actual": 1742}, {"Agent": "Rinah Kabahuma", "Cycle": 202511, "Type": "Call attempts", "Actual": 1708}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202510, "Type": "Connects", "Actual": 1700}, {"Agent": "Brian Kiiza", "Cycle": 202602, "Type": "Call attempts", "Actual": 1699}, {"Agent": "Raymond Twinomugisha", "Cycle": 202511, "Type": "Connects", "Actual": 1692}, {"Agent": "Angella Athieno", "Cycle": 202605, "Type": "Connects", "Actual": 1692}, {"Agent": "Mercy  Atusasiire", "Cycle": 202604, "Type": "Connects", "Actual": 1670}, {"Agent": "Mercy  Atusasiire", "Cycle": 202602, "Type": "Connects", "Actual": 1658}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202508, "Type": "Call attempts", "Actual": 1629}, {"Agent": "Flavia Nangonzi", "Cycle": 202508, "Type": "Connects", "Actual": 1629}, {"Agent": "Jupiter Atuhaire", "Cycle": 202605, "Type": "Connects", "Actual": 1602}, {"Agent": "Flavia Nangonzi", "Cycle": 202512, "Type": "Connects", "Actual": 1596}, {"Agent": "Patience Nyamwiza", "Cycle": 202603, "Type": "Connects", "Actual": 1595}, {"Agent": "Gloria Nahirya", "Cycle": 202603, "Type": "Connects", "Actual": 1593}, {"Agent": "Milly Nakkazi", "Cycle": 202509, "Type": "Connects", "Actual": 1589}, {"Agent": "Elizabeth Akampurira", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1586}, {"Agent": "Mercy  Atusasiire", "Cycle": 202601, "Type": "Connects", "Actual": 1577}, {"Agent": "Anitah Nalugwa", "Cycle": 202603, "Type": "Connects", "Actual": 1551}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202511, "Type": "Connects", "Actual": 1530}, {"Agent": "Fortunate Nahurira", "Cycle": 202509, "Type": "Connects", "Actual": 1530}, {"Agent": "Flavia Nangonzi", "Cycle": 202602, "Type": "Connects", "Actual": 1527}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202603, "Type": "Connects", "Actual": 1525}, {"Agent": "Birungi Nuwagaba", "Cycle": 202507, "Type": "Connects", "Actual": 1508}, {"Agent": "Jonathan  Luyima", "Cycle": 202507, "Type": "Connects", "Actual": 1505}, {"Agent": "Flavia Nangonzi", "Cycle": 202510, "Type": "Connects", "Actual": 1501}, {"Agent": "Rinah Kabahuma", "Cycle": 202510, "Type": "Call attempts", "Actual": 1494}, {"Agent": "Babirye Violla", "Cycle": 202604, "Type": "Connects", "Actual": 1487}, {"Agent": "Milly Nakkazi", "Cycle": 202508, "Type": "Connects", "Actual": 1484}, {"Agent": "Emily Namara", "Cycle": 202603, "Type": "Connects", "Actual": 1481}, {"Agent": "Birungi Nuwagaba", "Cycle": 202603, "Type": "Connects", "Actual": 1465}, {"Agent": "Milly Nakkazi", "Cycle": 202604, "Type": "Connects", "Actual": 1456}, {"Agent": "Gloria Kwagala", "Cycle": 202507, "Type": "Connects", "Actual": 1453}, {"Agent": "Milly Nakkazi", "Cycle": 202512, "Type": "Connects", "Actual": 1452}, {"Agent": "Flavia Nangonzi", "Cycle": 202601, "Type": "Connects", "Actual": 1452}, {"Agent": "Milly Nakkazi", "Cycle": 202510, "Type": "Connects", "Actual": 1450}, {"Agent": "Rinah Kabahuma", "Cycle": 202603, "Type": "Call attempts", "Actual": 1450}, {"Agent": "Milly Nakkazi", "Cycle": 202603, "Type": "Connects", "Actual": 1448}, {"Agent": "David Wasen", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1441}, {"Agent": "Beatrice Nakkazi", "Cycle": 202603, "Type": "Connects", "Actual": 1437}, {"Agent": "Jupiter Atuhaire", "Cycle": 202510, "Type": "Connects", "Actual": 1433}, {"Agent": "Godivah Ampumuza", "Cycle": 202602, "Type": "Call attempts", "Actual": 1431}, {"Agent": "Angella Athieno", "Cycle": 202605, "Type": "Successful Connects", "Actual": 1430}, {"Agent": "Oliver Natoolo", "Cycle": 202604, "Type": "Connects", "Actual": 1427}, {"Agent": "Rinah Kabahuma", "Cycle": 202507, "Type": "Call attempts", "Actual": 1427}, {"Agent": "Babirye Violla", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1426}, {"Agent": "Mercy  Atusasiire", "Cycle": 202512, "Type": "Successful Connects", "Actual": 1425}, {"Agent": "Patience Nyamwiza", "Cycle": 202508, "Type": "Connects", "Actual": 1417}, {"Agent": "Emily Namara", "Cycle": 202507, "Type": "Connects", "Actual": 1408}, {"Agent": "Flavia Nangonzi", "Cycle": 202511, "Type": "Connects", "Actual": 1403}, {"Agent": "Oliver Natoolo", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1397}, {"Agent": "Manita Joan", "Cycle": 202510, "Type": "Connects", "Actual": 1385}, {"Agent": "Flavia Nangonzi", "Cycle": 202604, "Type": "Successful Connects", "Actual": 1378}, {"Agent": "Gloria Nahirya", "Cycle": 202507, "Type": "Connects", "Actual": 1369}, {"Agent": "Ankwatsiibwe Angel", "Cycle": 202604, "Type": "Connects", "Actual": 1362}, {"Agent": "Daphine Nanyonjo", "Cycle": 202512, "Type": "Connects", "Actual": 1351}, {"Agent": "Milly Nakkazi", "Cycle": 202601, "Type": "Connects", "Actual": 1349}, {"Agent": "Anitah Nalugwa", "Cycle": 202604, "Type": "Connects", "Actual": 1348}, {"Agent": "Sheila Wenene Mate", "Cycle": 202509, "Type": "Connects", "Actual": 1344}, {"Agent": "Elizabeth Akampurira", "Cycle": 202604, "Type": "Successful Connects", "Actual": 1343}, {"Agent": "Fortunate Nahurira", "Cycle": 202602, "Type": "Call attempts", "Actual": 1341}, {"Agent": "Emily Namara", "Cycle": 202510, "Type": "Connects", "Actual": 1341}, {"Agent": "Fortunate Nahurira", "Cycle": 202512, "Type": "Call attempts", "Actual": 1339}, {"Agent": "Peter Kakuru", "Cycle": 202603, "Type": "Connects", "Actual": 1339}, {"Agent": "Flavia Nangonzi", "Cycle": 202605, "Type": "Connects", "Actual": 1333}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202605, "Type": "Connects", "Actual": 1329}, {"Agent": "Flavia Nangonzi", "Cycle": 202507, "Type": "Successful Connects", "Actual": 1329}, {"Agent": "Jupiter Atuhaire", "Cycle": 202604, "Type": "Connects", "Actual": 1328}, {"Agent": "Flavia Nangonzi", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1324}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202507, "Type": "Connects", "Actual": 1324}, {"Agent": "Rinah Kabahuma", "Cycle": 202509, "Type": "Call attempts", "Actual": 1323}, {"Agent": "Emily Namara", "Cycle": 202602, "Type": "Connects", "Actual": 1323}, {"Agent": "Beatrice Nakkazi", "Cycle": 202511, "Type": "Connects", "Actual": 1321}, {"Agent": "Fortunate Nahurira", "Cycle": 202507, "Type": "Call attempts", "Actual": 1320}, {"Agent": "Natasha Nakiyaga", "Cycle": 202509, "Type": "Connects", "Actual": 1317}, {"Agent": "Kenneth Birungi", "Cycle": 202603, "Type": "Connects", "Actual": 1312}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202602, "Type": "Connects", "Actual": 1312}, {"Agent": "Anitah Nalugwa", "Cycle": 202605, "Type": "Connects", "Actual": 1307}, {"Agent": "Manita Joan", "Cycle": 202603, "Type": "Connects", "Actual": 1300}, {"Agent": "Sarah Akello Flishia", "Cycle": 202509, "Type": "Connects", "Actual": 1294}, {"Agent": "David Wasen", "Cycle": 202604, "Type": "Connects", "Actual": 1287}, {"Agent": "Flavia Nangonzi", "Cycle": 202512, "Type": "Successful Connects", "Actual": 1286}, {"Agent": "Natasha Nakiyaga", "Cycle": 202603, "Type": "Connects", "Actual": 1275}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202603, "Type": "Connects", "Actual": 1273}, {"Agent": "Kenneth Birungi", "Cycle": 202511, "Type": "Connects", "Actual": 1272}, {"Agent": "Manita Joan", "Cycle": 202512, "Type": "Connects", "Actual": 1271}, {"Agent": "Gloria Nahirya", "Cycle": 202510, "Type": "Connects", "Actual": 1269}, {"Agent": "Mercy  Atusasiire", "Cycle": 202511, "Type": "Successful Connects", "Actual": 1267}, {"Agent": "Patience Nyamwiza", "Cycle": 202511, "Type": "Connects", "Actual": 1258}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202511, "Type": "Connects", "Actual": 1254}, {"Agent": "Gloria Nahirya", "Cycle": 202512, "Type": "Connects", "Actual": 1253}, {"Agent": "Jupiter Atuhaire", "Cycle": 202601, "Type": "Connects", "Actual": 1252}, {"Agent": "Kenneth Birungi", "Cycle": 202509, "Type": "Connects", "Actual": 1252}, {"Agent": "Sarah Akello Flishia", "Cycle": 202510, "Type": "Connects", "Actual": 1250}, {"Agent": "Patience Nyamwiza", "Cycle": 202605, "Type": "Connects", "Actual": 1246}, {"Agent": "Manita Joan", "Cycle": 202511, "Type": "Connects", "Actual": 1246}, {"Agent": "Elizabeth Akampurira", "Cycle": 202605, "Type": "Connects", "Actual": 1245}, {"Agent": "Beatrice Nakkazi", "Cycle": 202604, "Type": "Connects", "Actual": 1243}, {"Agent": "Milly Nakkazi", "Cycle": 202602, "Type": "Connects", "Actual": 1242}, {"Agent": "Babirye Violla", "Cycle": 202605, "Type": "Connects", "Actual": 1241}, {"Agent": "Jonathan  Luyima", "Cycle": 202511, "Type": "Connects", "Actual": 1238}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202508, "Type": "Connects", "Actual": 1236}, {"Agent": "Rachael Nankya", "Cycle": 202512, "Type": "Call attempts", "Actual": 1236}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202512, "Type": "Connects", "Actual": 1230}, {"Agent": "Gloria Kwagala", "Cycle": 202508, "Type": "Connects", "Actual": 1226}, {"Agent": "Jonathan  Luyima", "Cycle": 202509, "Type": "Connects", "Actual": 1225}, {"Agent": "Patience Nyamwiza", "Cycle": 202604, "Type": "Connects", "Actual": 1224}, {"Agent": "Birungi Nuwagaba", "Cycle": 202510, "Type": "Connects", "Actual": 1223}, {"Agent": "Daphine Nanyonjo", "Cycle": 202603, "Type": "Connects", "Actual": 1222}, {"Agent": "Milly Nakkazi", "Cycle": 202604, "Type": "Connects", "Actual": 1456}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202604, "Type": "Connects", "Actual": 1218}, {"Agent": "Emily Namara", "Cycle": 202509, "Type": "Connects", "Actual": 1217}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202512, "Type": "Connects", "Actual": 1217}, {"Agent": "Mercy  Atusasiire", "Cycle": 202605, "Type": "Connects", "Actual": 1215}, {"Agent": "Daphine Nanyonjo", "Cycle": 202604, "Type": "Connects", "Actual": 1215}, {"Agent": "Latifa Apio", "Cycle": 202508, "Type": "Connects", "Actual": 1213}, {"Agent": "Sarah Akello Flishia", "Cycle": 202512, "Type": "Connects", "Actual": 1211}, {"Agent": "Raymond Twinomugisha", "Cycle": 202507, "Type": "Connects", "Actual": 1208}, {"Agent": "Sarah Akello Flishia", "Cycle": 202603, "Type": "Connects", "Actual": 1204}, {"Agent": "Gloria Nahirya", "Cycle": 202604, "Type": "Connects", "Actual": 1199}, {"Agent": "Patience Nyamwiza", "Cycle": 202512, "Type": "Connects", "Actual": 1197}, {"Agent": "Natasha Nakiyaga", "Cycle": 202512, "Type": "Connects", "Actual": 1197}, {"Agent": "GraceMary Nakabiito", "Cycle": 202604, "Type": "Connects", "Actual": 1194}, {"Agent": "Birungi Nuwagaba", "Cycle": 202604, "Type": "Connects", "Actual": 1193}, {"Agent": "Gloria Nahirya", "Cycle": 202602, "Type": "Connects", "Actual": 1191}, {"Agent": "Jupiter Atuhaire", "Cycle": 202508, "Type": "Connects", "Actual": 1188}, {"Agent": "Patience Nyamwiza", "Cycle": 202510, "Type": "Connects", "Actual": 1179}, {"Agent": "Daphine Nanyonjo", "Cycle": 202507, "Type": "Connects", "Actual": 1178}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202603, "Type": "Connects", "Actual": 1176}, {"Agent": "Jonathan  Luyima", "Cycle": 202512, "Type": "Connects", "Actual": 1175}, {"Agent": "Calvin Ssematimba", "Cycle": 202507, "Type": "Connects", "Actual": 1170}, {"Agent": "Birungi Nuwagaba", "Cycle": 202509, "Type": "Connects", "Actual": 1168}, {"Agent": "Rachael Nankya", "Cycle": 202507, "Type": "Connects", "Actual": 1166}, {"Agent": "Oliver Natoolo", "Cycle": 202605, "Type": "Connects", "Actual": 1165}, {"Agent": "Elizabeth Akampurira", "Cycle": 202604, "Type": "Payments", "Actual": 1164}, {"Agent": "Kenneth Birungi", "Cycle": 202601, "Type": "Connects", "Actual": 1163}, {"Agent": "Ankwatsiibwe Angel", "Cycle": 202604, "Type": "Successful Connects", "Actual": 1162}, {"Agent": "Emily Namara", "Cycle": 202605, "Type": "Connects", "Actual": 1161}, {"Agent": "Latifa Apio", "Cycle": 202507, "Type": "Connects", "Actual": 1161}, {"Agent": "Rachael Nankya", "Cycle": 202509, "Type": "Connects", "Actual": 1159}, {"Agent": "Gloria Nahirya", "Cycle": 202509, "Type": "Connects", "Actual": 1159}, {"Agent": "Natasha Nakiyaga", "Cycle": 202510, "Type": "Connects", "Actual": 1159}, {"Agent": "Natasha Nakiyaga", "Cycle": 202507, "Type": "Connects", "Actual": 1156}, {"Agent": "Mercy  Atusasiire", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1154}, {"Agent": "Emily Namara", "Cycle": 202604, "Type": "Connects", "Actual": 1153}, {"Agent": "Anitah Nalugwa", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1153}, {"Agent": "Fortunate Nahurira", "Cycle": 202603, "Type": "Call attempts", "Actual": 1151}, {"Agent": "Birungi Nuwagaba", "Cycle": 202602, "Type": "Connects", "Actual": 1151}, {"Agent": "Daphine Nanyonjo", "Cycle": 202511, "Type": "Connects", "Actual": 1149}, {"Agent": "Mercy  Atusasiire", "Cycle": 202601, "Type": "Successful Connects", "Actual": 1147}, {"Agent": "Gloria Kwagala", "Cycle": 202602, "Type": "Connects", "Actual": 1141}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202603, "Type": "Connects", "Actual": 1140}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202601, "Type": "Connects", "Actual": 1139}, {"Agent": "Patience Nyamwiza", "Cycle": 202509, "Type": "Connects", "Actual": 1139}, {"Agent": "Natasha Nakiyaga", "Cycle": 202604, "Type": "Connects", "Actual": 1139}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202601, "Type": "Connects", "Actual": 1137}, {"Agent": "Emily Namara", "Cycle": 202511, "Type": "Connects", "Actual": 1137}, {"Agent": "Kenneth Birungi", "Cycle": 202604, "Type": "Connects", "Actual": 1136}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202604, "Type": "Connects", "Actual": 1135}, {"Agent": "Latifa Apio", "Cycle": 202510, "Type": "Connects", "Actual": 1132}, {"Agent": "Rinah Kabahuma", "Cycle": 202601, "Type": "Call attempts", "Actual": 1130}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202507, "Type": "Connects", "Actual": 1130}, {"Agent": "Emily Namara", "Cycle": 202512, "Type": "Connects", "Actual": 1129}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202602, "Type": "Connects", "Actual": 1126}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202510, "Type": "Connects", "Actual": 1126}, {"Agent": "Birungi Nuwagaba", "Cycle": 202512, "Type": "Connects", "Actual": 1124}, {"Agent": "Patience Nyamwiza", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1124}, {"Agent": "Natasha Nakiyaga", "Cycle": 202511, "Type": "Connects", "Actual": 1122}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202511, "Type": "Successful Connects", "Actual": 1121}, {"Agent": "Fortunate Nahurira", "Cycle": 202604, "Type": "Call attempts", "Actual": 1115}, {"Agent": "Brian Kiiza", "Cycle": 202603, "Type": "Connects", "Actual": 1111}, {"Agent": "Sarah Akello Flishia", "Cycle": 202604, "Type": "Connects", "Actual": 1110}, {"Agent": "Apio Cissy", "Cycle": 202603, "Type": "Connects", "Actual": 1107}, {"Agent": "Birungi Nuwagaba", "Cycle": 202511, "Type": "Connects", "Actual": 1106}, {"Agent": "Daphine Nanyonjo", "Cycle": 202509, "Type": "Connects", "Actual": 1104}, {"Agent": "Masinde Nisha", "Cycle": 202511, "Type": "Connects", "Actual": 1104}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202603, "Type": "Connects", "Actual": 1103}, {"Agent": "Gloria Kwagala", "Cycle": 202512, "Type": "Connects", "Actual": 1102}, {"Agent": "Jonathan  Luyima", "Cycle": 202510, "Type": "Connects", "Actual": 1098}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202602, "Type": "Connects", "Actual": 1097}, {"Agent": "Manita Joan", "Cycle": 202509, "Type": "Connects", "Actual": 1097}, {"Agent": "GraceMary Nakabiito", "Cycle": 202603, "Type": "Connects", "Actual": 1097}, {"Agent": "Natasha Nakiyaga", "Cycle": 202602, "Type": "Connects", "Actual": 1095}, {"Agent": "Peter Kakuru", "Cycle": 202604, "Type": "Connects", "Actual": 1095}, {"Agent": "Natasha Nakiyaga", "Cycle": 202605, "Type": "Connects", "Actual": 1094}, {"Agent": "Rachael Nankya", "Cycle": 202511, "Type": "Connects", "Actual": 1093}, {"Agent": "Latifa Apio", "Cycle": 202512, "Type": "Connects", "Actual": 1091}, {"Agent": "Mercy  Atusasiire", "Cycle": 202602, "Type": "Successful Connects", "Actual": 1086}, {"Agent": "Milly Nakkazi", "Cycle": 202605, "Type": "Connects", "Actual": 1086}, {"Agent": "Rachael Nankya", "Cycle": 202508, "Type": "Connects", "Actual": 1085}, {"Agent": "Milly Nakkazi", "Cycle": 202511, "Type": "Connects", "Actual": 1085}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202512, "Type": "Connects", "Actual": 1082}, {"Agent": "Birungi Nuwagaba", "Cycle": 202508, "Type": "Connects", "Actual": 1082}, {"Agent": "Milly Nakkazi", "Cycle": 202512, "Type": "Successful Connects", "Actual": 1081}, {"Agent": "Flavia Nangonzi", "Cycle": 202601, "Type": "Successful Connects", "Actual": 1080}, {"Agent": "Peter Kakuru", "Cycle": 202512, "Type": "Connects", "Actual": 1077}, {"Agent": "Emily Namara", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1076}, {"Agent": "Mercy  Atusasiire", "Cycle": 202509, "Type": "Successful Connects", "Actual": 1074}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202602, "Type": "Connects", "Actual": 1072}, {"Agent": "Patience Nyamwiza", "Cycle": 202507, "Type": "Connects", "Actual": 1072}, {"Agent": "Peter Kakuru", "Cycle": 202601, "Type": "Connects", "Actual": 1071}, {"Agent": "Latifa Apio", "Cycle": 202603, "Type": "Connects", "Actual": 1071}, {"Agent": "Latifa Apio", "Cycle": 202604, "Type": "Connects", "Actual": 1067}, {"Agent": "Daphine Nanyonjo", "Cycle": 202508, "Type": "Connects", "Actual": 1066}, {"Agent": "Birungi Nuwagaba", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1065}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202509, "Type": "Connects", "Actual": 1064}, {"Agent": "Kenneth Birungi", "Cycle": 202507, "Type": "Connects", "Actual": 1062}, {"Agent": "Masinde Nisha", "Cycle": 202512, "Type": "Connects", "Actual": 1062}, {"Agent": "Rittah Namataka", "Cycle": 202512, "Type": "Connects", "Actual": 1059}, {"Agent": "David Wasen", "Cycle": 202604, "Type": "Payments", "Actual": 1056}, {"Agent": "Daphine Nanyonjo", "Cycle": 202510, "Type": "Connects", "Actual": 1055}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202605, "Type": "Connects", "Actual": 1054}, {"Agent": "Birungi Nuwagaba", "Cycle": 202601, "Type": "Connects", "Actual": 1051}, {"Agent": "Flavia Nangonzi", "Cycle": 202508, "Type": "Successful Connects", "Actual": 1050}, {"Agent": "Josephine Nalumansi", "Cycle": 202507, "Type": "Call attempts", "Actual": 1050}, {"Agent": "Fortunate Nahurira", "Cycle": 202602, "Type": "Connects", "Actual": 1046}, {"Agent": "Rinah Kabahuma", "Cycle": 202508, "Type": "Connects", "Actual": 1041}, {"Agent": "Gloria Nahirya", "Cycle": 202603, "Type": "Successful Connects", "Actual": 1041}, {"Agent": "Flavia Nangonzi", "Cycle": 202602, "Type": "Successful Connects", "Actual": 1040}, {"Agent": "Beatrice Nakkazi", "Cycle": 202512, "Type": "Connects", "Actual": 1038}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202604, "Type": "Connects", "Actual": 1035}, {"Agent": "Daphine Nanyonjo", "Cycle": 202512, "Type": "Successful Connects", "Actual": 1035}, {"Agent": "GraceMary Nakabiito", "Cycle": 202510, "Type": "Connects", "Actual": 1034}, {"Agent": "Masinde Nisha", "Cycle": 202601, "Type": "Connects", "Actual": 1032}, {"Agent": "Oliver Natoolo", "Cycle": 202604, "Type": "Successful Connects", "Actual": 1029}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202511, "Type": "Connects", "Actual": 1029}, {"Agent": "Rachael Nankya", "Cycle": 202510, "Type": "Connects", "Actual": 1027}, {"Agent": "Gloria Nahirya", "Cycle": 202508, "Type": "Connects", "Actual": 1023}, {"Agent": "Jonathan  Luyima", "Cycle": 202507, "Type": "Successful Connects", "Actual": 1020}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202601, "Type": "Connects", "Actual": 1018}, {"Agent": "Gloria Nahirya", "Cycle": 202511, "Type": "Connects", "Actual": 1017}, {"Agent": "Sarah Akello Flishia", "Cycle": 202511, "Type": "Connects", "Actual": 1015}, {"Agent": "Natasha Nakiyaga", "Cycle": 202508, "Type": "Connects", "Actual": 1015}, {"Agent": "David Wasen", "Cycle": 202604, "Type": "Successful Connects", "Actual": 1012}, {"Agent": "Gloria Kwagala", "Cycle": 202511, "Type": "Connects", "Actual": 1011}, {"Agent": "Rachael Nankya", "Cycle": 202601, "Type": "Connects", "Actual": 1011}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202510, "Type": "Connects", "Actual": 1008}, {"Agent": "Latifa Apio", "Cycle": 202509, "Type": "Connects", "Actual": 1008}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202508, "Type": "Connects", "Actual": 1007}, {"Agent": "Kenneth Birungi", "Cycle": 202508, "Type": "Connects", "Actual": 1005}, {"Agent": "Kenneth Birungi", "Cycle": 202510, "Type": "Connects", "Actual": 1004}, {"Agent": "Manita Joan", "Cycle": 202604, "Type": "Connects", "Actual": 1004}, {"Agent": "Latifa Apio", "Cycle": 202601, "Type": "Connects", "Actual": 1000}, {"Agent": "Daphine Nanyonjo", "Cycle": 202602, "Type": "Connects", "Actual": 997}, {"Agent": "Sarah Akello Flishia", "Cycle": 202601, "Type": "Connects", "Actual": 996}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202603, "Type": "Successful Connects", "Actual": 995}, {"Agent": "Gloria Kwagala", "Cycle": 202510, "Type": "Connects", "Actual": 994}, {"Agent": "Birungi Nuwagaba", "Cycle": 202605, "Type": "Connects", "Actual": 992}, {"Agent": "Manita Joan", "Cycle": 202601, "Type": "Connects", "Actual": 992}, {"Agent": "Babirye Violla", "Cycle": 202604, "Type": "Successful Connects", "Actual": 991}, {"Agent": "Anitah Nalugwa", "Cycle": 202604, "Type": "Successful Connects", "Actual": 991}, {"Agent": "Patience Nyamwiza", "Cycle": 202602, "Type": "Connects", "Actual": 990}, {"Agent": "GraceMary Nakabiito", "Cycle": 202509, "Type": "Connects", "Actual": 989}, {"Agent": "Masinde Nisha", "Cycle": 202508, "Type": "Connects", "Actual": 988}, {"Agent": "Patience Nyamwiza", "Cycle": 202601, "Type": "Connects", "Actual": 983}, {"Agent": "Latifa Apio", "Cycle": 202511, "Type": "Connects", "Actual": 980}, {"Agent": "Beatrice Nakkazi", "Cycle": 202601, "Type": "Connects", "Actual": 979}, {"Agent": "Gloria Kwagala", "Cycle": 202509, "Type": "Connects", "Actual": 979}, {"Agent": "Beatrice Nakkazi", "Cycle": 202602, "Type": "Connects", "Actual": 973}, {"Agent": "David Wasen", "Cycle": 202605, "Type": "Connects", "Actual": 973}, {"Agent": "Gloria Nahirya", "Cycle": 202601, "Type": "Connects", "Actual": 973}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202509, "Type": "Successful Connects", "Actual": 967}, {"Agent": "Rittah Namataka", "Cycle": 202508, "Type": "Connects", "Actual": 966}, {"Agent": "Jonathan  Luyima", "Cycle": 202512, "Type": "Successful Connects", "Actual": 966}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202512, "Type": "Successful Connects", "Actual": 965}, {"Agent": "Mercy  Atusasiire", "Cycle": 202604, "Type": "Successful Connects", "Actual": 958}, {"Agent": "Rittah Namataka", "Cycle": 202511, "Type": "Connects", "Actual": 957}, {"Agent": "Godivah Ampumuza", "Cycle": 202604, "Type": "Connects", "Actual": 953}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202509, "Type": "Connects", "Actual": 952}, {"Agent": "GraceMary Nakabiito", "Cycle": 202511, "Type": "Connects", "Actual": 951}, {"Agent": "Kenneth Birungi", "Cycle": 202602, "Type": "Connects", "Actual": 947}, {"Agent": "Sarah Akello Flishia", "Cycle": 202512, "Type": "Successful Connects", "Actual": 947}, {"Agent": "Flavia Nangonzi", "Cycle": 202511, "Type": "Successful Connects", "Actual": 946}, {"Agent": "Jonathan  Luyima", "Cycle": 202508, "Type": "Connects", "Actual": 945}, {"Agent": "Natasha Nakiyaga", "Cycle": 202601, "Type": "Connects", "Actual": 941}, {"Agent": "Gloria Nahirya", "Cycle": 202605, "Type": "Connects", "Actual": 940}, {"Agent": "Peter Kakuru", "Cycle": 202603, "Type": "Successful Connects", "Actual": 939}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202605, "Type": "Successful Connects", "Actual": 939}, {"Agent": "Mercy  Atusasiire", "Cycle": 202511, "Type": "Payments", "Actual": 937}, {"Agent": "Manita Joan", "Cycle": 202602, "Type": "Connects", "Actual": 937}, {"Agent": "Anitah Nalugwa", "Cycle": 202604, "Type": "Payments", "Actual": 935}, {"Agent": "Jupiter Atuhaire", "Cycle": 202507, "Type": "Connects", "Actual": 932}, {"Agent": "Sheila Wenene Mate", "Cycle": 202508, "Type": "Connects", "Actual": 931}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202512, "Type": "Connects", "Actual": 927}, {"Agent": "Beatrice Nakkazi", "Cycle": 202605, "Type": "Connects", "Actual": 927}, {"Agent": "Fatumah Arinaitwe", "Cycle": 202512, "Type": "Connects", "Actual": 925}, {"Agent": "Martin  Tweteise", "Cycle": 202603, "Type": "Connects", "Actual": 925}, {"Agent": "Brian Kiiza", "Cycle": 202604, "Type": "Connects", "Actual": 924}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202601, "Type": "Connects", "Actual": 924}, {"Agent": "Flavia Nangonzi", "Cycle": 202605, "Type": "Successful Connects", "Actual": 923}, {"Agent": "Natasha Nakiyaga", "Cycle": 202512, "Type": "Successful Connects", "Actual": 922}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202512, "Type": "Successful Connects", "Actual": 921}, {"Agent": "Patience Nyamwiza", "Cycle": 202512, "Type": "Successful Connects", "Actual": 919}, {"Agent": "Masinde Nisha", "Cycle": 202509, "Type": "Connects", "Actual": 919}, {"Agent": "Apio Cissy", "Cycle": 202605, "Type": "Connects", "Actual": 918}, {"Agent": "Masinde Nisha", "Cycle": 202507, "Type": "Connects", "Actual": 918}, {"Agent": "Peter Kakuru", "Cycle": 202605, "Type": "Connects", "Actual": 917}, {"Agent": "Emily Namara", "Cycle": 202507, "Type": "Successful Connects", "Actual": 917}, {"Agent": "Mercy  Atusasiire", "Cycle": 202602, "Type": "Payments", "Actual": 914}, {"Agent": "Jonathan  Luyima", "Cycle": 202511, "Type": "Successful Connects", "Actual": 913}, {"Agent": "Sarah Akello Flishia", "Cycle": 202602, "Type": "Connects", "Actual": 912}, {"Agent": "Gloria Kwagala", "Cycle": 202601, "Type": "Connects", "Actual": 911}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202605, "Type": "Connects", "Actual": 910}, {"Agent": "Manita Joan", "Cycle": 202512, "Type": "Successful Connects", "Actual": 909}, {"Agent": "Mercy  Atusasiire", "Cycle": 202512, "Type": "Payments", "Actual": 907}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202605, "Type": "Connects", "Actual": 904}, {"Agent": "GraceMary Nakabiito", "Cycle": 202512, "Type": "Connects", "Actual": 904}, {"Agent": "Anitah Nalugwa", "Cycle": 202605, "Type": "Successful Connects", "Actual": 903}, {"Agent": "Emily Namara", "Cycle": 202605, "Type": "Successful Connects", "Actual": 900}, {"Agent": "Emily Namara", "Cycle": 202601, "Type": "Connects", "Actual": 899}, {"Agent": "Rinah Kabahuma", "Cycle": 202605, "Type": "Call attempts", "Actual": 897}, {"Agent": "Elizabeth Akampurira", "Cycle": 202603, "Type": "Payments", "Actual": 895}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202604, "Type": "Connects", "Actual": 895}, {"Agent": "Kenneth Birungi", "Cycle": 202605, "Type": "Connects", "Actual": 894}, {"Agent": "Gloria Nahirya", "Cycle": 202512, "Type": "Successful Connects", "Actual": 891}, {"Agent": "Babirye Violla", "Cycle": 202605, "Type": "Successful Connects", "Actual": 889}, {"Agent": "Sheila Wenene Mate", "Cycle": 202510, "Type": "Connects", "Actual": 888}, {"Agent": "Manita Joan", "Cycle": 202511, "Type": "Successful Connects", "Actual": 887}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202601, "Type": "Successful Connects", "Actual": 886}, {"Agent": "Elizabeth Akampurira", "Cycle": 202605, "Type": "Successful Connects", "Actual": 885}, {"Agent": "Oliver Natoolo", "Cycle": 202604, "Type": "Payments", "Actual": 881}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202602, "Type": "Successful Connects", "Actual": 880}, {"Agent": "Milly Nakkazi", "Cycle": 202601, "Type": "Successful Connects", "Actual": 878}, {"Agent": "Mercy  Atusasiire", "Cycle": 202510, "Type": "Successful Connects", "Actual": 878}, {"Agent": "Kenneth Birungi", "Cycle": 202512, "Type": "Connects", "Actual": 876}, {"Agent": "Emily Namara", "Cycle": 202512, "Type": "Successful Connects", "Actual": 875}, {"Agent": "Mercy  Atusasiire", "Cycle": 202510, "Type": "Payments", "Actual": 874}, {"Agent": "Birungi Nuwagaba", "Cycle": 202512, "Type": "Successful Connects", "Actual": 869}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202512, "Type": "Connects", "Actual": 865}, {"Agent": "Gloria Kwagala", "Cycle": 202507, "Type": "Successful Connects", "Actual": 864}, {"Agent": "Gloria Kwagala", "Cycle": 202512, "Type": "Successful Connects", "Actual": 863}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202507, "Type": "Connects", "Actual": 862}, {"Agent": "Kenneth Birungi", "Cycle": 202511, "Type": "Successful Connects", "Actual": 862}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202605, "Type": "Connects", "Actual": 861}, {"Agent": "Milly Nakkazi", "Cycle": 202507, "Type": "Payments", "Actual": 861}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202604, "Type": "Connects", "Actual": 859}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202601, "Type": "Connects", "Actual": 858}, {"Agent": "Patience Nyamwiza", "Cycle": 202605, "Type": "Successful Connects", "Actual": 855}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202508, "Type": "Successful Connects", "Actual": 855}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202603, "Type": "Successful Connects", "Actual": 854}, {"Agent": "Brian Kiiza", "Cycle": 202605, "Type": "Connects", "Actual": 853}, {"Agent": "Milly Nakkazi", "Cycle": 202508, "Type": "Successful Connects", "Actual": 853}, {"Agent": "Oliver Natoolo", "Cycle": 202603, "Type": "Payments", "Actual": 852}, {"Agent": "Patience Nyamwiza", "Cycle": 202604, "Type": "Successful Connects", "Actual": 851}, {"Agent": "Emily Namara", "Cycle": 202602, "Type": "Successful Connects", "Actual": 848}, {"Agent": "Birungi Nuwagaba", "Cycle": 202507, "Type": "Successful Connects", "Actual": 848}, {"Agent": "Sarah Akello Flishia", "Cycle": 202603, "Type": "Successful Connects", "Actual": 847}, {"Agent": "Angella Athieno", "Cycle": 202605, "Type": "Payments", "Actual": 839}, {"Agent": "Patience Nyamwiza", "Cycle": 202511, "Type": "Successful Connects", "Actual": 839}, {"Agent": "Flavia Nangonzi", "Cycle": 202509, "Type": "Successful Connects", "Actual": 835}, {"Agent": "Birungi Nuwagaba", "Cycle": 202511, "Type": "Successful Connects", "Actual": 834}, {"Agent": "Rachael Nankya", "Cycle": 202511, "Type": "Successful Connects", "Actual": 834}, {"Agent": "Milly Nakkazi", "Cycle": 202604, "Type": "Successful Connects", "Actual": 833}, {"Agent": "Namatovu Rachel", "Cycle": 202604, "Type": "Connects", "Actual": 832}, {"Agent": "Sheila Wenene Mate", "Cycle": 202509, "Type": "Successful Connects", "Actual": 832}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202604, "Type": "Connects", "Actual": 831}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202512, "Type": "Successful Connects", "Actual": 829}, {"Agent": "Anitah Nalugwa", "Cycle": 202605, "Type": "Payments", "Actual": 828}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202602, "Type": "Payments", "Actual": 827}, {"Agent": "Brian Kiiza", "Cycle": 202512, "Type": "Connects", "Actual": 824}, {"Agent": "Mercy  Atusasiire", "Cycle": 202601, "Type": "Payments", "Actual": 822}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202603, "Type": "Successful Connects", "Actual": 822}, {"Agent": "Gloria Kwagala", "Cycle": 202603, "Type": "Connects", "Actual": 820}, {"Agent": "Sarah Akello Flishia", "Cycle": 202605, "Type": "Connects", "Actual": 820}, {"Agent": "Sarah Akello Flishia", "Cycle": 202604, "Type": "Successful Connects", "Actual": 820}, {"Agent": "Emily Namara", "Cycle": 202511, "Type": "Successful Connects", "Actual": 820}, {"Agent": "Beatrice Nakkazi", "Cycle": 202511, "Type": "Successful Connects", "Actual": 818}, {"Agent": "Fortunate Nahurira", "Cycle": 202604, "Type": "Connects", "Actual": 815}, {"Agent": "Kenneth Birungi", "Cycle": 202603, "Type": "Successful Connects", "Actual": 814}, {"Agent": "Akademere Stella Slyvia", "Cycle": 202604, "Type": "Successful Connects", "Actual": 814}, {"Agent": "Elizabeth Akampurira", "Cycle": 202605, "Type": "Payments", "Actual": 811}, {"Agent": "Oliver Natoolo", "Cycle": 202605, "Type": "Successful Connects", "Actual": 810}, {"Agent": "Milly Nakkazi", "Cycle": 202603, "Type": "Successful Connects", "Actual": 805}, {"Agent": "Arthur Ssemwezzi", "Cycle": 202603, "Type": "Successful Connects", "Actual": 804}, {"Agent": "Peter Kakuru", "Cycle": 202511, "Type": "Connects", "Actual": 804}, {"Agent": "Racheal  Nabyonga Kisakye", "Cycle": 202511, "Type": "Payments", "Actual": 802}, {"Agent": "Birungi Nuwagaba", "Cycle": 202604, "Type": "Successful Connects", "Actual": 796}, {"Agent": "Gloria Kwagala", "Cycle": 202602, "Type": "Successful Connects", "Actual": 796}, {"Agent": "Birungi Nuwagaba", "Cycle": 202602, "Type": "Successful Connects", "Actual": 794}, {"Agent": "Elizabeth Kemigisa", "Cycle": 202601, "Type": "Successful Connects", "Actual": 793}, {"Agent": "Daphine Nanyonjo", "Cycle": 202511, "Type": "Successful Connects", "Actual": 792}, {"Agent": "Daphine Nanyonjo", "Cycle": 202601, "Type": "Connects", "Actual": 791}, {"Agent": "Babirye Violla", "Cycle": 202603, "Type": "Payments", "Actual": 791}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202601, "Type": "Connects", "Actual": 790}, {"Agent": "Godivah Ampumuza", "Cycle": 202605, "Type": "Connects", "Actual": 789}, {"Agent": "Priscilla Nakimbugwe", "Cycle": 202511, "Type": "Connects", "Actual": 785}, {"Agent": "Rittah Namataka", "Cycle": 202507, "Type": "Connects", "Actual": 780}, {"Agent": "Daphine Nanyonjo", "Cycle": 202603, "Type": "Successful Connects", "Actual": 779}, {"Agent": "Gloria Nahirya", "Cycle": 202604, "Type": "Successful Connects", "Actual": 778}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202605, "Type": "Connects", "Actual": 777}, {"Agent": "Milly Nakkazi", "Cycle": 202602, "Type": "Successful Connects", "Actual": 774}, {"Agent": "Godivah Ampumuza", "Cycle": 202603, "Type": "Successful Connects", "Actual": 774}, {"Agent": "Abesiga Muhabuzi", "Cycle": 202603, "Type": "Connects", "Actual": 773}, {"Agent": "Latifa Apio", "Cycle": 202512, "Type": "Successful Connects", "Actual": 771}, {"Agent": "Manita Joan", "Cycle": 202603, "Type": "Successful Connects", "Actual": 770}, {"Agent": "Latifa Apio", "Cycle": 202508, "Type": "Successful Connects", "Actual": 769}, {"Agent": "Natasha Nakiyaga", "Cycle": 202603, "Type": "Successful Connects", "Actual": 769}, {"Agent": "Rittah Namataka", "Cycle": 202512, "Type": "Successful Connects", "Actual": 768}, {"Agent": "Rachael Nankya", "Cycle": 202507, "Type": "Successful Connects", "Actual": 766}, {"Agent": "Gloria Nahirya", "Cycle": 202602, "Type": "Successful Connects", "Actual": 764}, {"Agent": "Natasha Nakiyaga", "Cycle": 202511, "Type": "Successful Connects", "Actual": 761}, {"Agent": "Irene Nabaggala", "Cycle": 202508, "Type": "Connects", "Actual": 760}, {"Agent": "Daphine Nanyonjo", "Cycle": 202604, "Type": "Successful Connects", "Actual": 654}, {"Agent": "Beatrice Nakkazi", "Cycle": 202604, "Type": "Successful Connects", "Actual": 574}, {"Agent": "Anitah Nalugwa", "Cycle": 202602, "Type": "Successful Connects", "Actual": 458}];
+
+// ============================================================
+// STATE & STORAGE
+// ============================================================
+const USERS = { admin: 'admin123', manager: 'manager1' };
+let currentUser = null;
+let customMetrics = JSON.parse(localStorage.getItem('callpulse_metrics') || '[]');
+let agentList = JSON.parse(localStorage.getItem('callpulse_agents') || '[]');
+let followUps = JSON.parse(localStorage.getItem('callpulse_followups') || '[]');
+
+function save() {
+  localStorage.setItem('callpulse_metrics', JSON.stringify(customMetrics));
+  localStorage.setItem('callpulse_agents', JSON.stringify(agentList));
+  localStorage.setItem('callpulse_followups', JSON.stringify(followUps));
+}
+
+// ============================================================
+// AUTH
+// ============================================================
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  if (USERS[u] && USERS[u] === p) {
+    currentUser = u;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('topbarUser').textContent = u;
+    showTab('dashboard');
   } else {
-    btn.textContent='✏ Edit mode';btn.classList.remove('on');
-    saveBtn.style.display='none';bar.classList.remove('on');
-    document.body.classList.remove('editing');
-    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){el.setAttribute('contenteditable','false');});
-    saveLocal();
+    document.getElementById('loginError').style.display = 'block';
   }
 }
-function doSave(){
-  saveLocal();
-  var t=document.getElementById('toast');t.classList.add('on');
-  setTimeout(function(){t.classList.remove('on');},2000);
+function doLogout() {
+  currentUser = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
 }
-function saveLocal(){
-  try{localStorage.setItem('sk_body',document.body.innerHTML);}catch(e){}
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') doLogin(); });
+
+// ============================================================
+// DATA HELPERS
+// ============================================================
+function cycleLabel(c) {
+  const s = String(c);
+  const months = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[parseInt(s.slice(4))] + ' ' + s.slice(2,4);
 }
-window.addEventListener('load',function(){
-  try{var s=localStorage.getItem('sk_body');if(s){document.body.innerHTML=s;}}catch(e){}
-});
+
+function getMetric(data, agent, cycle, type) {
+  const r = data.find(d => d.Agent === agent && d.Cycle === cycle && d.Type === type);
+  return r ? r.Actual : 0;
+}
+
+function buildPivot(cycles) {
+  const agents = [...new Set(RAW_DATA.map(d => d.Agent))].sort();
+  return agents.map(ag => {
+    let totalAttempts=0, totalConnects=0, totalSC=0, totalPay=0;
+    cycles.forEach(cy => {
+      totalAttempts += getMetric(RAW_DATA, ag, cy, 'Call attempts');
+      totalConnects += getMetric(RAW_DATA, ag, cy, 'Connects');
+      totalSC += getMetric(RAW_DATA, ag, cy, 'Successful Connects');
+      totalPay += getMetric(RAW_DATA, ag, cy, 'Payments');
+    });
+    const connectRate = totalAttempts > 0 ? (totalConnects/totalAttempts*100).toFixed(1) : 0;
+    const connectQuality = totalConnects > 0 ? (totalSC/totalConnects*100).toFixed(1) : 0;
+    const payRate = totalSC > 0 ? (totalPay/totalSC*100).toFixed(1) : 0;
+    return { agent: ag, attempts: totalAttempts, connects: totalConnects, sc: totalSC, pay: totalPay, connectRate, connectQuality, payRate };
+  }).filter(r => r.attempts > 0);
+}
+
+function janMayCycles() { return [202601,202602,202603,202604,202605]; }
+function allCycles() { return [...new Set(RAW_DATA.map(d => d.Cycle))].sort(); }
+
+function getRateStatus(val) {
+  if (val >= 25) return 'green';
+  if (val >= 18) return 'yellow';
+  return 'red';
+}
+function getQualityStatus(val) {
+  if (val >= 70) return 'green';
+  if (val >= 55) return 'yellow';
+  return 'red';
+}
+function getPayStatus(val) {
+  if (val >= 55) return 'green';
+  if (val >= 40) return 'yellow';
+  return 'red';
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function showTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const names = ['dashboard','agents','metrics','followups','report'];
+    t.classList.toggle('active', names[i] === tab);
+  });
+  const mc = document.getElementById('mainContent');
+  if (tab === 'dashboard') mc.innerHTML = renderDashboard();
+  else if (tab === 'agents') mc.innerHTML = renderAgents();
+  else if (tab === 'metrics') mc.innerHTML = renderMetrics();
+  else if (tab === 'followups') mc.innerHTML = renderFollowUps();
+  else if (tab === 'report') mc.innerHTML = renderReport();
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard() {
+  const cycles = janMayCycles();
+  const pivot = buildPivot(cycles);
+
+  const totalAttempts = pivot.reduce((s,r) => s+r.attempts, 0);
+  const totalConnects = pivot.reduce((s,r) => s+r.connects, 0);
+  const totalSC = pivot.reduce((s,r) => s+r.sc, 0);
+  const totalPay = pivot.reduce((s,r) => s+r.pay, 0);
+  const avgConnRate = totalAttempts > 0 ? (totalConnects/totalAttempts*100).toFixed(1) : 0;
+  const avgQuality = totalConnects > 0 ? (totalSC/totalConnects*100).toFixed(1) : 0;
+  const avgPayRate = totalSC > 0 ? (totalPay/totalSC*100).toFixed(1) : 0;
+
+  // Low performers
+  const lowConnect = pivot.filter(r => r.connectRate < 18 && r.attempts > 1000).slice(0,5);
+  const lowQuality = pivot.filter(r => r.connectQuality < 55 && r.connects > 500).slice(0,5);
+
+  // Monthly trend
+  const monthData = cycles.map(cy => {
+    const att = RAW_DATA.filter(d => d.Cycle === cy && d.Type === 'Call attempts').reduce((s,d) => s+d.Actual,0);
+    const conn = RAW_DATA.filter(d => d.Cycle === cy && d.Type === 'Connects').reduce((s,d) => s+d.Actual,0);
+    const sc = RAW_DATA.filter(d => d.Cycle === cy && d.Type === 'Successful Connects').reduce((s,d) => s+d.Actual,0);
+    const pay = RAW_DATA.filter(d => d.Cycle === cy && d.Type === 'Payments').reduce((s,d) => s+d.Actual,0);
+    return { cy, att, conn, sc, pay, cr: att>0?(conn/att*100).toFixed(1):0, cq: conn>0?(sc/conn*100).toFixed(1):0, pr: sc>0?(pay/sc*100).toFixed(1):0 };
+  });
+
+  const activeAgents = pivot.filter(r => r.attempts > 500).length;
+
+  return `
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Call Attempts</div>
+      <div class="kpi-val">${totalAttempts.toLocaleString()}</div>
+      <div class="kpi-sub">Jan–May 2026</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Connect Rate</div>
+      <div class="kpi-val kpi-${getRateStatus(avgConnRate)}">${avgConnRate}%</div>
+      <div class="kpi-sub">Connects / Call Attempts</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Connect Quality</div>
+      <div class="kpi-val kpi-${getQualityStatus(avgQuality)}">${avgQuality}%</div>
+      <div class="kpi-sub">Successful Connects / Connects</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Payment Rate</div>
+      <div class="kpi-val kpi-${getPayStatus(avgPayRate)}">${avgPayRate}%</div>
+      <div class="kpi-sub">Payments / Successful Connects</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+    <div class="kpi-card"><div class="kpi-label">Total Connects</div><div class="kpi-val kpi-accent">${totalConnects.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Successful Connects</div><div class="kpi-val kpi-accent">${totalSC.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Total Payments</div><div class="kpi-val kpi-accent">${totalPay.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Active Agents</div><div class="kpi-val">${activeAgents}</div></div>
+  </div>
+
+  <div class="section" style="margin-bottom:20px;">
+    <div class="section-head"><span class="section-title">📅 Monthly Trend — Jan to May 2026</span></div>
+    <div class="section-body" style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Month</th><th>Call Attempts</th><th>Connects</th>
+          <th>Connect Rate</th><th>Succ. Connects</th><th>Connect Quality</th>
+          <th>Payments</th><th>Pay Rate</th>
+        </tr></thead>
+        <tbody>
+          ${monthData.map(m => `
+          <tr>
+            <td><b>${cycleLabel(m.cy)}</b></td>
+            <td>${m.att.toLocaleString()}</td>
+            <td>${m.conn.toLocaleString()}</td>
+            <td><span class="badge badge-${getRateStatus(m.cr)}">${m.cr}%</span></td>
+            <td>${m.sc.toLocaleString()}</td>
+            <td><span class="badge badge-${getQualityStatus(m.cq)}">${m.cq}%</span></td>
+            <td>${m.pay.toLocaleString()}</td>
+            <td><span class="badge badge-${getPayStatus(m.pr)}">${m.pr}%</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div class="section">
+      <div class="section-head"><span class="section-title">⚠️ Low Connect Rate Agents</span></div>
+      <div class="section-body">
+        ${lowConnect.length === 0 ? '<div class="empty-state">All agents within range</div>' : lowConnect.map(r => `
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">${r.agent}</span>
+            <span class="badge badge-red">${r.connectRate}%</span>
+          </div>
+          <div class="mini-bar"><div class="mini-bar-fill" style="width:${Math.min(r.connectRate*2,100)}%;background:var(--danger);"></div></div>
+        </div>`).join('')}
+        ${lowConnect.length > 0 ? '<div class="followup-box"><h4>📞 Action: Follow up with Data Team</h4><p>Check if calls are going through — verify network routes, number validity, and dialler settings for flagged agents.</p></div>' : ''}
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-head"><span class="section-title">⚠️ Low Connect Quality Agents</span></div>
+      <div class="section-body">
+        ${lowQuality.length === 0 ? '<div class="empty-state">All agents within range</div>' : lowQuality.map(r => `
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">${r.agent}</span>
+            <span class="badge badge-red">${r.connectQuality}%</span>
+          </div>
+          <div class="mini-bar"><div class="mini-bar-fill" style="width:${Math.min(r.connectQuality,100)}%;background:var(--warn);"></div></div>
+        </div>`).join('')}
+        ${lowQuality.length > 0 ? '<div class="followup-box"><h4>🎯 Action: Quality Review</h4><p>Low successful connect rate suggests pitch or call handling issues. Review call recordings & provide coaching.</p></div>' : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// AGENTS TAB
+// ============================================================
+function renderAgents() {
+  const cycles = janMayCycles();
+  const pivot = buildPivot(cycles);
+  const filterCycle = document.getElementById('agentCycleFilter') ? document.getElementById('agentCycleFilter').value : '';
+  const filterSearch = document.getElementById('agentSearch') ? document.getElementById('agentSearch').value.toLowerCase() : '';
+
+  let displayPivot = filterCycle ? buildPivot([parseInt(filterCycle)]) : pivot;
+  if (filterSearch) displayPivot = displayPivot.filter(r => r.agent.toLowerCase().includes(filterSearch));
+
+  const cycleOptions = allCycles().map(c => `<option value="${c}">${cycleLabel(c)}</option>`).join('');
+
+  return `
+  <div class="filter-row no-print">
+    <div>
+      <label>Search Agent</label>
+      <input type="text" id="agentSearch" placeholder="Type name..." onkeyup="reloadAgents()" style="width:200px;">
+    </div>
+    <div>
+      <label>Filter by Cycle</label>
+      <select id="agentCycleFilter" onchange="reloadAgents()">
+        <option value="">Jan–May 2026 (All)</option>
+        ${cycleOptions}
+      </select>
+    </div>
+    <div style="margin-top:18px;">
+      <button class="btn btn-secondary" onclick="showTab('agents')">↺ Reset</button>
+    </div>
+    <div style="margin-top:18px;">
+      <button class="btn btn-primary" onclick="showAddAgent()">+ Add Agent</button>
+    </div>
+  </div>
+
+  <div id="addAgentForm" style="display:none;" class="section" style="margin-bottom:16px;">
+    <div class="section-head"><span class="section-title">➕ Add New Agent to Team</span></div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Full Name</label><input type="text" id="newAgentName" placeholder="e.g. Jane Doe"></div>
+        <div class="form-group"><label>Join Date</label><input type="date" id="newAgentDate"></div>
+        <div class="form-group"><label>Team / Role</label><input type="text" id="newAgentRole" placeholder="e.g. Collections Agent"></div>
+        <div class="form-group"><label>Notes</label><input type="text" id="newAgentNotes" placeholder="Any notes..."></div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="addAgent()">Save Agent</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('addAgentForm').style.display='none'">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  ${agentList.length > 0 ? `
+  <div class="section" style="margin-bottom:16px;">
+    <div class="section-head"><span class="section-title">👤 Custom Agent Registry (${agentList.length})</span></div>
+    <div class="section-body" style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Name</th><th>Join Date</th><th>Role</th><th>Notes</th><th>Action</th></tr></thead>
+        <tbody>
+          ${agentList.map((a,i) => `
+          <tr>
+            <td><b>${a.name}</b></td>
+            <td>${a.date}</td>
+            <td>${a.role}</td>
+            <td>${a.notes}</td>
+            <td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="removeAgent(${i})">Remove</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>` : ''}
+
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Agent Performance — ${filterCycle ? cycleLabel(parseInt(filterCycle)) : 'Jan–May 2026'} (${displayPivot.length} agents)</span>
+    </div>
+    <div class="section-body" style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Agent</th><th>Call Attempts</th><th>Connects</th>
+          <th data-tip="Connects / Call Attempts">Connect Rate ℹ</th>
+          <th>Succ. Connects</th>
+          <th data-tip="Successful Connects / Connects">Connect Quality ℹ</th>
+          <th>Payments</th>
+          <th data-tip="Payments / Successful Connects">Pay Rate ℹ</th>
+          <th>Follow-Up</th>
+        </tr></thead>
+        <tbody>
+          ${displayPivot.map((r,i) => {
+            const crStatus = getRateStatus(r.connectRate);
+            const cqStatus = getQualityStatus(r.connectQuality);
+            const prStatus = getPayStatus(r.payRate);
+            const needsFollowup = crStatus === 'red' || cqStatus === 'red';
+            return `
+            <tr>
+              <td style="color:var(--text2)">${i+1}</td>
+              <td><b>${r.agent}</b></td>
+              <td>${r.attempts.toLocaleString()}</td>
+              <td>${r.connects.toLocaleString()}</td>
+              <td><span class="badge badge-${crStatus}">${r.connectRate}%</span></td>
+              <td>${r.sc.toLocaleString()}</td>
+              <td><span class="badge badge-${cqStatus}">${r.connectQuality}%</span></td>
+              <td>${r.pay.toLocaleString()}</td>
+              <td><span class="badge badge-${prStatus}">${r.payRate}%</span></td>
+              <td>${needsFollowup ? `<button class="btn btn-warn" style="padding:4px 10px;font-size:11px;" onclick="createFollowUp('${r.agent.replace(/'/g,"\\'")}','${crStatus==='red'?'Connect Rate':'Connect Quality'}')">Flag</button>` : '<span style="color:var(--text3)">—</span>'}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function reloadAgents() { document.getElementById('mainContent').innerHTML = renderAgents(); }
+
+function showAddAgent() {
+  const f = document.getElementById('addAgentForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+
+function addAgent() {
+  const name = document.getElementById('newAgentName').value.trim();
+  if (!name) return alert('Please enter agent name');
+  agentList.push({ name, date: document.getElementById('newAgentDate').value, role: document.getElementById('newAgentRole').value, notes: document.getElementById('newAgentNotes').value });
+  save();
+  showTab('agents');
+}
+
+function removeAgent(i) {
+  if (confirm('Remove this agent?')) { agentList.splice(i,1); save(); showTab('agents'); }
+}
+
+// ============================================================
+// METRICS ENTRY
+// ============================================================
+function renderMetrics() {
+  const agents = [...new Set(RAW_DATA.map(d => d.Agent))].sort();
+  return `
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="section">
+      <div class="section-head"><span class="section-title">📥 Enter New Metric</span></div>
+      <div class="section-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Agent</label>
+            <select id="mAgent">
+              <option value="">-- Select Agent --</option>
+              ${agents.map(a => `<option>${a}</option>`).join('')}
+              ${agentList.map(a => `<option>${a.name}</option>`).join('')}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Cycle (YYYYMM)</label>
+            <input type="text" id="mCycle" placeholder="e.g. 202606" maxlength="6">
+          </div>
+          <div class="form-group">
+            <label>Metric Type</label>
+            <select id="mType">
+              <option>Call attempts</option>
+              <option>Connects</option>
+              <option>Successful Connects</option>
+              <option>Payments</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Value</label>
+            <input type="number" id="mValue" placeholder="e.g. 1250" min="0">
+          </div>
+          <div class="form-group full">
+            <label>Notes (optional)</label>
+            <textarea id="mNotes" placeholder="Any notes about this entry..."></textarea>
+          </div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;">
+          <button class="btn btn-primary" onclick="saveMetric()">Save Metric</button>
+          <button class="btn btn-secondary" onclick="clearMetricForm()">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <span class="section-title">📋 Saved Entries (${customMetrics.length})</span>
+        ${customMetrics.length > 0 ? `<button class="btn btn-danger no-print" onclick="clearAllMetrics()" style="padding:6px 14px;font-size:12px;">Clear All</button>` : ''}
+      </div>
+      <div class="section-body" style="max-height:400px;overflow-y:auto;">
+        ${customMetrics.length === 0 ? '<div class="empty-state">No custom metrics yet</div>' : `
+        <table>
+          <thead><tr><th>Agent</th><th>Cycle</th><th>Type</th><th>Value</th><th>Notes</th><th></th></tr></thead>
+          <tbody>
+            ${customMetrics.map((m,i) => `
+            <tr>
+              <td>${m.agent}</td>
+              <td>${cycleLabel(parseInt(m.cycle))}</td>
+              <td>${m.type}</td>
+              <td><b>${parseInt(m.value).toLocaleString()}</b></td>
+              <td style="color:var(--text2);font-size:11px;">${m.notes||'—'}</td>
+              <td><button onclick="removeMetric(${i})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:14px;">✕</button></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+function saveMetric() {
+  const agent = document.getElementById('mAgent').value;
+  const cycle = document.getElementById('mCycle').value.trim();
+  const type = document.getElementById('mType').value;
+  const value = document.getElementById('mValue').value;
+  if (!agent || !cycle || !value) return alert('Please fill Agent, Cycle, and Value');
+  if (!/^\d{6}$/.test(cycle)) return alert('Cycle must be 6 digits e.g. 202606');
+  customMetrics.push({ agent, cycle, type, value, notes: document.getElementById('mNotes').value, date: new Date().toISOString() });
+  save();
+  showTab('metrics');
+}
+
+function removeMetric(i) { customMetrics.splice(i,1); save(); showTab('metrics'); }
+function clearAllMetrics() { if (confirm('Clear all saved metrics?')) { customMetrics=[]; save(); showTab('metrics'); } }
+function clearMetricForm() { ['mAgent','mCycle','mValue','mNotes'].forEach(id => document.getElementById(id).value=''); }
+
+// ============================================================
+// FOLLOW-UPS
+// ============================================================
+function createFollowUp(agent, issue) {
+  const followUpData = {
+    agent,
+    issue,
+    team: issue.includes('Connect Rate') ? 'Data Team' : 'Quality Team',
+    questions: issue.includes('Connect Rate')
+      ? ['Are calls going through on the network?', 'Are numbers in the dialler valid?', 'Any routing issues on this agent\'s queue?', 'Has there been SIM/network downtime?']
+      : ['Review last 10 call recordings', 'Is the agent following the script?', 'Check average call duration', 'Identify objection handling gaps'],
+    status: 'Open',
+    created: new Date().toLocaleDateString(),
+    note: ''
+  };
+  followUps.push(followUpData);
+  save();
+  showTab('followups');
+}
+
+function renderFollowUps() {
+  const openCount = followUps.filter(f => f.status === 'Open').length;
+  return `
+  <div class="filter-row no-print">
+    <div style="margin-top:18px;">
+      <button class="btn btn-primary" onclick="showManualFollowUp()">+ Add Manual Follow-Up</button>
+    </div>
+  </div>
+
+  <div id="manualFollowUpForm" style="display:none;" class="section" style="margin-bottom:16px;">
+    <div class="section-head"><span class="section-title">➕ Manual Follow-Up</span></div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Agent</label><input type="text" id="fuAgent" placeholder="Agent name"></div>
+        <div class="form-group"><label>Issue</label><input type="text" id="fuIssue" placeholder="e.g. Low payment rate"></div>
+        <div class="form-group"><label>Team to Contact</label><input type="text" id="fuTeam" placeholder="e.g. QA Team"></div>
+        <div class="form-group"><label>Status</label>
+          <select id="fuStatus"><option>Open</option><option>In Progress</option><option>Resolved</option></select>
+        </div>
+        <div class="form-group full"><label>Notes / Questions</label><textarea id="fuNote" placeholder="What to check or ask..."></textarea></div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="saveManualFollowUp()">Save</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('manualFollowUpForm').style.display='none'">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-grid" style="margin-bottom:20px;">
+    <div class="kpi-card"><div class="kpi-label">Total Follow-Ups</div><div class="kpi-val">${followUps.length}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Open</div><div class="kpi-val kpi-danger">${openCount}</div></div>
+    <div class="kpi-card"><div class="kpi-label">In Progress</div><div class="kpi-val kpi-warn">${followUps.filter(f=>f.status==='In Progress').length}</div></div>
+    <div class="kpi-card"><div class="kpi-label">Resolved</div><div class="kpi-val kpi-accent">${followUps.filter(f=>f.status==='Resolved').length}</div></div>
+  </div>
+
+  ${followUps.length === 0 ? `
+  <div class="section"><div class="section-body"><div class="empty-state">
+    No follow-ups yet. Flag agents from the Agents tab or add manually above.
+  </div></div></div>` : followUps.map((f,i) => `
+  <div class="section" style="margin-bottom:14px;">
+    <div class="section-head">
+      <span class="section-title">
+        <span class="badge ${f.status==='Resolved'?'badge-green':f.status==='In Progress'?'badge-yellow':'badge-red'}" style="margin-right:8px;">${f.status}</span>
+        ${f.agent} — ${f.issue}
+      </span>
+      <div style="display:flex;gap:8px;">
+        <select onchange="updateFollowUpStatus(${i},this.value)" style="font-size:12px;padding:5px 8px;">
+          <option ${f.status==='Open'?'selected':''}>Open</option>
+          <option ${f.status==='In Progress'?'selected':''}>In Progress</option>
+          <option ${f.status==='Resolved'?'selected':''}>Resolved</option>
+        </select>
+        <button onclick="removeFollowUp(${i})" class="btn btn-secondary" style="padding:5px 10px;font-size:11px;">Remove</button>
+      </div>
+    </div>
+    <div class="section-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">📅 Created: <b>${f.created}</b> &nbsp; 👥 Contact: <b style="color:var(--accent2)">${f.team}</b></div>
+          ${f.questions && f.questions.length > 0 ? `
+          <div class="followup-box">
+            <h4>❓ Questions / Actions</h4>
+            <ul>${f.questions.map(q => `<li>${q}</li>`).join('')}</ul>
+          </div>` : ''}
+          ${f.note ? `<div style="margin-top:8px;font-size:12px;color:var(--text2);"><b>Notes:</b> ${f.note}</div>` : ''}
+        </div>
+        <div>
+          <label style="margin-bottom:6px;display:block;">Update Notes</label>
+          <textarea placeholder="Add update notes..." onblur="updateFollowUpNote(${i},this.value)" style="width:100%;min-height:80px;font-size:12px;">${f.note||''}</textarea>
+        </div>
+      </div>
+    </div>
+  </div>`).join('')}`;
+}
+
+function showManualFollowUp() {
+  const f = document.getElementById('manualFollowUpForm');
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+}
+function saveManualFollowUp() {
+  const agent = document.getElementById('fuAgent').value.trim();
+  if (!agent) return alert('Enter agent name');
+  followUps.push({ agent, issue: document.getElementById('fuIssue').value, team: document.getElementById('fuTeam').value, status: document.getElementById('fuStatus').value, created: new Date().toLocaleDateString(), note: document.getElementById('fuNote').value, questions: [] });
+  save();
+  showTab('followups');
+}
+function updateFollowUpStatus(i, val) { followUps[i].status = val; save(); }
+function updateFollowUpNote(i, val) { followUps[i].note = val; save(); }
+function removeFollowUp(i) { if (confirm('Remove follow-up?')) { followUps.splice(i,1); save(); showTab('followups'); } }
+
+// ============================================================
+// REPORT
+// ============================================================
+function renderReport() {
+  const cycles = janMayCycles();
+  const pivot = buildPivot(cycles).filter(r => r.attempts > 500);
+
+  const totalAttempts = pivot.reduce((s,r) => s+r.attempts, 0);
+  const totalConnects = pivot.reduce((s,r) => s+r.connects, 0);
+  const totalSC = pivot.reduce((s,r) => s+r.sc, 0);
+  const totalPay = pivot.reduce((s,r) => s+r.pay, 0);
+  const avgCR = (totalConnects/totalAttempts*100).toFixed(1);
+  const avgCQ = (totalSC/totalConnects*100).toFixed(1);
+  const avgPR = (totalPay/totalSC*100).toFixed(1);
+
+  const monthData = cycles.map(cy => {
+    const att = RAW_DATA.filter(d => d.Cycle===cy && d.Type==='Call attempts').reduce((s,d)=>s+d.Actual,0);
+    const conn = RAW_DATA.filter(d => d.Cycle===cy && d.Type==='Connects').reduce((s,d)=>s+d.Actual,0);
+    const sc = RAW_DATA.filter(d => d.Cycle===cy && d.Type==='Successful Connects').reduce((s,d)=>s+d.Actual,0);
+    const pay = RAW_DATA.filter(d => d.Cycle===cy && d.Type==='Payments').reduce((s,d)=>s+d.Actual,0);
+    return { cy, att, conn, sc, pay, cr: att>0?(conn/att*100).toFixed(1):0, cq: conn>0?(sc/conn*100).toFixed(1):0, pr: sc>0?(pay/sc*100).toFixed(1):0 };
+  });
+
+  const topAgents = [...pivot].sort((a,b) => b.pay-a.pay).slice(0,10);
+  const lowPerf = pivot.filter(r => parseFloat(r.connectRate) < 20).slice(0,10);
+
+  return `
+  <div class="no-print filter-row" style="margin-bottom:20px;">
+    <button class="btn btn-primary" onclick="window.print()">🖨 Print Report</button>
+    <button class="btn btn-secondary" onclick="exportCSV()">⬇ Export CSV</button>
+  </div>
+
+  <div style="border:1px solid var(--border);border-radius:12px;padding:32px;background:var(--surface);">
+    <div style="text-align:center;margin-bottom:28px;">
+      <h1 style="font-size:24px;font-weight:800;letter-spacing:-1px;">Call Centre Productivity Report</h1>
+      <p style="color:var(--text2);margin-top:4px;">Period: January — May 2026 &nbsp;|&nbsp; Generated: ${new Date().toLocaleDateString()}</p>
+    </div>
+
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;">Executive Summary</h2>
+    <div class="kpi-grid" style="margin-bottom:24px;">
+      <div class="kpi-card"><div class="kpi-label">Total Attempts</div><div class="kpi-val">${totalAttempts.toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Connect Rate</div><div class="kpi-val kpi-${getRateStatus(avgCR)}">${avgCR}%</div></div>
+      <div class="kpi-card"><div class="kpi-label">Connect Quality</div><div class="kpi-val kpi-${getQualityStatus(avgCQ)}">${avgCQ}%</div></div>
+      <div class="kpi-card"><div class="kpi-label">Payment Rate</div><div class="kpi-val kpi-${getPayStatus(avgPR)}">${avgPR}%</div></div>
+    </div>
+
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:8px;">Monthly Breakdown</h2>
+    <table style="margin-bottom:24px;">
+      <thead><tr><th>Month</th><th>Attempts</th><th>Connects</th><th>Connect Rate</th><th>Succ. Connects</th><th>Quality</th><th>Payments</th><th>Pay Rate</th></tr></thead>
+      <tbody>
+        ${monthData.map(m => `<tr>
+          <td><b>${cycleLabel(m.cy)}</b></td>
+          <td>${m.att.toLocaleString()}</td><td>${m.conn.toLocaleString()}</td>
+          <td><span class="badge badge-${getRateStatus(m.cr)}">${m.cr}%</span></td>
+          <td>${m.sc.toLocaleString()}</td>
+          <td><span class="badge badge-${getQualityStatus(m.cq)}">${m.cq}%</span></td>
+          <td>${m.pay.toLocaleString()}</td>
+          <td><span class="badge badge-${getPayStatus(m.pr)}">${m.pr}%</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:8px;">Top 10 Agents by Payments</h2>
+    <table style="margin-bottom:24px;">
+      <thead><tr><th>#</th><th>Agent</th><th>Attempts</th><th>Connects</th><th>Connect Rate</th><th>Succ. Connects</th><th>Quality</th><th>Payments</th><th>Pay Rate</th></tr></thead>
+      <tbody>
+        ${topAgents.map((r,i) => `<tr>
+          <td>${i+1}</td><td><b>${r.agent}</b></td>
+          <td>${r.attempts.toLocaleString()}</td><td>${r.connects.toLocaleString()}</td>
+          <td><span class="badge badge-${getRateStatus(r.connectRate)}">${r.connectRate}%</span></td>
+          <td>${r.sc.toLocaleString()}</td>
+          <td><span class="badge badge-${getQualityStatus(r.connectQuality)}">${r.connectQuality}%</span></td>
+          <td><b>${r.pay.toLocaleString()}</b></td>
+          <td><span class="badge badge-${getPayStatus(r.payRate)}">${r.payRate}%</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+
+    ${lowPerf.length > 0 ? `
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:8px;">⚠️ Agents Requiring Attention (Connect Rate < 20%)</h2>
+    <table style="margin-bottom:24px;">
+      <thead><tr><th>Agent</th><th>Attempts</th><th>Connects</th><th>Connect Rate</th><th>Recommended Action</th></tr></thead>
+      <tbody>
+        ${lowPerf.map(r => `<tr>
+          <td><b>${r.agent}</b></td>
+          <td>${r.attempts.toLocaleString()}</td><td>${r.connects.toLocaleString()}</td>
+          <td><span class="badge badge-red">${r.connectRate}%</span></td>
+          <td style="font-size:11px;color:var(--text2);">Follow up with Data Team — verify call routing & number validity</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : ''}
+
+    ${followUps.length > 0 ? `
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:8px;">Open Follow-Ups (${followUps.filter(f=>f.status!=='Resolved').length})</h2>
+    <table>
+      <thead><tr><th>Agent</th><th>Issue</th><th>Team</th><th>Status</th><th>Created</th></tr></thead>
+      <tbody>
+        ${followUps.map(f => `<tr>
+          <td>${f.agent}</td><td>${f.issue}</td><td>${f.team}</td>
+          <td><span class="badge ${f.status==='Resolved'?'badge-green':f.status==='In Progress'?'badge-yellow':'badge-red'}">${f.status}</span></td>
+          <td>${f.created}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : ''}
+  </div>`;
+}
+
+function exportCSV() {
+  const cycles = janMayCycles();
+  const pivot = buildPivot(cycles);
+  const headers = ['Agent','Call Attempts','Connects','Connect Rate (%)','Successful Connects','Connect Quality (%)','Payments','Pay Rate (%)'];
+  const rows = pivot.map(r => [r.agent, r.attempts, r.connects, r.connectRate, r.sc, r.connectQuality, r.pay, r.payRate]);
+  const csv = [headers, ...rows].map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'productivity_report.csv'; a.click();
+}
 </script>
 </body>
 </html>
