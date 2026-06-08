@@ -3,1499 +3,1414 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team Performance Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<title>PulseTrack · Collections Intel</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg: #0d0f14;
-  --surface: #13161d;
-  --surface2: #1a1e28;
-  --surface3: #222736;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.12);
-  --text: #f0f2f8;
-  --text2: #8b92a8;
-  --text3: #555d75;
-  --accent: #4f7cff;
+  --bg: #0d0f12;
+  --bg2: #141720;
+  --bg3: #1c2030;
+  --bg4: #242840;
+  --card: #181c28;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #e8eaf2;
+  --text2: #8a8fa8;
+  --text3: #5a5f78;
+  --accent: #4f8ef7;
   --accent2: #7c5cfc;
-  --green: #22d07a;
+  --green: #22c98a;
   --amber: #f5a623;
-  --red: #ff4d6d;
-  --cyan: #22d4d4;
-  --font-head: 'Syne', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'DM Mono', monospace;
-  --radius: 10px;
-  --radius-lg: 16px;
+  --red: #f55a5a;
+  --teal: #1dc9a0;
+  --font: 'IBM Plex Mono', monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; font-size: 14px; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 13px; min-height: 100vh; display: flex; }
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
 
-/* ── Layout ── */
-.shell { display: flex; min-height: 100vh; }
-.sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; }
-.main { margin-left: 220px; flex: 1; padding: 28px 32px; }
+/* Sidebar */
+.sidebar {
+  width: 200px; min-height: 100vh; background: var(--bg2);
+  border-right: 1px solid var(--border); display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto; flex-shrink: 0;
+}
+.logo { padding: 20px 16px; border-bottom: 1px solid var(--border); }
+.logo h1 { font-size: 15px; font-weight: 600; letter-spacing: 1px; color: var(--accent); }
+.logo p { font-size: 10px; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
+.cycle-badge { margin: 12px 16px; background: var(--bg4); border: 1px solid var(--border2);
+  border-radius: 6px; padding: 10px 12px; }
+.cycle-badge .label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); margin-bottom: 4px; }
+.cycle-badge .val { font-size: 12px; color: var(--green); font-weight: 500; }
+nav { flex: 1; padding: 8px 0; }
+nav a { display: flex; align-items: center; gap: 8px; padding: 9px 16px; color: var(--text2);
+  text-decoration: none; font-size: 12px; letter-spacing: 0.5px; cursor: pointer;
+  transition: all 0.15s; border-left: 2px solid transparent; }
+nav a:hover { color: var(--text); background: var(--bg3); }
+nav a.active { color: var(--accent); background: rgba(79,142,247,0.08); border-left-color: var(--accent); }
+nav a .icon { font-size: 14px; width: 16px; text-align: center; }
 
-/* ── Sidebar ── */
-.logo { padding: 24px 20px 16px; border-bottom: 1px solid var(--border); }
-.logo-mark { font-family: var(--font-head); font-size: 15px; font-weight: 800; letter-spacing: -0.3px; color: var(--text); }
-.logo-sub { font-size: 10px; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; font-family: var(--font-mono); }
-.nav { padding: 12px 0; flex: 1; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; cursor: pointer; font-size: 13px; color: var(--text2); transition: all 0.15s; border-left: 2px solid transparent; }
-.nav-item:hover { color: var(--text); background: var(--surface2); }
-.nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(79,124,255,0.06); }
-.nav-icon { font-size: 15px; width: 18px; text-align: center; }
-.cycle-badge { margin: 0 20px 16px; background: rgba(79,124,255,0.1); border: 1px solid rgba(79,124,255,0.2); border-radius: var(--radius); padding: 10px 12px; }
-.cycle-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); font-family: var(--font-mono); margin-bottom: 4px; }
-.cycle-dates { font-size: 12px; color: var(--text); font-family: var(--font-mono); }
-.cycle-progress { margin-top: 6px; height: 3px; background: rgba(79,124,255,0.15); border-radius: 2px; }
-.cycle-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s; }
-.cycle-pct { font-size: 10px; color: var(--text3); margin-top: 3px; font-family: var(--font-mono); }
+/* Main */
+.main { flex: 1; min-height: 100vh; overflow-y: auto; }
+.section { display: none; padding: 24px; max-width: 1100px; }
+.section.active { display: block; }
 
-/* ── Page headers ── */
-.page { display: none; }
-.page.active { display: block; }
-.page-header { margin-bottom: 28px; }
-.page-title { font-family: var(--font-head); font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-.page-sub { color: var(--text2); font-size: 13px; margin-top: 4px; }
-.breadcrumb { font-family: var(--font-mono); font-size: 11px; color: var(--text3); margin-bottom: 8px; letter-spacing: 0.5px; }
+.page-header { margin-bottom: 24px; }
+.page-header h2 { font-size: 18px; font-weight: 600; letter-spacing: 0.5px; }
+.page-header p { color: var(--text2); font-size: 11px; margin-top: 4px; }
 
-/* ── Cards ── */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
-.card-sm { padding: 16px; }
-.card-title { font-family: var(--font-head); font-size: 13px; font-weight: 600; color: var(--text2); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+/* Cards */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.card-header { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 
-/* ── Grid ── */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
-.mt-16 { margin-top: 16px; }
-.mt-20 { margin-top: 20px; }
-.mt-24 { margin-top: 24px; }
+/* Metric grid */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; margin-bottom: 20px; }
+.metric { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 14px 12px; }
+.metric .mlabel { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+.metric .mval { font-size: 22px; font-weight: 600; color: var(--text); }
+.metric .msub { font-size: 10px; color: var(--text2); margin-top: 3px; }
 
-/* ── Stat cards ── */
-.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-.stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text3); font-family: var(--font-mono); margin-bottom: 6px; }
-.stat-val { font-family: var(--font-head); font-size: 26px; font-weight: 800; color: var(--text); }
-.stat-val.green { color: var(--green); }
-.stat-val.amber { color: var(--amber); }
-.stat-val.red { color: var(--red); }
-.stat-meta { font-size: 11px; color: var(--text3); margin-top: 3px; }
+/* Grid layouts */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+@media(max-width:700px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
 
-/* ── Tables ── */
+/* Table */
 .tbl-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; }
-th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-tr:hover td { background: rgba(255,255,255,0.02); }
-.rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-family: var(--font-mono); font-size: 11px; font-weight: 500; }
-.rank-1 { background: rgba(245,166,35,0.15); color: var(--amber); }
-.rank-2 { background: rgba(240,240,240,0.08); color: var(--text2); }
-.rank-3 { background: rgba(205,127,50,0.1); color: #cd7f32; }
-.rank-n { background: var(--surface3); color: var(--text3); }
-.pill { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-family: var(--font-mono); }
-.pill-green { background: rgba(34,208,122,0.1); color: var(--green); }
-.pill-red { background: rgba(255,77,109,0.1); color: var(--red); }
-.pill-amber { background: rgba(245,166,35,0.1); color: var(--amber); }
-.pill-blue { background: rgba(79,124,255,0.1); color: var(--accent); }
-.pill-gray { background: var(--surface3); color: var(--text2); }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { text-align: left; padding: 8px 10px; font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text3); border-bottom: 1px solid var(--border); font-weight: 400; }
+td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text2); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg3); color: var(--text); }
+.rank { color: var(--accent); font-weight: 600; }
+.name-cell { color: var(--text); font-weight: 500; }
+.positive { color: var(--green); }
+.neutral { color: var(--text2); }
 
-/* ── Bar chart inline ── */
-.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.bar-label { width: 90px; font-size: 12px; color: var(--text2); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.bar-track { flex: 1; height: 6px; background: var(--surface3); border-radius: 3px; }
-.bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.16,1,0.3,1); }
-.bar-val { width: 40px; font-family: var(--font-mono); font-size: 11px; color: var(--text2); }
+/* Tab buttons */
+.tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.tab-btn { padding: 6px 14px; border: 1px solid var(--border); background: transparent;
+  color: var(--text2); border-radius: 4px; cursor: pointer; font-family: var(--font);
+  font-size: 11px; letter-spacing: 0.5px; transition: all 0.15s; }
+.tab-btn.active, .tab-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-/* ── Forms ── */
-.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text3); font-family: var(--font-mono); }
-input, select, textarea { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius); padding: 9px 12px; color: var(--text); font-size: 13px; font-family: var(--font-body); outline: none; width: 100%; transition: border-color 0.15s; }
-input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,124,255,0.1); }
-select option { background: var(--surface2); }
-.btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; border: none; font-family: var(--font-body); }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #6b8eff; }
-.btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
-.btn-outline:hover { background: var(--surface2); color: var(--text); }
-.btn-danger { background: rgba(255,77,109,0.12); color: var(--red); border: 1px solid rgba(255,77,109,0.2); }
-.btn-danger:hover { background: rgba(255,77,109,0.2); }
-.btn-green { background: rgba(34,208,122,0.12); color: var(--green); border: 1px solid rgba(34,208,122,0.2); }
-.btn-green:hover { background: rgba(34,208,122,0.2); }
+/* Forms */
+.form-group { margin-bottom: 14px; }
+label { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 6px; }
+input, select, textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 5px; padding: 8px 10px; color: var(--text); font-family: var(--font);
+  font-size: 12px; outline: none; transition: border-color 0.15s; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+select option { background: var(--bg3); }
+.btn { padding: 8px 16px; border: 1px solid var(--accent); background: rgba(79,142,247,0.12);
+  color: var(--accent); border-radius: 5px; cursor: pointer; font-family: var(--font);
+  font-size: 12px; letter-spacing: 0.5px; transition: all 0.15s; }
+.btn:hover { background: var(--accent); color: #fff; }
+.btn-danger { border-color: var(--red); background: rgba(245,90,90,0.1); color: var(--red); }
+.btn-danger:hover { background: var(--red); color: #fff; }
+.btn-green { border-color: var(--green); background: rgba(34,201,138,0.1); color: var(--green); }
+.btn-green:hover { background: var(--green); color: #000; }
+.btn-sm { padding: 5px 10px; font-size: 11px; }
 
-/* ── Message box ── */
-.ai-message { background: linear-gradient(135deg, rgba(79,124,255,0.08), rgba(124,92,252,0.08)); border: 1px solid rgba(79,124,255,0.2); border-radius: var(--radius-lg); padding: 20px; position: relative; }
-.ai-badge { position: absolute; top: -10px; left: 16px; background: var(--bg); padding: 2px 10px; border: 1px solid rgba(79,124,255,0.3); border-radius: 20px; font-size: 10px; color: var(--accent); font-family: var(--font-mono); letter-spacing: 1px; text-transform: uppercase; }
-.ai-message pre { white-space: pre-wrap; font-family: var(--font-body); font-size: 13px; line-height: 1.7; color: var(--text); }
-.loading-dots { display: inline-flex; gap: 4px; }
-.loading-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: dot-pulse 1.2s ease-in-out infinite; }
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes dot-pulse { 0%,80%,100%{opacity:0.2;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
+/* Agent grid in data entry */
+.agent-row { display: grid; grid-template-columns: 160px 1fr 1fr 1fr 1fr 1fr; gap: 8px;
+  align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.agent-row:last-child { border-bottom: none; }
+.agent-name-label { color: var(--text); font-size: 12px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.agent-row input { background: var(--bg3); padding: 6px 8px; font-size: 12px; }
+.col-header { display: grid; grid-template-columns: 160px 1fr 1fr 1fr 1fr 1fr; gap: 8px;
+  padding: 6px 0 4px; border-bottom: 2px solid var(--border2); margin-bottom: 4px; }
+.col-header span { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); }
 
-/* ── Agent card ── */
-.agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; cursor: pointer; transition: all 0.15s; }
-.agent-card:hover { border-color: var(--border2); background: var(--surface2); }
-.agent-card.selected { border-color: var(--accent); background: rgba(79,124,255,0.05); }
-.agent-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-.agent-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
-.agent-role { font-size: 11px; color: var(--text3); font-family: var(--font-mono); }
+/* CSV drop zone */
+.dropzone { border: 2px dashed var(--border2); border-radius: 8px; padding: 32px;
+  text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 16px; }
+.dropzone:hover, .dropzone.drag-over { border-color: var(--accent); background: rgba(79,142,247,0.05); }
+.dropzone .dz-icon { font-size: 32px; margin-bottom: 8px; opacity: 0.5; }
+.dropzone p { color: var(--text2); font-size: 12px; margin-bottom: 4px; }
+.dropzone small { color: var(--text3); font-size: 10px; }
+#csv-file-input { display: none; }
 
-/* ── Score ring ── */
-.score-ring { position: relative; display: inline-flex; align-items: center; justify-content: center; }
-.score-ring svg { transform: rotate(-90deg); }
-.score-val { position: absolute; font-family: var(--font-head); font-size: 14px; font-weight: 800; }
-
-/* ── Weakness tag ── */
-.weakness-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px; background: var(--surface2); border-radius: var(--radius); margin-bottom: 8px; }
-.weakness-icon { font-size: 16px; margin-top: 1px; }
-.weakness-label { font-size: 12px; font-weight: 500; color: var(--text); }
-.weakness-desc { font-size: 11px; color: var(--text2); margin-top: 2px; }
-
-/* ── Tabs ── */
-.tabs { display: flex; gap: 2px; background: var(--surface2); border-radius: var(--radius); padding: 4px; margin-bottom: 20px; }
-.tab { flex: 1; padding: 7px 12px; text-align: center; font-size: 12px; cursor: pointer; border-radius: 7px; color: var(--text2); transition: all 0.15s; font-weight: 500; }
-.tab.active { background: var(--surface3); color: var(--text); }
-
-/* ── Filter bar ── */
-.filter-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
-.filter-bar select, .filter-bar input { max-width: 160px; }
-
-/* ── Insights ── */
-.insight { display: flex; gap: 12px; padding: 12px; border-radius: var(--radius); margin-bottom: 10px; }
-.insight-crit { background: rgba(255,77,109,0.06); border-left: 3px solid var(--red); }
-.insight-warn { background: rgba(245,166,35,0.06); border-left: 3px solid var(--amber); }
-.insight-good { background: rgba(34,208,122,0.06); border-left: 3px solid var(--green); }
-.insight-info { background: rgba(79,124,255,0.06); border-left: 3px solid var(--accent); }
-.insight-icon { font-size: 18px; flex-shrink: 0; }
-.insight-title { font-size: 13px; font-weight: 600; color: var(--text); }
-.insight-body { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.5; }
-
-/* ── Toast ── */
-.toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface3); border: 1px solid var(--border2); border-radius: var(--radius); padding: 12px 16px; font-size: 13px; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.3s; max-width: 280px; }
+/* Toast */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--bg4);
+  border: 1px solid var(--border2); border-radius: 6px; padding: 10px 16px;
+  font-size: 12px; z-index: 1000; transform: translateY(80px); opacity: 0;
+  transition: all 0.3s; pointer-events: none; }
 .toast.show { transform: translateY(0); opacity: 1; }
-.toast.success { border-left: 3px solid var(--green); }
-.toast.error { border-left: 3px solid var(--red); }
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.error { border-color: var(--red); color: var(--red); }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+/* Charts */
+.chart-wrap { position: relative; height: 200px; }
+.chart-wrap-lg { position: relative; height: 280px; }
+
+/* Progress bar */
+.prog-bar { background: var(--bg3); border-radius: 3px; height: 4px; margin-top: 6px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.4s; }
+
+/* AI output */
+.ai-output { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
+  padding: 16px; min-height: 120px; color: var(--text2); font-size: 12px; line-height: 1.8;
+  white-space: pre-wrap; font-family: var(--font); }
+.ai-output.loading { color: var(--text3); font-style: italic; }
+.api-key-notice { background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.3);
+  border-radius: 6px; padding: 12px 14px; font-size: 11px; color: var(--amber); margin-bottom: 16px; }
+
+/* Leaderboard medals */
+.medal-1 { color: #ffd700; }
+.medal-2 { color: #c0c0c0; }
+.medal-3 { color: #cd7f32; }
+
+/* Inline filter row */
+.filter-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-row label { margin: 0; font-size: 10px; white-space: nowrap; }
+.filter-row select, .filter-row input[type=date] { width: auto; min-width: 120px; padding: 6px 8px; font-size: 11px; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
 
-/* ── Agent colors ── */
-.c0 { background: rgba(79,124,255,0.15); color: #6b8eff; }
-.c1 { background: rgba(34,208,122,0.15); color: #22d07a; }
-.c2 { background: rgba(245,166,35,0.15); color: #f5a623; }
-.c3 { background: rgba(255,77,109,0.15); color: #ff4d6d; }
-.c4 { background: rgba(34,212,212,0.15); color: #22d4d4; }
-.c5 { background: rgba(124,92,252,0.15); color: #9b7ffe; }
-.c6 { background: rgba(255,166,55,0.15); color: #ffb347; }
-.c7 { background: rgba(236,100,100,0.15); color: #ec6464; }
+/* Recent entries */
+.entry-item { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.entry-item:last-child { border-bottom: none; }
+.entry-meta { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 9px;
+  letter-spacing: 0.5px; text-transform: uppercase; }
+.badge-blue { background: rgba(79,142,247,0.15); color: var(--accent); }
+.badge-green { background: rgba(34,201,138,0.15); color: var(--green); }
 
-.section-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
-.flex-between { display: flex; justify-content: space-between; align-items: center; }
-.flex-gap { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-.w-full { width: 100%; }
+.section-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
-/* ── Modal ── */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 28px; max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto; }
-.modal-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-.close-btn { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 20px; }
-
-/* ── Report ── */
-.report-section { margin-bottom: 24px; }
-.report-section h3 { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-
-.metric-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 13px; }
-.metric-row:last-child { border-bottom: none; }
-.metric-name { color: var(--text2); }
-.metric-val { font-family: var(--font-mono); color: var(--text); }
-
-.hidden { display: none !important; }
+/* Funnel */
+.funnel { display: flex; flex-direction: column; gap: 4px; }
+.funnel-step { display: flex; align-items: center; gap: 10px; }
+.funnel-bar { height: 28px; background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 3px; display: flex; align-items: center; padding: 0 10px;
+  font-size: 11px; color: #fff; white-space: nowrap; min-width: 60px; }
+.funnel-label { font-size: 11px; color: var(--text2); width: 120px; text-align: right; flex-shrink: 0; }
+.funnel-pct { font-size: 10px; color: var(--text3); margin-left: 4px; }
 </style>
 </head>
 <body>
 
-<div class="shell">
-<!-- ── SIDEBAR ── -->
-<aside class="sidebar">
+<!-- Sidebar -->
+<div class="sidebar">
   <div class="logo">
-    <div class="logo-mark">⚡ PulseTrack</div>
-    <div class="logo-sub">Collections Intel</div>
+    <h1>⚡ PulseTrack</h1>
+    <p>Collections Intel</p>
   </div>
-  <nav class="nav">
-    <div class="nav-item active" onclick="showPage('dashboard')">
-      <span class="nav-icon">⊞</span> Dashboard
-    </div>
-    <div class="nav-item" onclick="showPage('entry')">
-      <span class="nav-icon">＋</span> Enter Data
-    </div>
-    <div class="nav-item" onclick="showPage('agents')">
-      <span class="nav-icon">◉</span> Agents
-    </div>
-    <div class="nav-item" onclick="showPage('analysis')">
-      <span class="nav-icon">◈</span> Analysis
-    </div>
-    <div class="nav-item" onclick="showPage('message')">
-      <span class="nav-icon">✉</span> Morning Brief
-    </div>
-    <div class="nav-item" onclick="showPage('report')">
-      <span class="nav-icon">▤</span> Cycle Report
-    </div>
-    <div class="nav-item" onclick="showPage('settings')">
-      <span class="nav-icon">⊙</span> Settings
-    </div>
+  <div class="cycle-badge">
+    <div class="label">Current Cycle</div>
+    <div class="val" id="cycle-label">—</div>
+    <div style="font-size:10px;color:var(--text3);margin-top:2px;" id="cycle-day-label">Day — of 30</div>
+  </div>
+  <nav>
+    <a class="active" onclick="showSection('dashboard')" data-section="dashboard">
+      <span class="icon">⊞</span> Dashboard
+    </a>
+    <a onclick="showSection('enter')" data-section="enter">
+      <span class="icon">＋</span> Enter Data
+    </a>
+    <a onclick="showSection('csv')" data-section="csv">
+      <span class="icon">↑</span> CSV Import
+    </a>
+    <a onclick="showSection('agents')" data-section="agents">
+      <span class="icon">◉</span> Agents
+    </a>
+    <a onclick="showSection('analysis')" data-section="analysis">
+      <span class="icon">◈</span> Analysis
+    </a>
+    <a onclick="showSection('brief')" data-section="brief">
+      <span class="icon">✉</span> Morning Brief
+    </a>
+    <a onclick="showSection('report')" data-section="report">
+      <span class="icon">▤</span> Cycle Report
+    </a>
+    <a onclick="showSection('settings')" data-section="settings">
+      <span class="icon">⊙</span> Settings
+    </a>
   </nav>
-  <div class="cycle-badge" id="sidebar-cycle">
-    <div class="cycle-label">Current Cycle</div>
-    <div class="cycle-dates" id="cycle-dates-sidebar">—</div>
-    <div class="cycle-progress"><div class="cycle-progress-fill" id="cycle-progress-fill" style="width:0%"></div></div>
-    <div class="cycle-pct" id="cycle-pct">Day — of 31</div>
-  </div>
-</aside>
+</div>
 
-<!-- ── MAIN ── -->
-<main class="main">
+<!-- Main -->
+<div class="main">
 
-<!-- ════ DASHBOARD ════ -->
-<div class="page active" id="page-dashboard">
+<!-- DASHBOARD -->
+<div class="section active" id="section-dashboard">
   <div class="page-header">
-    <div class="breadcrumb">OVERVIEW</div>
-    <div class="flex-between">
-      <div>
-        <div class="page-title">Command Center</div>
-        <div class="page-sub">Real-time cycle snapshot · <span id="today-display"></span></div>
-      </div>
-      <div class="flex-gap">
-        <select id="dash-cycle-filter" style="max-width:170px" onchange="renderDashboard()">
-          <option value="current">Current Cycle</option>
-          <option value="all">All Time</option>
-        </select>
-        <button class="btn btn-primary" onclick="showPage('entry')">＋ Enter Data</button>
-      </div>
-    </div>
+    <h2>Command Center</h2>
+    <p id="dashboard-subtitle">Real-time cycle snapshot · Current cycle to date</p>
   </div>
-
-  <!-- KPIs -->
-  <div class="grid-5" id="kpi-grid"></div>
-
-  <!-- Insights -->
-  <div class="mt-20" id="insight-panel"></div>
-
-  <!-- Charts row -->
-  <div class="grid-2 mt-20">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="setDashView('cycle',this)">Current Cycle</button>
+    <button class="tab-btn" onclick="setDashView('alltime',this)">All Time</button>
+  </div>
+  <div class="metrics" id="dash-metrics"></div>
+  <div class="grid2">
     <div class="card">
-      <div class="card-title">Daily Trend — Payments</div>
-      <div style="position:relative;height:200px"><canvas id="chart-trend" role="img" aria-label="Daily payment trend">Daily payment trend chart.</canvas></div>
+      <div class="card-header">Daily Trend — Payments</div>
+      <div class="chart-wrap"><canvas id="chart-daily-trend"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">Connect Rate by Agent</div>
-      <div id="connect-bars" style="margin-top:8px"></div>
+      <div class="card-header">Connect Rate by Agent</div>
+      <div class="chart-wrap"><canvas id="chart-connect-rate"></canvas></div>
     </div>
   </div>
-
-  <!-- Leaderboard -->
-  <div class="card mt-20">
-    <div class="flex-between" style="margin-bottom:14px">
-      <div class="card-title" style="margin-bottom:0">Leaderboard · Cycle Standings</div>
-      <div class="flex-gap">
-        <select id="lb-metric" onchange="renderDashboard()" style="max-width:170px">
-          <option value="payments">Payments</option>
-          <option value="collections">Collections</option>
-          <option value="connectRate">Connect Rate</option>
-          <option value="successRate">Success Rate</option>
-        </select>
-      </div>
+  <div class="card">
+    <div class="card-header">Leaderboard · Cycle Standings</div>
+    <div class="tabs" style="margin-top:8px;margin-bottom:12px;">
+      <button class="tab-btn active" onclick="renderLeaderboard('payments',this)">Payments</button>
+      <button class="tab-btn" onclick="renderLeaderboard('amount',this)">Collections</button>
+      <button class="tab-btn" onclick="renderLeaderboard('connect_rate',this)">Connect Rate</button>
+      <button class="tab-btn" onclick="renderLeaderboard('success_rate',this)">Success Rate</button>
     </div>
     <div class="tbl-wrap" id="leaderboard-table"></div>
   </div>
 </div>
 
-<!-- ════ DATA ENTRY ════ -->
-<div class="page" id="page-entry">
+<!-- ENTER DATA -->
+<div class="section" id="section-enter">
   <div class="page-header">
-    <div class="breadcrumb">DATA · INPUT</div>
-    <div class="page-title">Enter Daily Data</div>
-    <div class="page-sub">Record call activity per agent for a specific date</div>
+    <h2>Enter Daily Data</h2>
+    <p>Record call activity per agent for a specific date</p>
   </div>
-
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-header">Bulk Entry — All Agents</div>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="date" id="entry-date" style="max-width:200px;">
+    </div>
+    <div class="col-header">
+      <span>Agent</span>
+      <span>Call Attempts</span>
+      <span>Connects</span>
+      <span>Succ. Connects</span>
+      <span>Payments</span>
+      <span>Amount (UGX)</span>
+    </div>
+    <div id="bulk-agent-rows"></div>
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <button class="btn btn-green" onclick="saveAllRecords()">💾 Save All Records</button>
+      <button class="btn" onclick="clearEntryForm()">Clear</button>
+    </div>
+  </div>
   <div class="card">
-    <div class="flex-between" style="margin-bottom:20px">
-      <div class="card-title" style="margin-bottom:0">Bulk Entry — All Agents</div>
-      <div class="flex-gap">
-        <input type="date" id="entry-date" style="max-width:160px">
-        <button class="btn btn-outline" onclick="addAgent()">+ Add Agent</button>
-      </div>
+    <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+      <span>Recent Entries</span>
+      <button class="btn btn-danger btn-sm" onclick="confirmClearAll()">🗑 Clear All Data</button>
     </div>
-    <div id="bulk-entry-table"></div>
-    <div style="margin-top:20px; display:flex; gap:10px; align-items:center">
-      <button class="btn btn-primary" onclick="saveBulkEntry()">💾 Save All Records</button>
-      <button class="btn btn-outline" onclick="clearBulkForm()">Clear</button>
-      <span id="entry-status" style="font-size:12px;color:var(--text3)"></span>
+    <div class="filter-row">
+      <label>Agent:</label>
+      <select id="filter-agent-recent" onchange="renderRecentEntries()">
+        <option value="">All Agents</option>
+      </select>
     </div>
-  </div>
-
-  <div class="card mt-16">
-    <div class="flex-between" style="margin-bottom:14px">
-      <div class="card-title" style="margin-bottom:0">Recent Entries</div>
-      <div class="flex-gap">
-        <input type="date" id="filter-entry-date" style="max-width:160px" oninput="renderEntryHistory()">
-        <select id="filter-entry-agent" onchange="renderEntryHistory()" style="max-width:150px">
-          <option value="">All Agents</option>
-        </select>
-        <button class="btn btn-outline btn-danger" onclick="clearAllData()">🗑 Clear All Data</button>
-      </div>
-    </div>
-    <div class="tbl-wrap" id="entry-history"></div>
+    <div id="recent-entries-list"></div>
   </div>
 </div>
 
-<!-- ════ AGENTS ════ -->
-<div class="page" id="page-agents">
+<!-- CSV IMPORT -->
+<div class="section" id="section-csv">
   <div class="page-header">
-    <div class="breadcrumb">TEAM</div>
-    <div class="flex-between">
-      <div>
-        <div class="page-title">Agent Profiles</div>
-        <div class="page-sub">Individual performance breakdown & diagnostics</div>
-      </div>
-      <div class="flex-gap">
-        <select id="agent-cycle-filter" style="max-width:170px" onchange="renderAgentPage()">
-          <option value="current">Current Cycle</option>
-          <option value="all">All Time</option>
-        </select>
-        <select id="agent-selector" style="max-width:160px" onchange="renderAgentDetail()"></select>
-      </div>
+    <h2>CSV Import</h2>
+    <p>Upload your pivot export — auto-fills agent data for the cycle</p>
+  </div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-header">Upload CSV</div>
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('csv-file-input').click()"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="handleDrop(event)">
+      <div class="dz-icon">📂</div>
+      <p>Click to browse or drag & drop your CSV file</p>
+      <small>Format: Agent · CYCLE · TYPE · ACTUAL (as exported from pivot table)</small>
+    </div>
+    <input type="file" id="csv-file-input" accept=".csv" onchange="handleCsvFile(this.files[0])">
+    <div class="form-group">
+      <label>Assign to Date (data will be recorded as this date)</label>
+      <input type="date" id="csv-date" style="max-width:200px;">
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="btn btn-green" id="csv-import-btn" onclick="importCsvData()" disabled>Import Data</button>
+      <span id="csv-status" style="font-size:11px;color:var(--text3);"></span>
     </div>
   </div>
-
-  <div class="grid-4" id="agent-cards-grid" style="margin-bottom:20px"></div>
-
-  <div id="agent-detail-section">
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="card-title">Performance Metrics</div>
-          <div class="grid-2" id="agent-stats-grid" style="gap:10px"></div>
-        </div>
-        <div class="card mt-16">
-          <div class="card-title">Daily Activity Trend</div>
-          <div style="position:relative;height:180px"><canvas id="chart-agent-trend" role="img" aria-label="Agent daily trend">Agent trend chart.</canvas></div>
-        </div>
-      </div>
-      <div>
-        <div class="card">
-          <div class="card-title">⚠ Weakness Diagnostics</div>
-          <div id="agent-weaknesses"></div>
-        </div>
-        <div class="card mt-16">
-          <div class="card-title">✦ Strengths</div>
-          <div id="agent-strengths"></div>
-        </div>
-        <div class="card mt-16">
-          <div class="card-title">Manager Recommendation</div>
-          <div id="agent-recommendation" style="font-size:13px;line-height:1.7;color:var(--text2)"></div>
-        </div>
-      </div>
-    </div>
+  <div class="card" id="csv-preview-card" style="display:none;">
+    <div class="card-header">Preview — Parsed Data</div>
+    <div class="tbl-wrap" id="csv-preview-table"></div>
   </div>
 </div>
 
-<!-- ════ ANALYSIS ════ -->
-<div class="page" id="page-analysis">
+<!-- AGENTS -->
+<div class="section" id="section-agents">
   <div class="page-header">
-    <div class="breadcrumb">INTELLIGENCE · ANALYSIS</div>
-    <div class="page-title">Deep Analysis</div>
-    <div class="page-sub">Identify controllable vs uncontrollable performance factors</div>
+    <h2>Agent Profiles</h2>
+    <p>Individual performance breakdown & diagnostics</p>
   </div>
-
-  <div class="filter-bar">
-    <select id="anal-cycle" style="max-width:170px" onchange="renderAnalysis()">
-      <option value="current">Current Cycle</option>
-      <option value="all">All Time</option>
+  <div class="filter-row">
+    <label>Agent:</label>
+    <select id="agent-select" onchange="renderAgentProfile()">
+      <option value="">Select agent...</option>
     </select>
-    <select id="anal-agent" style="max-width:160px" onchange="renderAnalysis()">
+    <div class="tabs" style="margin-bottom:0;">
+      <button class="tab-btn active" onclick="setAgentView('cycle',this)">Current Cycle</button>
+      <button class="tab-btn" onclick="setAgentView('alltime',this)">All Time</button>
+    </div>
+  </div>
+  <div id="agent-profile-content">
+    <p style="color:var(--text3);font-size:12px;">Select an agent above to view their profile.</p>
+  </div>
+</div>
+
+<!-- ANALYSIS -->
+<div class="section" id="section-analysis">
+  <div class="page-header">
+    <h2>Deep Analysis</h2>
+    <p>Identify controllable vs uncontrollable performance factors</p>
+  </div>
+  <div class="filter-row">
+    <div class="tabs" style="margin-bottom:0;">
+      <button class="tab-btn active" onclick="setAnalysisView('cycle',this)">Current Cycle</button>
+      <button class="tab-btn" onclick="setAnalysisView('alltime',this)">All Time</button>
+    </div>
+    <label>Agent:</label>
+    <select id="analysis-agent-filter" onchange="renderAnalysis()">
       <option value="">All Agents</option>
     </select>
-    <input type="date" id="anal-from" placeholder="From" style="max-width:150px" oninput="renderAnalysis()">
-    <input type="date" id="anal-to" placeholder="To" style="max-width:150px" oninput="renderAnalysis()">
   </div>
+  <div id="analysis-content"></div>
+</div>
 
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-title" style="color:var(--red)">⚡ Uncontrollable Factors</div>
-      <div id="uncontrollable-section"></div>
+<!-- MORNING BRIEF -->
+<div class="section" id="section-brief">
+  <div class="page-header">
+    <h2>Morning Brief Generator</h2>
+    <p>AI-drafted motivational brief based on recent data</p>
+  </div>
+  <div id="brief-api-notice" class="api-key-notice" style="display:none;">
+    ⚠ No API key set. Go to Settings → API Key to enable AI features. The brief will use a template until then.
+  </div>
+  <div class="card">
+    <div class="card-header">Generate Brief</div>
+    <div class="filter-row">
+      <div class="tabs" style="margin-bottom:0;">
+        <button class="tab-btn active" onclick="setBriefMode('latest',this)">Based on Latest Data</button>
+        <button class="tab-btn" onclick="setBriefMode('date',this)">Pick a Date</button>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-title" style="color:var(--green)">◆ Controllable Factors</div>
-      <div id="controllable-section"></div>
+    <div id="brief-date-row" style="display:none;margin-bottom:12px;">
+      <label>Date</label>
+      <input type="date" id="brief-date" style="max-width:200px;">
     </div>
-  </div>
-
-  <div class="card mt-20">
-    <div class="card-title">Funnel Conversion Analysis</div>
-    <div class="grid-2">
-      <div id="funnel-chart-wrap" style="position:relative;height:240px"><canvas id="chart-funnel" role="img" aria-label="Conversion funnel">Funnel chart.</canvas></div>
-      <div id="funnel-insights" style="padding:8px 0"></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="setBriefTone('energetic',this)">Energetic & Motivating</button>
+      <button class="tab-btn" onclick="setBriefTone('firm',this)">Firm & Focused</button>
+      <button class="tab-btn" onclick="setBriefTone('analytical',this)">Analytical & Strategic</button>
     </div>
-  </div>
-
-  <div class="card mt-20">
-    <div class="card-title">Best Period Analysis</div>
-    <div id="best-period-section"></div>
-  </div>
-
-  <div class="card mt-20">
-    <div class="card-title">Team vs Individual — What's Systemic vs Personal?</div>
-    <div id="systemic-section"></div>
+    <button class="btn btn-green" onclick="generateBrief()" style="margin-bottom:14px;">✦ Generate Brief</button>
+    <div class="ai-output" id="brief-output">Enter data then click Generate Brief</div>
   </div>
 </div>
 
-<!-- ════ MORNING BRIEF ════ -->
-<div class="page" id="page-message">
+<!-- CYCLE REPORT -->
+<div class="section" id="section-report">
   <div class="page-header">
-    <div class="breadcrumb">DAILY BRIEF</div>
-    <div class="page-title">Morning Message Generator</div>
-    <div class="page-sub">AI-drafted motivational brief based on yesterday's data</div>
+    <h2>Cycle End Report</h2>
+    <p>Full cycle wrap-up, conversation starters & action items</p>
   </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="flex-between" style="margin-bottom:14px">
-      <div class="card-title" style="margin-bottom:0">Generate Today's Message</div>
-    </div>
-    <div class="flex-gap">
-      <select id="msg-date-source" style="max-width:200px">
-        <option value="latest">Based on Latest Data</option>
-        <option value="pick">Pick a Date</option>
-      </select>
-      <input type="date" id="msg-date-pick" class="hidden" style="max-width:160px" oninput="">
-      <select id="msg-tone">
-        <option value="energetic">Energetic & Motivating</option>
-        <option value="firm">Firm & Focused</option>
-        <option value="analytical">Analytical & Strategic</option>
-      </select>
-      <button class="btn btn-primary" onclick="generateMorningMessage()">✦ Generate Brief</button>
-    </div>
+  <div id="report-api-notice" class="api-key-notice" style="display:none;">
+    ⚠ No API key set. Go to Settings → API Key to enable AI features.
   </div>
-
-  <div id="morning-message-box">
-    <div class="card" style="text-align:center;padding:40px;color:var(--text3)">
-      <div style="font-size:32px;margin-bottom:10px">✉</div>
-      <div>Enter data then click Generate Brief</div>
-    </div>
+  <div class="card">
+    <button class="btn btn-green" onclick="generateReport()" style="margin-bottom:14px;">✦ Generate Report</button>
+    <div class="ai-output" id="report-output">Click Generate Report to build the full cycle post-analysis</div>
   </div>
 </div>
 
-<!-- ════ CYCLE REPORT ════ -->
-<div class="page" id="page-report">
+<!-- SETTINGS -->
+<div class="section" id="section-settings">
   <div class="page-header">
-    <div class="breadcrumb">CYCLE · POST-ANALYSIS</div>
-    <div class="flex-between">
+    <h2>Settings</h2>
+    <p>Configure API key, cycle, agents, and data</p>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="card-header">API Key (Claude AI)</div>
+      <div class="form-group">
+        <label>Anthropic API Key</label>
+        <input type="password" id="api-key-input" placeholder="sk-ant-...">
+        <small style="color:var(--text3);font-size:10px;display:block;margin-top:4px;">
+          Stored locally in your browser — never sent anywhere except to the Anthropic API.
+        </small>
+      </div>
+      <button class="btn" onclick="saveApiKey()">Save Key</button>
+    </div>
+    <div class="card">
+      <div class="card-header">Cycle Configuration</div>
+      <div class="form-group">
+        <label>Cycle Start Day (of month)</label>
+        <input type="number" id="cycle-start-day" min="1" max="28" value="11" style="max-width:100px;">
+      </div>
+      <div class="form-group">
+        <label>Team / Group Name</label>
+        <input type="text" id="team-name-input" placeholder="Collections Team">
+      </div>
+      <button class="btn" onclick="saveSettings()">Save Settings</button>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">Agent Management</div>
+    <div id="agent-mgmt-list" style="margin-bottom:14px;"></div>
+    <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
       <div>
-        <div class="page-title">Cycle End Report</div>
-        <div class="page-sub">Full cycle wrap-up, conversation starters & action items</div>
+        <label>Agent Name</label>
+        <input type="text" id="new-agent-name" placeholder="Full name..." style="width:180px;">
       </div>
-      <button class="btn btn-primary" onclick="generateCycleReport()">✦ Generate Report</button>
+      <div>
+        <label>Role / Title</label>
+        <input type="text" id="new-agent-role" placeholder="Collections Agent" style="width:150px;">
+      </div>
+      <button class="btn btn-green" onclick="addAgent()">+ Add Agent</button>
     </div>
   </div>
-
-  <div id="cycle-report-box">
-    <div class="card" style="text-align:center;padding:40px;color:var(--text3)">
-      <div style="font-size:32px;margin-bottom:10px">▤</div>
-      <div>Click Generate Report to build the full cycle post-analysis</div>
-    </div>
-  </div>
-</div>
-
-<!-- ════ SETTINGS ════ -->
-<div class="page" id="page-settings">
-  <div class="page-header">
-    <div class="breadcrumb">CONFIG</div>
-    <div class="page-title">Settings</div>
-  </div>
-
-  <div class="grid-2">
-    <div class="card">
-      <div class="card-title">API Key (Claude AI)</div>
-      <div class="form-group" style="margin-bottom:14px">
-        <label class="form-label">Anthropic API Key</label>
-        <input type="password" id="api-key-input" placeholder="sk-ant-..." autocomplete="off">
-      </div>
-      <div style="font-size:12px;color:var(--text3);margin-bottom:14px;line-height:1.6">
-        Required for AI-generated morning briefs and cycle reports. Stored locally in your browser — never sent anywhere except to the Anthropic API.
-      </div>
-      <button class="btn btn-primary" onclick="saveApiKey()">Save Key</button>
-      <span id="key-status" style="font-size:12px;color:var(--green);margin-left:10px"></span>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Cycle Configuration</div>
-      <div class="form-group" style="margin-bottom:12px">
-        <label class="form-label">Cycle Start Day (of month)</label>
-        <input type="number" id="cycle-start-day" min="1" max="28" value="11">
-      </div>
-      <div class="form-group" style="margin-bottom:14px">
-        <label class="form-label">Team / Group Name</label>
-        <input type="text" id="team-name-input" placeholder="Collections Team A">
-      </div>
-      <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
-    </div>
-  </div>
-
-  <div class="card mt-16">
-    <div class="card-title">Agent Management</div>
-    <div id="agent-list-settings"></div>
-    <hr class="section-divider" style="margin:16px 0">
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="form-label">Agent Name</label>
-        <input type="text" id="new-agent-name" placeholder="Full name">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Role / Title</label>
-        <input type="text" id="new-agent-role" placeholder="Senior Agent">
-      </div>
-    </div>
-    <button class="btn btn-primary" style="margin-top:12px" onclick="addNewAgent()">+ Add Agent</button>
-  </div>
-
-  <div class="card mt-16">
-    <div class="card-title">Data Management</div>
-    <div class="flex-gap">
-      <button class="btn btn-outline" onclick="exportData()">⬇ Export JSON</button>
-      <label class="btn btn-outline" style="cursor:pointer">⬆ Import JSON <input type="file" accept=".json" onchange="importData(event)" style="display:none"></label>
-      <button class="btn btn-danger" onclick="clearAllData()">🗑 Delete All Data</button>
+  <div class="card" style="margin-top:16px;">
+    <div class="card-header">Data Management</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn" onclick="exportData()">⬇ Export JSON</button>
+      <button class="btn" onclick="document.getElementById('import-json').click()">⬆ Import JSON</button>
+      <button class="btn btn-danger" onclick="confirmClearAll()">🗑 Delete All Data</button>
+      <input type="file" id="import-json" accept=".json" onchange="importData(this)" style="display:none;">
     </div>
   </div>
 </div>
 
-</main>
-</div>
+</div><!-- end main -->
 
-<!-- Modal for delete confirm -->
-<div class="modal-overlay" id="confirm-modal">
-  <div class="modal" style="max-width:380px">
-    <div class="modal-title" id="modal-title">Confirm Action</div>
-    <div id="modal-body" style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6"></div>
-    <div class="flex-gap">
-      <button class="btn btn-danger" id="modal-confirm-btn">Confirm</button>
-      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<!-- Confirm Modal -->
+<div id="confirm-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:none;align-items:center;justify-content:center;">
+  <div class="card" style="max-width:320px;width:90%;padding:20px;">
+    <p style="margin-bottom:16px;font-size:13px;" id="confirm-msg">Are you sure?</p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-danger" onclick="confirmAction()">Confirm</button>
+      <button class="btn" onclick="closeConfirm()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ════ STATE ════
+// ==================== STATE ====================
 let state = {
   agents: [],
-  records: [], // {id, agentId, date, attempts, connects, successfulConnects, payments, collections}
+  records: [], // {id, agentName, date, calls, connects, successConnects, payments, amount}
   settings: { cycleStartDay: 11, teamName: 'Collections Team', apiKey: '' }
 };
 
-// ════ STORAGE ════
-function save() { localStorage.setItem('pulsetrack_data', JSON.stringify(state)); }
-function load() {
-  const d = localStorage.getItem('pulsetrack_data');
-  if (d) state = JSON.parse(d);
-  if (!state.settings) state.settings = { cycleStartDay: 11, teamName: 'Collections Team', apiKey: '' };
-  if (!state.agents) state.agents = [];
-  if (!state.records) state.records = [];
+let chartDailyTrend = null, chartConnectRate = null, chartAgentTrend = null;
+let dashView = 'cycle', agentView = 'cycle', analysisView = 'cycle';
+let briefMode = 'latest', briefTone = 'energetic';
+let pendingCsvData = null;
+let confirmCallback = null;
+
+// ==================== PERSISTENCE ====================
+function saveState() {
+  localStorage.setItem('pulsetrack_v2', JSON.stringify(state));
+}
+function loadState() {
+  const raw = localStorage.getItem('pulsetrack_v2');
+  if (raw) {
+    try {
+      const s = JSON.parse(raw);
+      state.agents = s.agents || [];
+      state.records = s.records || [];
+      state.settings = { ...state.settings, ...(s.settings || {}) };
+    } catch(e) {}
+  }
+  // Migrate old data if exists
+  const old = localStorage.getItem('pulsetrack_data');
+  if (old && state.records.length === 0) {
+    try {
+      const o = JSON.parse(old);
+      if (o.records) state.records = o.records;
+      if (o.agents) state.agents = o.agents;
+      if (o.settings) state.settings = { ...state.settings, ...o.settings };
+      saveState();
+    } catch(e) {}
+  }
 }
 
-// ════ CYCLE UTILS ════
-function getCycleDates(d = new Date()) {
+// ==================== CYCLE LOGIC ====================
+function getCycleStartDate(refDate) {
+  const d = refDate ? new Date(refDate) : new Date();
   const day = d.getDate();
-  const m = d.getMonth();
-  const y = d.getFullYear();
   const sd = state.settings.cycleStartDay || 11;
-  let start, end;
+  let start;
   if (day >= sd) {
-    start = new Date(y, m, sd);
-    end = new Date(y, m + 1, sd - 1);
+    start = new Date(d.getFullYear(), d.getMonth(), sd);
   } else {
-    start = new Date(y, m - 1, sd);
-    end = new Date(y, m, sd - 1);
+    start = new Date(d.getFullYear(), d.getMonth() - 1, sd);
   }
-  return { start, end };
+  return start;
 }
-
-function fmt(d) {
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+function getCycleEndDate(startDate) {
+  const s = new Date(startDate);
+  const sd = state.settings.cycleStartDay || 11;
+  const end = new Date(s.getFullYear(), s.getMonth() + 1, sd - 1);
+  return end;
 }
-
-function fmtDate(d) {
-  return d instanceof Date ? d.toISOString().slice(0, 10) : d;
+function getCurrentCycleCode() {
+  const start = getCycleStartDate();
+  const y = start.getFullYear();
+  const m = String(start.getMonth() + 1).padStart(2, '0');
+  return `${y}${m}`;
 }
-
-function inRange(dateStr, start, end) {
+function dateInCycle(dateStr, cycleStart) {
   const d = new Date(dateStr + 'T00:00:00');
-  return d >= start && d <= end;
+  const s = new Date(cycleStart);
+  const e = getCycleEndDate(s);
+  e.setHours(23,59,59);
+  return d >= s && d <= e;
 }
-
-function updateSidebarCycle() {
-  const { start, end } = getCycleDates();
+function updateCycleBadge() {
+  const start = getCycleStartDate();
+  const end = getCycleEndDate(start);
   const now = new Date();
-  const total = Math.round((end - start) / 86400000) + 1;
-  const elapsed = Math.round((now - start) / 86400000) + 1;
-  const pct = Math.min(100, Math.round((elapsed / total) * 100));
-  document.getElementById('cycle-dates-sidebar').textContent = `${fmt(start)} – ${fmt(end)}`;
-  document.getElementById('cycle-progress-fill').style.width = pct + '%';
-  document.getElementById('cycle-pct').textContent = `Day ${elapsed} of ${total}`;
-  document.getElementById('today-display').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  const dayNum = Math.floor((now - start) / 86400000) + 1;
+  const totalDays = Math.floor((end - start) / 86400000) + 1;
+  const fmtS = start.toLocaleDateString('en-GB', {day:'numeric',month:'short'});
+  const fmtE = end.toLocaleDateString('en-GB', {day:'numeric',month:'short'});
+  document.getElementById('cycle-label').textContent = `${fmtS} – ${fmtE}`;
+  document.getElementById('cycle-day-label').textContent = `Day ${Math.max(1,dayNum)} of ${totalDays}`;
+  document.getElementById('dashboard-subtitle').textContent =
+    `Real-time cycle snapshot · ${fmtS} to today`;
 }
 
-// ════ FILTER RECORDS ════
-function getFilteredRecords(cycleFilter, agentId = '', from = '', to = '') {
-  let recs = [...state.records];
-  if (cycleFilter === 'current') {
-    const { start, end } = getCycleDates();
-    recs = recs.filter(r => inRange(r.date, start, end));
-  }
-  if (agentId) recs = recs.filter(r => r.agentId === agentId);
-  if (from) recs = recs.filter(r => r.date >= from);
-  if (to) recs = recs.filter(r => r.date <= to);
-  return recs;
+// ==================== FILTERED DATA ====================
+function getCycleRecords() {
+  const start = getCycleStartDate();
+  return state.records.filter(r => dateInCycle(r.date, start));
+}
+function getRecordsForView(view) {
+  return view === 'cycle' ? getCycleRecords() : state.records;
 }
 
-function agentTotals(recs, agentId) {
-  const r = recs.filter(x => x.agentId === agentId);
-  return {
-    attempts: sum(r, 'attempts'), connects: sum(r, 'connects'),
-    successfulConnects: sum(r, 'successfulConnects'), payments: sum(r, 'payments'),
-    collections: sum(r, 'collections'), days: r.length
-  };
-}
-
-function sum(arr, k) { return arr.reduce((a, b) => a + (Number(b[k]) || 0), 0); }
-
-function pct(n, d) { return d === 0 ? 0 : Math.round((n / d) * 100 * 10) / 10; }
-
-function computeRates(t) {
-  return {
-    connectRate: pct(t.connects, t.attempts),
-    successRate: pct(t.successfulConnects, t.connects),
-    paymentRate: pct(t.payments, t.successfulConnects),
-    avgPayment: t.payments === 0 ? 0 : Math.round(t.collections / t.payments)
-  };
-}
-
-function getColor(i) { return ['#4f7cff','#22d07a','#f5a623','#ff4d6d','#22d4d4','#9b7ffe','#ffb347','#ec6464'][i % 8]; }
-function getAvatarClass(i) { return `c${i % 8}`; }
-function initials(name) { return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase(); }
-
-// ════ NAVIGATION ════
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById(`page-${id}`).classList.add('active');
-  const items = document.querySelectorAll('.nav-item');
-  const map = { dashboard: 0, entry: 1, agents: 2, analysis: 3, message: 4, report: 5, settings: 6 };
-  if (map[id] !== undefined) items[map[id]].classList.add('active');
+// ==================== SECTION NAV ====================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.section === id);
+  });
+  document.getElementById('section-' + id).classList.add('active');
   if (id === 'dashboard') renderDashboard();
-  if (id === 'entry') renderEntryForm();
-  if (id === 'agents') renderAgentPage();
-  if (id === 'analysis') renderAnalysis();
+  if (id === 'enter') renderEntryForm();
+  if (id === 'agents') renderAgentSelects();
+  if (id === 'analysis') { renderAnalysisSelects(); renderAnalysis(); }
   if (id === 'settings') renderSettings();
-  if (id === 'report') {
-    document.getElementById('cycle-report-box').innerHTML = `<div class="card" style="text-align:center;padding:40px;color:var(--text3)"><div style="font-size:32px;margin-bottom:10px">▤</div><div>Click Generate Report to build the full cycle post-analysis</div></div>`;
-  }
+  if (id === 'brief') checkApiKeyNotice();
+  if (id === 'report') checkApiKeyNotice();
 }
 
-// ════ DASHBOARD ════
-let trendChart = null;
+// ==================== DASHBOARD ====================
+function setDashView(v, btn) {
+  dashView = v;
+  document.querySelectorAll('#section-dashboard .tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDashboard();
+}
 function renderDashboard() {
-  const cycle = document.getElementById('dash-cycle-filter')?.value || 'current';
-  const recs = getFilteredRecords(cycle);
+  const recs = getRecordsForView(dashView);
+  const totCalls = recs.reduce((a,r)=>a+r.calls,0);
+  const totConnects = recs.reduce((a,r)=>a+r.connects,0);
+  const totSuccess = recs.reduce((a,r)=>a+r.successConnects,0);
+  const totPayments = recs.reduce((a,r)=>a+r.payments,0);
+  const totAmount = recs.reduce((a,r)=>a+r.amount,0);
+  const connectRate = totCalls > 0 ? ((totConnects/totCalls)*100).toFixed(1) : '0.0';
+  const successRate = totConnects > 0 ? ((totSuccess/totConnects)*100).toFixed(1) : '0.0';
 
-  const totals = {
-    attempts: sum(recs, 'attempts'), connects: sum(recs, 'connects'),
-    successfulConnects: sum(recs, 'successfulConnects'), payments: sum(recs, 'payments'),
-    collections: sum(recs, 'collections')
-  };
-  const rates = computeRates(totals);
+  document.getElementById('dash-metrics').innerHTML = `
+    <div class="metric"><div class="mlabel">Total Calls</div><div class="mval">${totCalls.toLocaleString()}</div></div>
+    <div class="metric"><div class="mlabel">Connects</div><div class="mval">${totConnects.toLocaleString()}</div></div>
+    <div class="metric"><div class="mlabel">Successful</div><div class="mval">${totSuccess.toLocaleString()}</div></div>
+    <div class="metric"><div class="mlabel">Payments</div><div class="mval">${totPayments.toLocaleString()}</div></div>
+    <div class="metric"><div class="mlabel">Collections</div><div class="mval" style="font-size:14px;">${formatUGX(totAmount)}</div></div>
+    <div class="metric"><div class="mlabel">Connect Rate</div><div class="mval" style="color:var(--green)">${connectRate}%</div></div>
+    <div class="metric"><div class="mlabel">Success Rate</div><div class="mval" style="color:var(--accent)">${successRate}%</div></div>
+  `;
+  renderDailyTrendChart(recs);
+  renderConnectRateChart(recs);
+  renderLeaderboard('payments', null);
+}
 
-  // KPIs
-  const kpis = [
-    { label: 'Call Attempts', val: totals.attempts.toLocaleString(), meta: 'Total calls made', cls: '' },
-    { label: 'Connect Rate', val: rates.connectRate + '%', meta: `${totals.connects} connects`, cls: rates.connectRate < 30 ? 'red' : rates.connectRate < 50 ? 'amber' : 'green' },
-    { label: 'Success Rate', val: rates.successRate + '%', meta: `${totals.successfulConnects} successes`, cls: rates.successRate < 20 ? 'red' : rates.successRate < 40 ? 'amber' : 'green' },
-    { label: 'Payments', val: totals.payments.toLocaleString(), meta: 'Promises collected', cls: '' },
-    { label: 'Collections', val: 'UGX ' + totals.collections.toLocaleString(), meta: `Avg UGX ${rates.avgPayment}/payment`, cls: 'green' }
-  ];
-  document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
-    <div class="stat">
-      <div class="stat-label">${k.label}</div>
-      <div class="stat-val ${k.cls}">${k.val}</div>
-      <div class="stat-meta">${k.meta}</div>
-    </div>`).join('');
+function renderDailyTrendChart(recs) {
+  const byDate = {};
+  recs.forEach(r => { byDate[r.date] = (byDate[r.date] || 0) + r.amount; });
+  const dates = Object.keys(byDate).sort();
+  const vals = dates.map(d => byDate[d]);
+  const ctx = document.getElementById('chart-daily-trend');
+  if (chartDailyTrend) chartDailyTrend.destroy();
+  chartDailyTrend = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: dates.map(d => d.slice(5)),
+      datasets: [{ label: 'Amount', data: vals, borderColor: '#4f8ef7', backgroundColor: 'rgba(79,142,247,0.1)',
+        fill: true, tension: 0.3, pointRadius: 3 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#5a5f78', font: { family: 'IBM Plex Mono', size: 10 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#5a5f78', font: { family: 'IBM Plex Mono', size: 10 },
+          callback: v => v >= 1000000 ? (v/1000000).toFixed(1)+'M' : v >= 1000 ? (v/1000).toFixed(0)+'K' : v } }
+      }
+    }
+  });
+}
 
-  // Insights
-  const insights = generateInsights(recs, totals, rates);
-  document.getElementById('insight-panel').innerHTML = insights.slice(0, 4).map(i => `
-    <div class="insight insight-${i.type}">
-      <div class="insight-icon">${i.icon}</div>
-      <div>
-        <div class="insight-title">${i.title}</div>
-        <div class="insight-body">${i.body}</div>
-      </div>
-    </div>`).join('');
+function renderConnectRateChart(recs) {
+  const byAgent = {};
+  recs.forEach(r => {
+    if (!byAgent[r.agentName]) byAgent[r.agentName] = {calls:0,connects:0};
+    byAgent[r.agentName].calls += r.calls;
+    byAgent[r.agentName].connects += r.connects;
+  });
+  const names = Object.keys(byAgent);
+  const rates = names.map(n => byAgent[n].calls > 0 ? ((byAgent[n].connects/byAgent[n].calls)*100).toFixed(1) : 0);
+  const ctx = document.getElementById('chart-connect-rate');
+  if (chartConnectRate) chartConnectRate.destroy();
+  chartConnectRate = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: names.map(n => n.split(' ')[0]),
+      datasets: [{ data: rates, backgroundColor: '#22c98a88', borderColor: '#22c98a', borderWidth: 1, borderRadius: 3 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#5a5f78', font: { family: 'IBM Plex Mono', size: 10 },
+          callback: v => v + '%' }, max: 100 },
+        y: { grid: { display: false }, ticks: { color: '#8a8fa8', font: { family: 'IBM Plex Mono', size: 10 } } }
+      }
+    }
+  });
+}
 
-  // Trend chart
-  const dateMap = {};
-  recs.forEach(r => { dateMap[r.date] = (dateMap[r.date] || 0) + Number(r.payments); });
-  const dates = Object.keys(dateMap).sort();
-  const vals = dates.map(d => dateMap[d]);
-  if (trendChart) trendChart.destroy();
-  const ctx = document.getElementById('chart-trend')?.getContext('2d');
-  if (ctx) {
-    trendChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: dates.map(d => d.slice(5)),
-        datasets: [{ label: 'Payments', data: vals, borderColor: '#4f7cff', backgroundColor: 'rgba(79,124,255,0.08)', tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#4f7cff' }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#555d75', font: { size: 11 }, maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.04)' } }, y: { ticks: { color: '#555d75', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } } } }
-    });
+let lbMetric = 'payments';
+function renderLeaderboard(metric, btn) {
+  if (metric) lbMetric = metric;
+  if (btn) {
+    const parent = btn.closest('.card');
+    parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   }
-
-  // Connect rate bars
-  const barsEl = document.getElementById('connect-bars');
-  if (state.agents.length === 0) { barsEl.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:20px 0;text-align:center">No agents added yet</div>'; }
-  else {
-    const maxRate = Math.max(...state.agents.map(a => { const t = agentTotals(recs, a.id); return pct(t.connects, t.attempts); }), 1);
-    barsEl.innerHTML = state.agents.map((a, i) => {
-      const t = agentTotals(recs, a.id);
-      const rate = pct(t.connects, t.attempts);
-      return `<div class="bar-row">
-        <div class="bar-label">${a.name.split(' ')[0]}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(rate/maxRate)*100}%;background:${getColor(i)}"></div></div>
-        <div class="bar-val">${rate}%</div>
-      </div>`;
-    }).join('');
-  }
-
-  // Leaderboard
-  const metric = document.getElementById('lb-metric')?.value || 'payments';
-  const metricLabels = { payments: 'Payments', collections: 'Collections (UGX)', connectRate: 'Connect Rate', successRate: 'Success Rate' };
-  const agentData = state.agents.map((a, i) => {
-    const t = agentTotals(recs, a.id);
-    const r = computeRates(t);
-    return { agent: a, idx: i, t, r,
-      sort: metric === 'payments' ? t.payments : metric === 'collections' ? t.collections : metric === 'connectRate' ? r.connectRate : r.successRate,
-      displayVal: metric === 'payments' ? t.payments : metric === 'collections' ? 'UGX ' + t.collections.toLocaleString() : metric === 'connectRate' ? r.connectRate + '%' : r.successRate + '%'
-    };
-  }).sort((a, b) => b.sort - a.sort);
-
+  const recs = getRecordsForView(dashView);
+  const byAgent = {};
+  recs.forEach(r => {
+    if (!byAgent[r.agentName]) byAgent[r.agentName] = {calls:0,connects:0,successConnects:0,payments:0,amount:0};
+    byAgent[r.agentName].calls += r.calls;
+    byAgent[r.agentName].connects += r.connects;
+    byAgent[r.agentName].successConnects += r.successConnects;
+    byAgent[r.agentName].payments += r.payments;
+    byAgent[r.agentName].amount += r.amount;
+  });
+  const entries = Object.entries(byAgent).map(([name,d]) => ({
+    name,
+    payments: d.payments,
+    amount: d.amount,
+    connect_rate: d.calls > 0 ? (d.connects/d.calls)*100 : 0,
+    success_rate: d.connects > 0 ? (d.successConnects/d.connects)*100 : 0,
+    calls: d.calls
+  }));
+  entries.sort((a,b) => b[lbMetric] - a[lbMetric]);
+  const medals = ['🥇','🥈','🥉'];
+  const rows = entries.map((e,i) => `
+    <tr>
+      <td class="rank">${medals[i] || (i+1)}</td>
+      <td class="name-cell">${e.name}</td>
+      <td class="positive">${lbMetric==='amount' ? formatUGX(e.amount) :
+        lbMetric==='payments' ? e.payments.toLocaleString() :
+        lbMetric==='connect_rate' ? e.connect_rate.toFixed(1)+'%' :
+        e.success_rate.toFixed(1)+'%'}</td>
+      <td>${e.calls.toLocaleString()}</td>
+      <td>${e.payments.toLocaleString()}</td>
+      <td>${formatUGX(e.amount)}</td>
+    </tr>
+  `).join('');
   document.getElementById('leaderboard-table').innerHTML = `
     <table>
-      <thead><tr><th>#</th><th>Agent</th><th>Attempts</th><th>Connects</th><th>Connect %</th><th>Payments</th><th>Collections</th><th>${metricLabels[metric]}</th></tr></thead>
-      <tbody>
-        ${agentData.map((d, rank) => `
-          <tr>
-            <td><span class="rank-badge ${rank === 0 ? 'rank-1' : rank === 1 ? 'rank-2' : rank === 2 ? 'rank-3' : 'rank-n'}">${rank + 1}</span></td>
-            <td><div style="display:flex;align-items:center;gap:8px"><div class="agent-avatar ${getAvatarClass(d.idx)}" style="width:28px;height:28px;font-size:11px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700">${initials(d.agent.name)}</div>${d.agent.name}</div></td>
-            <td class="mono">${d.t.attempts}</td>
-            <td class="mono">${d.t.connects}</td>
-            <td><span class="pill ${d.r.connectRate >= 50 ? 'pill-green' : d.r.connectRate >= 30 ? 'pill-amber' : 'pill-red'}">${d.r.connectRate}%</span></td>
-            <td class="mono">${d.t.payments}</td>
-            <td class="mono">UGX ${d.t.collections.toLocaleString()}</td>
-            <td style="font-weight:600">${d.displayVal}</td>
-          </tr>`).join('')}
-      </tbody>
+      <thead><tr><th>#</th><th>Agent</th><th>${lbMetric==='amount'?'Collections':lbMetric==='payments'?'Payments':lbMetric==='connect_rate'?'Connect Rate':'Success Rate'}</th>
+      <th>Calls</th><th>Payments</th><th>Collections</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="6" style="color:var(--text3)">No data yet</td></tr>'}</tbody>
     </table>`;
 }
 
-function generateInsights(recs, totals, rates) {
-  const out = [];
-  if (state.agents.length === 0) return [{ type: 'info', icon: 'ℹ', title: 'No agents configured', body: 'Go to Settings to add your team members, then start entering data.' }];
-  if (recs.length === 0) return [{ type: 'info', icon: 'ℹ', title: 'No data for this period', body: 'Use "Enter Data" to start recording daily call activity.' }];
-
-  // Connect rate check — uncontrollable?
-  if (rates.connectRate < 25) {
-    out.push({ type: 'crit', icon: '📡', title: 'Critical: Connect Rate Below 25%', body: `Team connect rate is ${rates.connectRate}%. This is likely a systemic/data issue — follow up with the data team to confirm calls are actually being dialed and numbers are valid.` });
-  }
-  // Success rate
-  if (rates.successRate < 20 && totals.connects > 0) {
-    out.push({ type: 'warn', icon: '🎯', title: 'Low Conversion on Connected Calls', body: `Only ${rates.successRate}% of connects convert. Focus coaching on objection handling and negotiation techniques.` });
-  }
-  // Top performer
-  const topA = state.agents.map(a => ({ a, t: agentTotals(recs, a.id) })).sort((x, y) => y.t.payments - x.t.payments)[0];
-  if (topA && topA.t.payments > 0) {
-    out.push({ type: 'good', icon: '🏆', title: `Top Performer: ${topA.a.name}`, body: `${topA.a.name} leads with ${topA.t.payments} payments and UGX ${topA.t.collections.toLocaleString()} collected this cycle. Analyze their approach for team coaching.` });
-  }
-  // Variance check
-  const agentRates = state.agents.map(a => { const t = agentTotals(recs, a.id); return pct(t.connects, t.attempts); }).filter(r => r > 0);
-  if (agentRates.length > 1) {
-    const maxR = Math.max(...agentRates), minR = Math.min(...agentRates);
-    if (maxR - minR > 25) {
-      out.push({ type: 'info', icon: '📊', title: 'High Connect Rate Variance Between Agents', body: `Spread of ${maxR - minR}% suggests some agents may be working different lists or have better data. Investigate whether call distribution is even.` });
-    }
-  }
-  return out;
-}
-
-// ════ DATA ENTRY ════
+// ==================== ENTRY FORM ====================
 function renderEntryForm() {
-  const dateEl = document.getElementById('entry-date');
-  if (!dateEl.value) dateEl.value = new Date().toISOString().slice(0, 10);
-  buildBulkTable();
-  renderEntryHistory();
-  const sel = document.getElementById('filter-entry-agent');
-  sel.innerHTML = '<option value="">All Agents</option>' + state.agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-}
-
-function buildBulkTable() {
-  const date = document.getElementById('entry-date').value;
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('entry-date').value = today;
+  const container = document.getElementById('bulk-agent-rows');
   if (!state.agents.length) {
-    document.getElementById('bulk-entry-table').innerHTML = '<div style="color:var(--text3);font-size:13px;padding:20px 0;text-align:center">No agents found. Add agents in Settings first.</div>';
+    container.innerHTML = '<p style="color:var(--text3);font-size:12px;padding:12px 0;">No agents added yet. Go to Settings → Agent Management to add agents.</p>';
     return;
   }
-  // Pre-fill existing values for this date
-  const existingMap = {};
-  state.records.filter(r => r.date === date).forEach(r => { existingMap[r.agentId] = r; });
-
-  document.getElementById('bulk-entry-table').innerHTML = `
-    <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Agent</th><th>Call Attempts</th><th>Connects</th><th>Successful Connects</th><th>Payments</th><th>Collections (UGX)</th></tr></thead>
-      <tbody>
-        ${state.agents.map((a, i) => {
-          const ex = existingMap[a.id] || {};
-          return `<tr>
-            <td><div style="display:flex;align-items:center;gap:8px"><div class="agent-avatar ${getAvatarClass(i)}" style="width:28px;height:28px;font-size:11px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700">${initials(a.name)}</div>${a.name}</div></td>
-            <td><input type="number" min="0" class="entry-field" data-agent="${a.id}" data-field="attempts" value="${ex.attempts||''}" placeholder="0" style="width:90px"></td>
-            <td><input type="number" min="0" class="entry-field" data-agent="${a.id}" data-field="connects" value="${ex.connects||''}" placeholder="0" style="width:90px"></td>
-            <td><input type="number" min="0" class="entry-field" data-agent="${a.id}" data-field="successfulConnects" value="${ex.successfulConnects||''}" placeholder="0" style="width:90px"></td>
-            <td><input type="number" min="0" class="entry-field" data-agent="${a.id}" data-field="payments" value="${ex.payments||''}" placeholder="0" style="width:90px"></td>
-            <td><input type="number" min="0" class="entry-field" data-agent="${a.id}" data-field="collections" value="${ex.collections||''}" placeholder="0" style="width:120px"></td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table></div>`;
+  container.innerHTML = state.agents.map((a,i) => `
+    <div class="agent-row">
+      <div class="agent-name-label" title="${a.name}">${a.name}</div>
+      <input type="number" min="0" placeholder="0" id="row-calls-${i}">
+      <input type="number" min="0" placeholder="0" id="row-connects-${i}">
+      <input type="number" min="0" placeholder="0" id="row-success-${i}">
+      <input type="number" min="0" placeholder="0" id="row-payments-${i}">
+      <input type="number" min="0" placeholder="0" id="row-amount-${i}">
+    </div>
+  `).join('');
+  // Populate filter
+  const sel = document.getElementById('filter-agent-recent');
+  sel.innerHTML = '<option value="">All Agents</option>' +
+    state.agents.map(a => `<option value="${a.name}">${a.name}</option>`).join('');
+  renderRecentEntries();
 }
 
-document.addEventListener('change', e => {
-  if (e.target.id === 'entry-date') buildBulkTable();
-  if (e.target.id === 'msg-date-source') {
-    document.getElementById('msg-date-pick').classList.toggle('hidden', e.target.value !== 'pick');
-  }
-});
-
-function saveBulkEntry() {
+function saveAllRecords() {
   const date = document.getElementById('entry-date').value;
   if (!date) { showToast('Please select a date', 'error'); return; }
-  const fields = document.querySelectorAll('.entry-field');
-  const dataMap = {};
-  fields.forEach(f => {
-    const aid = f.dataset.agent;
-    if (!dataMap[aid]) dataMap[aid] = {};
-    dataMap[aid][f.dataset.field] = Number(f.value) || 0;
-  });
-
   let saved = 0;
-  Object.entries(dataMap).forEach(([agentId, d]) => {
-    if (Object.values(d).every(v => v === 0)) return;
-    // Remove existing record for this agent/date
-    state.records = state.records.filter(r => !(r.agentId === agentId && r.date === date));
-    state.records.push({ id: Date.now() + Math.random(), agentId, date, ...d });
+  state.agents.forEach((a, i) => {
+    const calls = parseInt(document.getElementById(`row-calls-${i}`)?.value) || 0;
+    const connects = parseInt(document.getElementById(`row-connects-${i}`)?.value) || 0;
+    const success = parseInt(document.getElementById(`row-success-${i}`)?.value) || 0;
+    const payments = parseInt(document.getElementById(`row-payments-${i}`)?.value) || 0;
+    const amount = parseFloat(document.getElementById(`row-amount-${i}`)?.value) || 0;
+    if (calls + connects + success + payments + amount === 0) return;
+    // Remove existing record for same agent+date
+    state.records = state.records.filter(r => !(r.agentName === a.name && r.date === date));
+    state.records.push({
+      id: Date.now() + i,
+      agentName: a.name,
+      date,
+      calls,
+      connects,
+      successConnects: success,
+      payments,
+      amount
+    });
     saved++;
   });
-  save();
-  showToast(`${saved} records saved for ${date}`, 'success');
-  document.getElementById('entry-status').textContent = `Last saved: ${new Date().toLocaleTimeString()}`;
-  renderEntryHistory();
+  saveState();
+  showToast(`Saved ${saved} agent records for ${date}`, 'success');
+  renderRecentEntries();
 }
 
-function clearBulkForm() {
-  document.querySelectorAll('.entry-field').forEach(f => f.value = '');
+function clearEntryForm() {
+  state.agents.forEach((a,i) => {
+    ['calls','connects','success','payments','amount'].forEach(f => {
+      const el = document.getElementById(`row-${f}-${i}`);
+      if (el) el.value = '';
+    });
+  });
 }
 
-function renderEntryHistory() {
-  const dateFilter = document.getElementById('filter-entry-date')?.value;
-  const agentFilter = document.getElementById('filter-entry-agent')?.value;
-  let recs = [...state.records];
-  if (dateFilter) recs = recs.filter(r => r.date === dateFilter);
-  if (agentFilter) recs = recs.filter(r => r.agentId === agentFilter);
-  recs.sort((a, b) => b.date.localeCompare(a.date));
-
-  if (!recs.length) { document.getElementById('entry-history').innerHTML = '<div style="color:var(--text3);font-size:13px;padding:20px 0;text-align:center">No records found</div>'; return; }
-  const agentMap = Object.fromEntries(state.agents.map((a, i) => [a.id, { a, i }]));
-  document.getElementById('entry-history').innerHTML = `
-    <table>
-      <thead><tr><th>Date</th><th>Agent</th><th>Attempts</th><th>Connects</th><th>Succ. Conn.</th><th>Payments</th><th>Collections</th><th>Connect %</th><th></th></tr></thead>
-      <tbody>
-        ${recs.map(r => {
-          const ag = agentMap[r.agentId];
-          const cr = pct(r.connects, r.attempts);
-          return `<tr>
-            <td style="font-family:var(--font-mono);font-size:12px">${r.date}</td>
-            <td>${ag ? `<div style="display:flex;align-items:center;gap:6px"><div class="${getAvatarClass(ag.i)}" style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">${initials(ag.a.name)}</div>${ag.a.name}</div>` : r.agentId}</td>
-            <td>${r.attempts}</td><td>${r.connects}</td><td>${r.successfulConnects}</td>
-            <td style="font-weight:600">${r.payments}</td>
-            <td>UGX ${Number(r.collections).toLocaleString()}</td>
-            <td><span class="pill ${cr >= 50 ? 'pill-green' : cr >= 30 ? 'pill-amber' : 'pill-red'}">${cr}%</span></td>
-            <td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px" onclick="deleteRecord('${r.id}')">✕</button></td>
-          </tr>`;
-        }).join('')}
-      </tbody>
-    </table>`;
+function renderRecentEntries() {
+  const agentFilter = document.getElementById('filter-agent-recent')?.value || '';
+  let recs = [...state.records].filter(r => !agentFilter || r.agentName === agentFilter);
+  recs.sort((a,b) => b.date.localeCompare(a.date));
+  const container = document.getElementById('recent-entries-list');
+  if (!recs.length) {
+    container.innerHTML = '<p style="color:var(--text3);font-size:12px;padding:12px 0;">No records yet.</p>';
+    return;
+  }
+  // Group by date
+  const byDate = {};
+  recs.forEach(r => { (byDate[r.date] = byDate[r.date] || []).push(r); });
+  let html = '';
+  Object.entries(byDate).slice(0,10).forEach(([date, items]) => {
+    html += `<div style="padding:6px 0;"><div style="font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;">${date}</div>`;
+    items.forEach(r => {
+      html += `<div class="entry-item">
+        <div>
+          <span class="name-cell">${r.agentName}</span>
+          <div class="entry-meta">Calls: ${r.calls} · Connects: ${r.connects} · Succ: ${r.successConnects} · Pmts: ${r.payments} · ${formatUGX(r.amount)}</div>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="deleteRecord(${r.id})">✕</button>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  container.innerHTML = html;
 }
 
 function deleteRecord(id) {
-  state.records = state.records.filter(r => r.id != id);
-  save(); renderEntryHistory(); showToast('Record deleted');
+  state.records = state.records.filter(r => r.id !== id);
+  saveState();
+  renderRecentEntries();
+  showToast('Record deleted', 'success');
 }
 
-function addAgent() { showPage('settings'); }
-
-// ════ AGENTS ════
-let agentTrendChart = null;
-function renderAgentPage() {
-  const cycle = document.getElementById('agent-cycle-filter')?.value || 'current';
-  const recs = getFilteredRecords(cycle);
-  const sel = document.getElementById('agent-selector');
-  if (sel) {
-    const cur = sel.value;
-    sel.innerHTML = state.agents.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-    if (cur) sel.value = cur;
-  }
-
-  // Agent cards
-  document.getElementById('agent-cards-grid').innerHTML = state.agents.map((a, i) => {
-    const t = agentTotals(recs, a.id);
-    const r = computeRates(t);
-    const perf = t.payments > 0 ? (r.connectRate >= 50 && r.successRate >= 30 ? 'pill-green' : r.connectRate >= 30 ? 'pill-amber' : 'pill-red') : 'pill-gray';
-    const grade = t.payments > 0 ? (r.connectRate >= 50 && r.successRate >= 30 ? '🔥' : r.connectRate >= 30 ? '📈' : '⚠') : '—';
-    return `<div class="agent-card ${document.getElementById('agent-selector')?.value === a.id ? 'selected' : ''}" onclick="document.getElementById('agent-selector').value='${a.id}';renderAgentDetail()">
-      <div class="agent-avatar ${getAvatarClass(i)}">${initials(a.name)}</div>
-      <div class="agent-name">${a.name}</div>
-      <div class="agent-role">${a.role || 'Agent'}</div>
-      <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
-        <span class="pill pill-blue">${t.payments} pmts</span>
-        <span class="pill ${perf}">${grade}</span>
-      </div>
-    </div>`;
-  }).join('') || '<div style="color:var(--text3);font-size:13px">No agents added. Go to Settings.</div>';
-
-  renderAgentDetail();
+// ==================== CSV IMPORT ====================
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('dropzone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleCsvFile(file);
 }
 
-function renderAgentDetail() {
-  const agentId = document.getElementById('agent-selector')?.value;
-  if (!agentId) return;
-  const cycle = document.getElementById('agent-cycle-filter')?.value || 'current';
-  const recs = getFilteredRecords(cycle, agentId);
-  const t = agentTotals(recs, agentId);
-  const r = computeRates(t);
-  const a = state.agents.find(x => x.id === agentId);
-
-  // Stats
-  document.getElementById('agent-stats-grid').innerHTML = [
-    { l: 'Attempts', v: t.attempts, cls: '' },
-    { l: 'Connects', v: t.connects, cls: '' },
-    { l: 'Connect Rate', v: r.connectRate + '%', cls: r.connectRate >= 50 ? 'green' : r.connectRate >= 30 ? 'amber' : 'red' },
-    { l: 'Succ. Connects', v: t.successfulConnects, cls: '' },
-    { l: 'Success Rate', v: r.successRate + '%', cls: r.successRate >= 40 ? 'green' : r.successRate >= 20 ? 'amber' : 'red' },
-    { l: 'Payments', v: t.payments, cls: 'green' },
-    { l: 'Collections', v: 'UGX ' + t.collections.toLocaleString(), cls: 'green' },
-    { l: 'Avg per Payment', v: 'UGX ' + r.avgPayment, cls: '' }
-  ].map(s => `<div class="stat card-sm">
-    <div class="stat-label">${s.l}</div>
-    <div class="stat-val ${s.cls}" style="font-size:20px">${s.v}</div>
-  </div>`).join('');
-
-  // Trend chart
-  const dateMap = {};
-  recs.forEach(r => { dateMap[r.date] = (dateMap[r.date] || 0) + Number(r.payments); });
-  const dates = Object.keys(dateMap).sort();
-  if (agentTrendChart) agentTrendChart.destroy();
-  const ctx = document.getElementById('chart-agent-trend')?.getContext('2d');
-  if (ctx) {
-    const ai = state.agents.findIndex(x => x.id === agentId);
-    agentTrendChart = new Chart(ctx, {
-      type: 'bar',
-      data: { labels: dates.map(d => d.slice(5)), datasets: [{ data: dates.map(d => dateMap[d]), backgroundColor: getColor(ai) + '99', borderColor: getColor(ai), borderWidth: 1 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#555d75', font: { size: 10 }, maxRotation: 45 }, grid: { color: 'rgba(255,255,255,0.03)' } }, y: { ticks: { color: '#555d75', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.03)' } } } }
-    });
-  }
-
-  // Weaknesses
-  const weaknesses = diagnoseAgent(t, r, agentId, recs);
-  document.getElementById('agent-weaknesses').innerHTML = weaknesses.weak.map(w => `
-    <div class="weakness-item">
-      <div class="weakness-icon">${w.icon}</div>
-      <div><div class="weakness-label">${w.label}</div><div class="weakness-desc">${w.desc}</div></div>
-    </div>`).join('') || '<div style="color:var(--green);font-size:13px;padding:8px 0">✓ No critical weaknesses detected</div>';
-
-  document.getElementById('agent-strengths').innerHTML = weaknesses.strong.map(w => `
-    <div class="weakness-item" style="background:rgba(34,208,122,0.05)">
-      <div class="weakness-icon">${w.icon}</div>
-      <div><div class="weakness-label" style="color:var(--green)">${w.label}</div><div class="weakness-desc">${w.desc}</div></div>
-    </div>`).join('') || '<div style="color:var(--text3);font-size:13px;padding:8px 0">Not enough data</div>';
-
-  document.getElementById('agent-recommendation').innerHTML = buildAgentRec(a?.name || 'This agent', t, r, weaknesses);
-}
-
-function diagnoseAgent(t, r, agentId, recs) {
-  const weak = [], strong = [];
-  if (t.attempts === 0) { weak.push({ icon: '📵', label: 'No activity recorded', desc: 'No call attempts logged for this period.' }); return { weak, strong }; }
-
-  if (r.connectRate < 25) weak.push({ icon: '📡', label: 'Very Low Connect Rate (' + r.connectRate + '%)', desc: 'Less than 1 in 4 calls connects. Check if data quality is the issue — escalate to data team.' });
-  else if (r.connectRate < 40) weak.push({ icon: '📞', label: 'Below-Average Connect Rate (' + r.connectRate + '%)', desc: 'Connects need improvement. Verify phone numbers, calling hours, and dialing patterns.' });
-  else if (r.connectRate >= 60) strong.push({ icon: '📡', label: 'Strong Connect Rate (' + r.connectRate + '%)', desc: 'Great penetration on the list — calls are reaching customers effectively.' });
-
-  if (r.successRate < 20 && t.connects > 0) weak.push({ icon: '🎙', label: 'Low Call Conversion (' + r.successRate + '%)', desc: 'Connecting but not converting. Focus: opening pitch, tone, objection handling.' });
-  else if (r.successRate >= 50) strong.push({ icon: '🎯', label: 'High Conversion on Connects (' + r.successRate + '%)', desc: 'Excellent at turning connects into productive conversations.' });
-
-  if (r.paymentRate < 30 && t.successfulConnects > 0) weak.push({ icon: '💳', label: 'Low Payment Commitment Rate (' + r.paymentRate + '%)', desc: 'Successful connects not converting to payments. Needs coaching on closing and commitment.' });
-  else if (r.paymentRate >= 60) strong.push({ icon: '💰', label: 'Excellent Close Rate (' + r.paymentRate + '%)', desc: 'Very effective at securing payment commitments in successful conversations.' });
-
-  if (t.attempts > 0 && t.attempts < 20) weak.push({ icon: '⏱', label: 'Low Call Volume', desc: `Only ${t.attempts} attempts. Increase daily dial count to build pipeline.` });
-  else if (t.attempts >= 60) strong.push({ icon: '⚡', label: 'High Dial Volume', desc: `${t.attempts} attempts shows strong work ethic and call discipline.` });
-
-  return { weak, strong };
-}
-
-function buildAgentRec(name, t, r, d) {
-  if (t.attempts === 0) return `No data available for ${name} in this period. Ensure daily entries are being logged.`;
-  const issues = d.weak.map(w => w.label.toLowerCase()).join('; ');
-  let msg = `<strong>${name}</strong>: `;
-  if (d.weak.length === 0) msg += `Performing well across all metrics. Keep reinforcing their approach and consider having them mentor teammates.`;
-  else if (r.connectRate < 25) msg += `Priority: investigate data quality. A ${r.connectRate}% connect rate suggests a systemic issue beyond individual performance — loop in the data team before intensive coaching.`;
-  else msg += `Focus coaching on: ${issues}. ${r.connectRate < 40 ? 'Start with dialing habits and list quality.' : 'Work on the conversation flow once connected.'}`;
-  return msg;
-}
-
-// ════ ANALYSIS ════
-let funnelChart = null;
-function renderAnalysis() {
-  const cycle = document.getElementById('anal-cycle')?.value || 'current';
-  const agentId = document.getElementById('anal-agent')?.value || '';
-  const from = document.getElementById('anal-from')?.value || '';
-  const to = document.getElementById('anal-to')?.value || '';
-
-  // Populate agent selector
-  const asel = document.getElementById('anal-agent');
-  if (asel && asel.options.length <= 1) {
-    state.agents.forEach(a => { const o = new Option(a.name, a.id); asel.add(o); });
-  }
-
-  const recs = getFilteredRecords(cycle, agentId, from, to);
-  const tot = { attempts: sum(recs, 'attempts'), connects: sum(recs, 'connects'), successfulConnects: sum(recs, 'successfulConnects'), payments: sum(recs, 'payments'), collections: sum(recs, 'collections') };
-  const rates = computeRates(tot);
-
-  // Uncontrollable factors
-  const unc = [];
-  if (rates.connectRate < 30) unc.push({ icon: '🚨', title: 'Low System Connect Rate', body: `${rates.connectRate}% — Below 30% is a strong signal the problem is infrastructure, not agents. Calls may not be going out, numbers may be wrong, or DNC issues.`, action: 'Action: Contact data team to audit outbound call logs vs. dialer records.' });
-  if (tot.attempts > 0 && tot.connects === 0) unc.push({ icon: '📵', title: 'Zero Connects', body: 'No connections at all — this cannot be agent skill. Dialer or data is broken.', action: 'Action: Immediate escalation required.' });
-  const crVariance = (() => {
-    const rates2 = state.agents.map(a => { const t = agentTotals(recs, a.id); return { name: a.name, cr: pct(t.connects, t.attempts), att: t.attempts }; }).filter(r => r.att > 0);
-    if (rates2.length < 2) return null;
-    const mx = Math.max(...rates2.map(r => r.cr)), mn = Math.min(...rates2.map(r => r.cr));
-    return { diff: mx - mn, high: rates2.find(r => r.cr === mx), low: rates2.find(r => r.cr === mn) };
-  })();
-  if (crVariance && crVariance.diff > 30) unc.push({ icon: '⚖', title: 'Uneven Connect Rate Distribution', body: `${crVariance.high?.name} connects at ${crVariance.high?.cr}% vs ${crVariance.low?.name} at ${crVariance.low?.cr}%. ${crVariance.diff}% gap suggests list allocation or data quality differences.`, action: 'Action: Audit call list assignment — some agents may have better/worse data sets.' });
-  if (!unc.length) unc.push({ icon: '✓', title: 'No Major Systemic Issues Detected', body: 'Connect rates appear normal. Performance differences are likely attributable to individual skill.' });
-
-  document.getElementById('uncontrollable-section').innerHTML = unc.map(u => `
-    <div class="insight insight-${u.title.startsWith('✓') ? 'good' : 'crit'}" style="margin-bottom:10px">
-      <div style="font-size:20px">${u.icon}</div>
-      <div><div class="insight-title">${u.title}</div><div class="insight-body">${u.body}</div>${u.action ? `<div style="font-size:11px;color:var(--accent);margin-top:4px;font-weight:500">${u.action}</div>` : ''}</div>
-    </div>`).join('');
-
-  // Controllable factors
-  const ctrl = [];
-  if (rates.successRate < 30 && rates.connectRate >= 30) ctrl.push({ icon: '🎙', title: 'Conversion from Connect', body: `${rates.successRate}% of connects convert. This is within agent control — quality of opening, tone, and engagement.`, action: 'Coaching: Role-play calls, review objection scripts.' });
-  if (rates.paymentRate < 40 && tot.successfulConnects > 0) ctrl.push({ icon: '🤝', title: 'Payment Commitment Rate', body: `${rates.paymentRate}% of successful connects commit to payment. Negotiation and closing skills are the lever.`, action: 'Coaching: Closing techniques, flexible payment options.' });
-  if (tot.attempts > 0 && tot.attempts / Math.max(state.agents.length, 1) < 15) ctrl.push({ icon: '📞', title: 'Dial Volume', body: `Average ${Math.round(tot.attempts / Math.max(state.agents.length, 1))} attempts/agent. Higher volume is a direct controllable lever.`, action: 'Action: Set daily minimum dial targets per agent.' });
-  if (!ctrl.length && recs.length > 0) ctrl.push({ icon: '✓', title: 'Controllable Metrics Healthy', body: 'Conversion rates and volume look appropriate. Monitor for consistency.' });
-
-  document.getElementById('controllable-section').innerHTML = ctrl.map(c => `
-    <div class="insight insight-good" style="margin-bottom:10px">
-      <div style="font-size:20px">${c.icon}</div>
-      <div><div class="insight-title">${c.title}</div><div class="insight-body">${c.body}</div>${c.action ? `<div style="font-size:11px;color:var(--green);margin-top:4px;font-weight:500">${c.action}</div>` : ''}</div>
-    </div>`).join('');
-
-  // Funnel
-  const fdata = [tot.attempts, tot.connects, tot.successfulConnects, tot.payments];
-  const flabels = ['Attempts', 'Connects', 'Succ. Connects', 'Payments'];
-  if (funnelChart) funnelChart.destroy();
-  const fctx = document.getElementById('chart-funnel')?.getContext('2d');
-  if (fctx) {
-    funnelChart = new Chart(fctx, {
-      type: 'bar',
-      data: { labels: flabels, datasets: [{ data: fdata, backgroundColor: ['#4f7cff99', '#22d07a99', '#f5a62399', '#ff4d6d99'], borderColor: ['#4f7cff', '#22d07a', '#f5a623', '#ff4d6d'], borderWidth: 1 }] },
-      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#555d75', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.04)' } }, y: { ticks: { color: '#8b92a8', font: { size: 12 } }, grid: { display: false } } } }
-    });
-  }
-  document.getElementById('funnel-insights').innerHTML = [
-    { label: 'Attempts → Connects', val: rates.connectRate + '%', cls: rates.connectRate >= 50 ? 'pill-green' : rates.connectRate >= 30 ? 'pill-amber' : 'pill-red' },
-    { label: 'Connects → Success', val: rates.successRate + '%', cls: rates.successRate >= 40 ? 'pill-green' : rates.successRate >= 20 ? 'pill-amber' : 'pill-red' },
-    { label: 'Success → Payment', val: rates.paymentRate + '%', cls: rates.paymentRate >= 50 ? 'pill-green' : rates.paymentRate >= 30 ? 'pill-amber' : 'pill-red' },
-    { label: 'Overall Conversion', val: pct(tot.payments, tot.attempts) + '%', cls: 'pill-blue' }
-  ].map(r => `<div class="metric-row"><span class="metric-name">${r.label}</span><span class="pill ${r.cls}">${r.val}</span></div>`).join('');
-
-  // Best period
-  const dateMap = {};
-  recs.forEach(r => { dateMap[r.date] = (dateMap[r.date] || 0) + Number(r.payments); });
-  const sortedDates = Object.entries(dateMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
-  document.getElementById('best-period-section').innerHTML = sortedDates.length ? `
-    <div class="grid-5">
-      ${sortedDates.map(([d, v], i) => `<div class="stat"><div class="stat-label">#${i+1} · ${d.slice(5)}</div><div class="stat-val" style="font-size:20px">${v}</div><div class="stat-meta">payments</div></div>`).join('')}
-    </div>` : '<div style="color:var(--text3);font-size:13px">No data yet</div>';
-
-  // Systemic vs personal
-  if (state.agents.length >= 2 && recs.length > 0) {
-    const agRates = state.agents.map(a => { const t = agentTotals(recs, a.id); return pct(t.connects, t.attempts); }).filter(r => r > 0);
-    const avg = agRates.length ? Math.round(agRates.reduce((a, b) => a + b, 0) / agRates.length) : 0;
-    const allLow = agRates.every(r => r < 35);
-    document.getElementById('systemic-section').innerHTML = `
-      <div class="insight ${allLow ? 'insight-crit' : 'insight-info'}">
-        <div style="font-size:20px">${allLow ? '🚨' : '📊'}</div>
-        <div>
-          <div class="insight-title">${allLow ? 'Systemic Issue Likely' : 'Mixed Performance — Individual Factors Dominant'}</div>
-          <div class="insight-body">${allLow ? 'All agents are below 35% connect rate. This strongly suggests a data/system problem outside individual control. Engage the data team before any performance management.' : `Team average connect rate is ${avg}%. Variance between agents suggests differences are skill/effort based. Target coaching on lowest performers.`}</div>
-        </div>
-      </div>`;
-  } else {
-    document.getElementById('systemic-section').innerHTML = '<div style="color:var(--text3);font-size:13px">Need at least 2 agents with data for systemic analysis.</div>';
-  }
-}
-
-// ════ MORNING MESSAGE ════
-async function generateMorningMessage() {
-  const apiKey = state.settings.apiKey;
-  if (!apiKey) { showToast('Add your API key in Settings first', 'error'); showPage('settings'); return; }
-
-  const tone = document.getElementById('msg-tone').value;
-  const src = document.getElementById('msg-date-source').value;
-  let date = '';
-  if (src === 'pick') date = document.getElementById('msg-date-pick').value;
-  if (!date) {
-    const sorted = [...state.records].sort((a, b) => b.date.localeCompare(a.date));
-    date = sorted[0]?.date || '';
-  }
-  if (!date) { showToast('No data available to base message on', 'error'); return; }
-
-  const dayRecs = state.records.filter(r => r.date === date);
-  const { start } = getCycleDates();
-  const cycleRecs = state.records.filter(r => inRange(r.date, start, new Date()));
-  const cycleTot = { attempts: sum(cycleRecs, 'attempts'), connects: sum(cycleRecs, 'connects'), successfulConnects: sum(cycleRecs, 'successfulConnects'), payments: sum(cycleRecs, 'payments'), collections: sum(cycleRecs, 'collections') };
-  const dayTot = { attempts: sum(dayRecs, 'attempts'), connects: sum(dayRecs, 'connects'), successfulConnects: sum(dayRecs, 'successfulConnects'), payments: sum(dayRecs, 'payments'), collections: sum(dayRecs, 'collections') };
-  const cycleRates = computeRates(cycleTot);
-
-  const agentSummaries = state.agents.map(a => {
-    const dr = dayRecs.find(r => r.agentId === a.id);
-    const cr = cycleRecs.filter(r => r.agentId === a.id);
-    const ct = agentTotals(cr, a.id);
-    return { name: a.name, day: dr || null, cycleTotals: ct, cycleRates: computeRates(ct) };
-  });
-
-  const topAgent = [...agentSummaries].sort((a, b) => (b.day?.payments || 0) - (a.day?.payments || 0))[0];
-  const lowConnect = agentSummaries.filter(a => a.cycleRates.connectRate < 30 && a.cycleTotals.attempts > 0);
-
-  document.getElementById('morning-message-box').innerHTML = `
-    <div class="ai-message">
-      <div class="ai-badge">AI BRIEF</div>
-      <div style="display:flex;align-items:center;gap:10px;padding:10px 0">
-        <div class="loading-dots"><span></span><span></span><span></span></div>
-        <span style="font-size:13px;color:var(--text3)">Generating your morning brief...</span>
-      </div>
-    </div>`;
-
-  const prompt = `You are a collections team manager assistant. Write a motivational and insightful morning message for the team based on this data.
-
-YESTERDAY (${date}):
-- Total Attempts: ${dayTot.attempts}
-- Connects: ${dayTot.connects} (${pct(dayTot.connects, dayTot.attempts)}%)
-- Successful Connects: ${dayTot.successfulConnects}
-- Payments: ${dayTot.payments}
-- Collections: UGX ${dayTot.collections.toLocaleString()}
-
-CYCLE-TO-DATE:
-- Connect Rate: ${cycleRates.connectRate}%
-- Success Rate: ${cycleRates.successRate}%
-- Total Payments: ${cycleTot.payments}
-- Total Collections: UGX ${cycleTot.collections.toLocaleString()}
-
-INDIVIDUAL HIGHLIGHTS:
-${agentSummaries.map(a => `- ${a.name}: Yesterday ${a.day?.payments || 0} payments | Cycle connect rate ${a.cycleRates.connectRate}%`).join('\n')}
-
-TOP PERFORMER YESTERDAY: ${topAgent?.name || 'N/A'} (${topAgent?.day?.payments || 0} payments)
-${lowConnect.length ? `AGENTS WITH LOW CONNECT RATES (may need data team investigation): ${lowConnect.map(a => a.name).join(', ')}` : ''}
-
-TONE: ${tone === 'energetic' ? 'Energetic and motivating — pump the team up' : tone === 'firm' ? 'Firm and focused — set high expectations professionally' : 'Analytical and strategic — data-driven insights'}
-
-Write the message as if you are the manager speaking directly to the team. Include:
-1. Appreciation / recognition for top performers by name
-2. One key insight from yesterday's data
-3. Today's focus / what to do differently or keep doing
-4. A closing motivational line
-${lowConnect.length ? '5. A note that low connect rates may be a data issue being investigated (dont blame agents)' : ''}
-
-Keep it under 250 words. Write in first person as the manager. No bullet points in the final message — flowing, natural text.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
-    });
-    const data = await res.json();
-    const text = data.content?.map(c => c.text || '').join('') || 'Could not generate message.';
-    document.getElementById('morning-message-box').innerHTML = `
-      <div class="ai-message">
-        <div class="ai-badge">✦ MORNING BRIEF · ${date}</div>
-        <pre style="margin-top:8px">${text}</pre>
-        <div style="margin-top:16px;display:flex;gap:10px">
-          <button class="btn btn-outline" onclick="copyText(this)" data-text="${encodeURIComponent(text)}">📋 Copy Message</button>
-          <button class="btn btn-outline" onclick="generateMorningMessage()">↺ Regenerate</button>
-        </div>
-      </div>`;
-  } catch (e) {
-    document.getElementById('morning-message-box').innerHTML = `<div class="card" style="color:var(--red)">Error: ${e.message}. Check your API key in Settings.</div>`;
-  }
-}
-
-function copyText(btn) {
-  const text = decodeURIComponent(btn.dataset.text);
-  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!', 'success'));
-}
-
-// ════ CYCLE REPORT ════
-async function generateCycleReport() {
-  const apiKey = state.settings.apiKey;
-  if (!apiKey) { showToast('Add your API key in Settings first', 'error'); showPage('settings'); return; }
-
-  const { start, end } = getCycleDates();
-  const cycleRecs = state.records.filter(r => inRange(r.date, start, end));
-  if (!cycleRecs.length) { showToast('No data for current cycle', 'error'); return; }
-
-  const tot = { attempts: sum(cycleRecs, 'attempts'), connects: sum(cycleRecs, 'connects'), successfulConnects: sum(cycleRecs, 'successfulConnects'), payments: sum(cycleRecs, 'payments'), collections: sum(cycleRecs, 'collections') };
-  const rates = computeRates(tot);
-
-  const agentDetails = state.agents.map(a => {
-    const t = agentTotals(cycleRecs, a.id);
-    const r = computeRates(t);
-    const d = diagnoseAgent(t, r, a.id, cycleRecs);
-    return { name: a.name, t, r, weak: d.weak.map(w => w.label).join(', '), strong: d.strong.map(w => w.label).join(', ') };
-  }).sort((a, b) => b.t.payments - a.t.payments);
-
-  document.getElementById('cycle-report-box').innerHTML = `
-    <div class="card">
-      <div style="display:flex;align-items:center;gap:10px;padding:20px 0;justify-content:center">
-        <div class="loading-dots"><span></span><span></span><span></span></div>
-        <span style="font-size:13px;color:var(--text3)">Building post-cycle analysis report...</span>
-      </div>
-    </div>`;
-
-  const lowConnectTeam = rates.connectRate < 30;
-  const prompt = `You are a collections team manager. Write a comprehensive end-of-cycle performance report and debrief guide based on this data.
-
-CYCLE: ${fmt(start)} to ${fmt(end)}
-TEAM: ${state.settings.teamName}
-
-TEAM TOTALS:
-- Call Attempts: ${tot.attempts}
-- Connects: ${tot.connects} (${rates.connectRate}% connect rate)
-- Successful Connects: ${tot.successfulConnects} (${rates.successRate}% success rate)
-- Payments: ${tot.payments}
-- Collections: UGX ${tot.collections.toLocaleString()}
-- Avg Collection per Payment: $${rates.avgPayment}
-${lowConnectTeam ? '\n⚠️ IMPORTANT: Connect rate is below 30% — likely a systemic/data issue, not agent performance.' : ''}
-
-AGENT RANKINGS (by payments):
-${agentDetails.map((a, i) => `${i + 1}. ${a.name}: ${a.t.payments} payments | UGX ${a.t.collections.toLocaleString()} collected | Connect: ${a.r.connectRate}% | Success: ${a.r.successRate}%${a.weak ? ` | Weaknesses: ${a.weak}` : ''}${a.strong ? ` | Strengths: ${a.strong}` : ''}`).join('\n')}
-
-Write a structured report with these sections:
-1. CYCLE SUMMARY — What happened this cycle in 3-4 sentences
-2. TOP PERFORMERS — Who to publicly recognize and why (be specific)
-3. WHAT WORKED — Top 2-3 things done well
-4. AREAS FOR IMPROVEMENT — Top 2-3 specific coaching priorities
-5. DATA/SYSTEM ISSUES — ${lowConnectTeam ? 'Address the low connect rate as a systemic issue' : 'Any patterns suggesting data or system problems'}
-6. INDIVIDUAL CONVERSATIONS — For each agent, write 2-3 sentences on what specific conversation to hold with them: what to praise, what to address, what to ask them
-7. NEXT CYCLE PRIORITIES — Top 3 action items for next cycle
-8. TEAM MESSAGE — A 2-sentence closing message to share with the whole team about next cycle
-
-Be specific, reference actual numbers, and be direct but constructive. Write as the manager.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
-    });
-    const data = await res.json();
-    const text = data.content?.map(c => c.text || '').join('') || 'Could not generate report.';
-    const statsHtml = `
-      <div class="grid-5" style="margin-bottom:20px">
-        <div class="stat"><div class="stat-label">Attempts</div><div class="stat-val">${tot.attempts.toLocaleString()}</div></div>
-        <div class="stat"><div class="stat-label">Connect Rate</div><div class="stat-val ${rates.connectRate < 30 ? 'red' : rates.connectRate < 50 ? 'amber' : 'green'}">${rates.connectRate}%</div></div>
-        <div class="stat"><div class="stat-label">Payments</div><div class="stat-val">${tot.payments.toLocaleString()}</div></div>
-        <div class="stat"><div class="stat-label">Collections</div><div class="stat-val green">$${tot.collections.toLocaleString()}</div></div>
-        <div class="stat"><div class="stat-label">Avg / Payment</div><div class="stat-val">$${rates.avgPayment}</div></div>
-      </div>`;
-    document.getElementById('cycle-report-box').innerHTML = `
-      <div class="card">
-        <div class="flex-between" style="margin-bottom:20px">
-          <div>
-            <div style="font-family:var(--font-head);font-size:18px;font-weight:800">Post-Cycle Report</div>
-            <div style="font-size:12px;color:var(--text3);font-family:var(--font-mono);margin-top:2px">${fmt(start)} → ${fmt(end)} · ${state.settings.teamName}</div>
-          </div>
-          <div class="flex-gap">
-            <button class="btn btn-outline" onclick="printReport()">🖨 Print</button>
-            <button class="btn btn-outline" onclick="copyText(this)" data-text="${encodeURIComponent(text)}">📋 Copy</button>
-            <button class="btn btn-primary" onclick="generateCycleReport()">↺ Regenerate</button>
-          </div>
-        </div>
-        ${statsHtml}
-        <hr class="section-divider">
-        <div class="ai-message" style="margin-top:0">
-          <div class="ai-badge">✦ CYCLE REPORT · AI ANALYSIS</div>
-          <pre style="margin-top:8px;line-height:1.8">${text}</pre>
-        </div>
-      </div>`;
-  } catch (e) {
-    document.getElementById('cycle-report-box').innerHTML = `<div class="card" style="color:var(--red)">Error: ${e.message}. Check your API key in Settings.</div>`;
-  }
-}
-
-function printReport() { window.print(); }
-
-// ════ SETTINGS ════
-function renderSettings() {
-  document.getElementById('api-key-input').value = state.settings.apiKey || '';
-  document.getElementById('cycle-start-day').value = state.settings.cycleStartDay || 11;
-  document.getElementById('team-name-input').value = state.settings.teamName || '';
-
-  document.getElementById('agent-list-settings').innerHTML = state.agents.length ? `
-    <div class="tbl-wrap"><table>
-      <thead><tr><th>#</th><th>Name</th><th>Role</th><th></th></tr></thead>
-      <tbody>${state.agents.map((a, i) => `
-        <tr>
-          <td><div class="agent-avatar ${getAvatarClass(i)}" style="width:28px;height:28px;font-size:11px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700">${initials(a.name)}</div></td>
-          <td>${a.name}</td>
-          <td style="color:var(--text3);font-size:12px">${a.role || '—'}</td>
-          <td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px" onclick="removeAgent('${a.id}')">Remove</button></td>
-        </tr>`).join('')}
-      </tbody>
-    </table></div>` : '<div style="color:var(--text3);font-size:13px;padding:10px 0">No agents yet. Add your first agent below.</div>';
-}
-
-function saveApiKey() {
-  state.settings.apiKey = document.getElementById('api-key-input').value.trim();
-  save();
-  document.getElementById('key-status').textContent = '✓ Saved';
-  setTimeout(() => document.getElementById('key-status').textContent = '', 2000);
-  showToast('API key saved', 'success');
-}
-
-function saveSettings() {
-  state.settings.cycleStartDay = parseInt(document.getElementById('cycle-start-day').value) || 11;
-  state.settings.teamName = document.getElementById('team-name-input').value || 'Collections Team';
-  save(); updateSidebarCycle(); showToast('Settings saved', 'success');
-}
-
-function addNewAgent() {
-  const name = document.getElementById('new-agent-name').value.trim();
-  const role = document.getElementById('new-agent-role').value.trim();
-  if (!name) { showToast('Enter agent name', 'error'); return; }
-  state.agents.push({ id: 'a_' + Date.now(), name, role });
-  save(); renderSettings(); showToast(`${name} added`, 'success');
-  document.getElementById('new-agent-name').value = '';
-  document.getElementById('new-agent-role').value = '';
-}
-
-function removeAgent(id) {
-  const a = state.agents.find(x => x.id === id);
-  openModal(`Remove ${a?.name}?`, `This will remove the agent profile. Their historical records will remain in the data but will show as unknown.`, () => {
-    state.agents = state.agents.filter(x => x.id !== id);
-    save(); renderSettings(); showToast('Agent removed');
-  });
-}
-
-// ════ EXPORT / IMPORT ════
-function exportData() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `pulsetrack_${new Date().toISOString().slice(0, 10)}.json`;
-  a.click();
-}
-
-function importData(e) {
-  const file = e.target.files[0];
+function handleCsvFile(file) {
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const imported = JSON.parse(ev.target.result);
-      if (imported.agents && imported.records) {
-        state = imported;
-        save(); renderSettings(); showToast('Data imported successfully', 'success');
-      } else { showToast('Invalid file format', 'error'); }
-    } catch { showToast('Could not parse file', 'error'); }
+  reader.onload = (e) => {
+    const text = e.target.result;
+    parseCsvData(text);
   };
   reader.readAsText(file);
 }
 
-// ════ MODAL / TOAST ════
-let modalCallback = null;
-function openModal(title, body, cb) {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').textContent = body;
-  document.getElementById('confirm-modal').classList.add('open');
-  modalCallback = cb;
-  document.getElementById('modal-confirm-btn').onclick = () => { cb && cb(); closeModal(); };
-}
-function closeModal() { document.getElementById('confirm-modal').classList.remove('open'); }
-
-function clearAllData() {
-  openModal('Delete All Data?', 'This permanently removes all records, agents, and settings. This cannot be undone.', () => {
-    state = { agents: [], records: [], settings: { cycleStartDay: 11, teamName: 'Collections Team', apiKey: '' } };
-    save(); renderSettings(); renderDashboard(); showToast('All data cleared');
+function parseCsvData(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+  const data = {};
+  let parsed = 0;
+  lines.forEach(line => {
+    const parts = line.split(',').map(p => p.trim().replace(/^"|"$/g,''));
+    if (parts.length < 4) return;
+    const [agent, cycle, type, actualStr] = parts;
+    if (!agent || !type || agent.toLowerCase() === 'agent' || agent === '') return;
+    const actual = parseFloat(actualStr) || 0;
+    const key = agent.trim();
+    if (!data[key]) data[key] = { calls:0, connects:0, successConnects:0, payments:0, amount:0, cycle };
+    const typeLower = type.toLowerCase();
+    if (typeLower.includes('call attempt')) data[key].calls = actual;
+    else if (typeLower.includes('successful connect') || typeLower.includes('success')) data[key].successConnects = actual;
+    else if (typeLower.includes('connect')) data[key].connects = actual;
+    else if (typeLower.includes('payment') && typeLower.includes('amount')) data[key].amount = actual;
+    else if (typeLower.includes('payment')) data[key].payments = actual;
+    parsed++;
   });
+
+  if (!Object.keys(data).length) {
+    showToast('No valid data found in CSV', 'error');
+    return;
+  }
+
+  pendingCsvData = data;
+  // Auto-add agents not yet in list
+  Object.keys(data).forEach(name => {
+    if (!state.agents.find(a => a.name === name)) {
+      state.agents.push({ name, role: 'Collections Agent' });
+    }
+  });
+  saveState();
+
+  // Preview table
+  const rows = Object.entries(data).map(([name, d]) => `
+    <tr>
+      <td class="name-cell">${name}</td>
+      <td>${d.calls.toLocaleString()}</td>
+      <td>${d.connects.toLocaleString()}</td>
+      <td>${d.successConnects.toLocaleString()}</td>
+      <td>${d.payments.toLocaleString()}</td>
+      <td>${formatUGX(d.amount)}</td>
+    </tr>
+  `).join('');
+  document.getElementById('csv-preview-table').innerHTML = `
+    <table>
+      <thead><tr><th>Agent</th><th>Call Attempts</th><th>Connects</th><th>Succ. Connects</th><th>Payments</th><th>Amount</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  document.getElementById('csv-preview-card').style.display = 'block';
+  document.getElementById('csv-import-btn').disabled = false;
+  document.getElementById('csv-status').textContent = `${Object.keys(data).length} agents parsed from ${parsed} rows`;
+  showToast(`CSV parsed: ${Object.keys(data).length} agents found`, 'success');
 }
 
-let toastTimer;
-function showToast(msg, type = 'success') {
+function importCsvData() {
+  if (!pendingCsvData) return;
+  const dateEl = document.getElementById('csv-date');
+  const date = dateEl.value || new Date().toISOString().split('T')[0];
+  let imported = 0;
+  Object.entries(pendingCsvData).forEach(([name, d]) => {
+    // Remove existing record for same agent+date
+    state.records = state.records.filter(r => !(r.agentName === name && r.date === date));
+    state.records.push({
+      id: Date.now() + Math.random(),
+      agentName: name, date,
+      calls: d.calls,
+      connects: d.connects,
+      successConnects: d.successConnects,
+      payments: d.payments,
+      amount: d.amount
+    });
+    imported++;
+  });
+  saveState();
+  pendingCsvData = null;
+  document.getElementById('csv-import-btn').disabled = true;
+  document.getElementById('csv-status').textContent = '';
+  document.getElementById('csv-preview-card').style.display = 'none';
+  showToast(`Imported ${imported} agent records for ${date}`, 'success');
+}
+
+// ==================== AGENTS ====================
+function renderAgentSelects() {
+  const sel = document.getElementById('agent-select');
+  sel.innerHTML = '<option value="">Select agent...</option>' +
+    state.agents.map(a => `<option value="${a.name}">${a.name}</option>`).join('');
+}
+function setAgentView(v, btn) {
+  agentView = v;
+  document.querySelectorAll('#section-agents .tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAgentProfile();
+}
+function renderAgentProfile() {
+  const name = document.getElementById('agent-select').value;
+  const container = document.getElementById('agent-profile-content');
+  if (!name) { container.innerHTML = '<p style="color:var(--text3);font-size:12px;">Select an agent above.</p>'; return; }
+  const recs = getRecordsForView(agentView).filter(r => r.agentName === name);
+  const calls = recs.reduce((a,r)=>a+r.calls,0);
+  const connects = recs.reduce((a,r)=>a+r.connects,0);
+  const success = recs.reduce((a,r)=>a+r.successConnects,0);
+  const payments = recs.reduce((a,r)=>a+r.payments,0);
+  const amount = recs.reduce((a,r)=>a+r.amount,0);
+  const cRate = calls>0?((connects/calls)*100).toFixed(1):0;
+  const sRate = connects>0?((success/connects)*100).toFixed(1):0;
+  const avgPay = payments>0?(amount/payments).toFixed(0):0;
+
+  // Trend data
+  const byDate = {};
+  recs.forEach(r => { byDate[r.date] = (byDate[r.date]||0)+r.amount; });
+  const dates = Object.keys(byDate).sort();
+
+  // Weakness diagnostics
+  const weaknesses = [];
+  const strengths = [];
+  if (parseFloat(cRate) < 20) weaknesses.push('Connect rate below 20% — check call timing or list quality');
+  else strengths.push(`Strong connect rate at ${cRate}%`);
+  if (parseFloat(sRate) < 50) weaknesses.push('Success rate under 50% — review pitch or objection handling');
+  else strengths.push(`Good conversion on connects: ${sRate}%`);
+  if (calls < 3000 && agentView==='cycle') weaknesses.push('Call volume may be low — target 3000+ per cycle');
+  else if (calls >= 3000) strengths.push(`High call volume: ${calls.toLocaleString()} attempts`);
+
+  const recommendation = weaknesses.length > 0
+    ? `Focus on: ${weaknesses[0].split('—')[0].trim()}. ${parseFloat(cRate)<20?'Schedule more calls during peak response hours (9–11am, 2–4pm).':'Work on overcoming objections in the first 30 seconds.'}`
+    : `${name.split(' ')[0]} is performing well. Consider mentoring lower-performing agents on their connect approach.`;
+
+  container.innerHTML = `
+    <div class="metrics">
+      <div class="metric"><div class="mlabel">Call Attempts</div><div class="mval">${calls.toLocaleString()}</div></div>
+      <div class="metric"><div class="mlabel">Connect Rate</div><div class="mval" style="color:var(--green)">${cRate}%</div></div>
+      <div class="metric"><div class="mlabel">Success Rate</div><div class="mval" style="color:var(--accent)">${sRate}%</div></div>
+      <div class="metric"><div class="mlabel">Payments</div><div class="mval">${payments.toLocaleString()}</div></div>
+      <div class="metric"><div class="mlabel">Collections</div><div class="mval" style="font-size:14px;">${formatUGX(amount)}</div></div>
+      <div class="metric"><div class="mlabel">Avg Payment</div><div class="mval" style="font-size:14px;">${formatUGX(parseFloat(avgPay))}</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-header">Daily Activity Trend</div>
+        <div class="chart-wrap"><canvas id="chart-agent-trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header">Diagnostics</div>
+        ${weaknesses.length ? `<div style="margin-bottom:10px;"><div style="font-size:10px;letter-spacing:1px;color:var(--amber);margin-bottom:6px;">⚠ AREAS TO IMPROVE</div>
+          ${weaknesses.map(w=>`<div style="font-size:11px;color:var(--text2);margin-bottom:4px;padding-left:8px;border-left:2px solid var(--amber);">${w}</div>`).join('')}</div>` : ''}
+        ${strengths.length ? `<div style="margin-bottom:10px;"><div style="font-size:10px;letter-spacing:1px;color:var(--green);margin-bottom:6px;">✦ STRENGTHS</div>
+          ${strengths.map(s=>`<div style="font-size:11px;color:var(--text2);margin-bottom:4px;padding-left:8px;border-left:2px solid var(--green);">${s}</div>`).join('')}</div>` : ''}
+        <div style="font-size:10px;letter-spacing:1px;color:var(--accent);margin-bottom:6px;margin-top:10px;">◆ MANAGER RECOMMENDATION</div>
+        <div style="font-size:11px;color:var(--text2);padding-left:8px;border-left:2px solid var(--accent);line-height:1.6;">${recommendation}</div>
+      </div>
+    </div>
+  `;
+  // Render agent trend chart
+  const ctx = document.getElementById('chart-agent-trend');
+  if (ctx) {
+    if (chartAgentTrend) chartAgentTrend.destroy();
+    chartAgentTrend = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: dates.map(d=>d.slice(5)),
+        datasets: [{ data: dates.map(d=>byDate[d]), backgroundColor: 'rgba(79,142,247,0.5)', borderColor: '#4f8ef7', borderWidth: 1, borderRadius: 3 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#5a5f78', font: { family: 'IBM Plex Mono', size: 10 } } },
+          y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#5a5f78', font: { family: 'IBM Plex Mono', size: 10 },
+            callback: v => v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(0)+'K':v } }
+        }
+      }
+    });
+  }
+}
+
+// ==================== ANALYSIS ====================
+function setAnalysisView(v, btn) {
+  analysisView = v;
+  document.querySelectorAll('#section-analysis .tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAnalysis();
+}
+function renderAnalysisSelects() {
+  const sel = document.getElementById('analysis-agent-filter');
+  sel.innerHTML = '<option value="">All Agents</option>' +
+    state.agents.map(a => `<option value="${a.name}">${a.name}</option>`).join('');
+}
+function renderAnalysis() {
+  const agentFilter = document.getElementById('analysis-agent-filter')?.value || '';
+  let recs = getRecordsForView(analysisView);
+  if (agentFilter) recs = recs.filter(r => r.agentName === agentFilter);
+
+  const calls = recs.reduce((a,r)=>a+r.calls,0);
+  const connects = recs.reduce((a,r)=>a+r.connects,0);
+  const success = recs.reduce((a,r)=>a+r.successConnects,0);
+  const payments = recs.reduce((a,r)=>a+r.payments,0);
+  const amount = recs.reduce((a,r)=>a+r.amount,0);
+  const cRate = calls>0?((connects/calls)*100):0;
+  const sRate = connects>0?((success/connects)*100):0;
+  const convRate = success>0?((payments/success)*100):0;
+
+  // Best period
+  const byDate = {};
+  recs.forEach(r => {
+    if (!byDate[r.date]) byDate[r.date] = {amount:0,payments:0,calls:0};
+    byDate[r.date].amount += r.amount;
+    byDate[r.date].payments += r.payments;
+    byDate[r.date].calls += r.calls;
+  });
+  const bestDay = Object.entries(byDate).sort((a,b)=>b[1].amount-a[1].amount)[0];
+  const worstDay = Object.entries(byDate).sort((a,b)=>a[1].amount-b[1].amount)[0];
+
+  // Agent variance — who's pulling above/below average
+  const allAgents = getRecordsForView(analysisView);
+  const agentStats = {};
+  allAgents.forEach(r => {
+    if (!agentStats[r.agentName]) agentStats[r.agentName] = {calls:0,connects:0,success:0,payments:0,amount:0};
+    agentStats[r.agentName].calls += r.calls;
+    agentStats[r.agentName].connects += r.connects;
+    agentStats[r.agentName].success += r.successConnects;
+    agentStats[r.agentName].payments += r.payments;
+    agentStats[r.agentName].amount += r.amount;
+  });
+  const agentList = Object.entries(agentStats);
+  const avgConnRate = agentList.length > 0 ? agentList.reduce((a,[,d])=>a+(d.calls>0?d.connects/d.calls:0),0)/agentList.length : 0;
+
+  document.getElementById('analysis-content').innerHTML = `
+    <div class="grid2" style="margin-bottom:16px;">
+      <div class="card">
+        <div class="card-header">⚡ Uncontrollable Factors</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.8;">
+          <div style="padding:6px 0;border-bottom:1px solid var(--border);">📅 <strong>Calendar effects</strong> — weekends, public holidays reduce reachability</div>
+          <div style="padding:6px 0;border-bottom:1px solid var(--border);">📱 <strong>Network issues</strong> — dropped calls, poor signal out of agent control</div>
+          <div style="padding:6px 0;border-bottom:1px solid var(--border);">💰 <strong>Customer ability to pay</strong> — macro-economic conditions</div>
+          <div style="padding:6px 0;">📋 <strong>List quality</strong> — outdated contacts, wrong numbers</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">◆ Controllable Factors</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.8;">
+          <div style="padding:6px 0;border-bottom:1px solid var(--border);">📞 <strong>Call volume</strong> — agents control how many calls they make</div>
+          <div style="padding:6px 0;border-bottom:1px solid var(--border);">🗣 <strong>Pitch quality</strong> — tone, script adherence, objection handling</div>
+          <div style="padding:6px 0;border-bottom:1px solid var(--border);">⏰ <strong>Call timing</strong> — scheduling calls during high-pickup windows</div>
+          <div style="padding:6px 0;">📈 <strong>Follow-up consistency</strong> — reattempting non-connects</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header">Funnel Conversion Analysis</div>
+      <div class="funnel" style="padding:8px 0;">
+        <div class="funnel-step">
+          <div class="funnel-label">Call Attempts</div>
+          <div class="funnel-bar" style="width:100%;background:var(--bg4);color:var(--text2);">${calls.toLocaleString()}</div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Connects</div>
+          <div class="funnel-bar" style="width:${Math.max(5,cRate)}%;background:linear-gradient(90deg,#4f8ef7,#7c5cfc);">${connects.toLocaleString()} <span class="funnel-pct">${cRate.toFixed(1)}%</span></div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Succ. Connects</div>
+          <div class="funnel-bar" style="width:${Math.max(3,connects>0?success/calls*100:0)}%;background:linear-gradient(90deg,#22c98a,#1dc9a0);">${success.toLocaleString()} <span class="funnel-pct">${sRate.toFixed(1)}%</span></div>
+        </div>
+        <div class="funnel-step">
+          <div class="funnel-label">Payments</div>
+          <div class="funnel-bar" style="width:${Math.max(2,success>0?payments/calls*100:0)}%;background:linear-gradient(90deg,#f5a623,#ef9f27);">${payments.toLocaleString()} <span class="funnel-pct">${convRate.toFixed(1)}%</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-header">Best Period Analysis</div>
+        ${bestDay ? `
+          <div style="margin-bottom:10px;">
+            <div style="font-size:10px;letter-spacing:1px;color:var(--green);margin-bottom:4px;">▲ BEST DAY</div>
+            <div style="font-size:14px;color:var(--text);font-weight:500;">${bestDay[0]}</div>
+            <div style="font-size:11px;color:var(--text2);">${formatUGX(bestDay[1].amount)} · ${bestDay[1].payments} payments · ${bestDay[1].calls} calls</div>
+          </div>
+          ${worstDay && worstDay[0] !== bestDay[0] ? `
+          <div>
+            <div style="font-size:10px;letter-spacing:1px;color:var(--red);margin-bottom:4px;">▼ LOWEST DAY</div>
+            <div style="font-size:14px;color:var(--text);font-weight:500;">${worstDay[0]}</div>
+            <div style="font-size:11px;color:var(--text2);">${formatUGX(worstDay[1].amount)} · ${worstDay[1].payments} payments</div>
+          </div>` : ''}
+        ` : '<p style="color:var(--text3);font-size:12px;">Not enough data yet.</p>'}
+      </div>
+      <div class="card">
+        <div class="card-header">Team vs Individual — Systemic vs Personal</div>
+        ${agentList.length > 0 ? `
+          <div style="font-size:10px;letter-spacing:1px;color:var(--text3);margin-bottom:8px;">AVG TEAM CONNECT RATE: ${(avgConnRate*100).toFixed(1)}%</div>
+          ${agentList.sort((a,b)=>(b[1].connects/Math.max(1,b[1].calls))-(a[1].connects/Math.max(1,a[1].calls))).map(([name,d])=>{
+            const rate = d.calls>0?(d.connects/d.calls):0;
+            const diff = rate - avgConnRate;
+            return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);">
+              <span style="font-size:11px;color:var(--text2);">${name.split(' ')[0]}</span>
+              <span style="font-size:11px;color:${diff>=0?'var(--green)':'var(--red)'};">${(rate*100).toFixed(1)}% (${diff>=0?'+':''}${(diff*100).toFixed(1)}%)</span>
+            </div>`;
+          }).join('')}
+        ` : '<p style="color:var(--text3);font-size:12px;">No data yet.</p>'}
+      </div>
+    </div>
+  `;
+}
+
+// ==================== BRIEF & REPORT ====================
+function checkApiKeyNotice() {
+  const hasKey = !!state.settings.apiKey;
+  const briefNotice = document.getElementById('brief-api-notice');
+  const reportNotice = document.getElementById('report-api-notice');
+  if (briefNotice) briefNotice.style.display = hasKey ? 'none' : 'block';
+  if (reportNotice) reportNotice.style.display = hasKey ? 'none' : 'block';
+}
+function setBriefMode(m, btn) {
+  briefMode = m;
+  document.querySelectorAll('#section-brief .tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('brief-date-row').style.display = m === 'date' ? 'block' : 'none';
+}
+function setBriefTone(t, btn) {
+  briefTone = t;
+  const parent = btn.closest('.card');
+  parent.querySelectorAll('.tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function getSummaryData(date) {
+  let recs = date ? state.records.filter(r => r.date === date) : getCycleRecords();
+  if (!recs.length && !date) recs = state.records;
+  const calls = recs.reduce((a,r)=>a+r.calls,0);
+  const connects = recs.reduce((a,r)=>a+r.connects,0);
+  const success = recs.reduce((a,r)=>a+r.successConnects,0);
+  const payments = recs.reduce((a,r)=>a+r.payments,0);
+  const amount = recs.reduce((a,r)=>a+r.amount,0);
+  const cRate = calls>0?((connects/calls)*100).toFixed(1):'0';
+  const topAgent = (() => {
+    const byA = {};
+    recs.forEach(r => { byA[r.agentName] = (byA[r.agentName]||0)+r.amount; });
+    return Object.entries(byA).sort((a,b)=>b[1]-a[1])[0]?.[0] || 'N/A';
+  })();
+  return { calls, connects, success, payments, amount, cRate, topAgent, teamName: state.settings.teamName||'Collections Team' };
+}
+
+async function generateBrief() {
+  const out = document.getElementById('brief-output');
+  out.className = 'ai-output loading';
+  out.textContent = 'Generating...';
+  const date = briefMode === 'date' ? document.getElementById('brief-date').value : null;
+  const d = getSummaryData(date);
+  if (!state.settings.apiKey) {
+    out.className = 'ai-output';
+    out.textContent = templateBrief(d, briefTone);
+    return;
+  }
+  const toneMap = { energetic: 'energetic and motivating', firm: 'firm and focused', analytical: 'analytical and strategic' };
+  const prompt = `You are a collections team manager. Write a ${toneMap[briefTone]} morning briefing message for the ${d.teamName}.
+
+Data summary:
+- Call attempts: ${d.calls.toLocaleString()}
+- Connects: ${d.connects.toLocaleString()} (${d.cRate}% rate)
+- Successful connects: ${d.success.toLocaleString()}
+- Payments collected: ${d.payments.toLocaleString()}
+- Total collections: UGX ${d.amount.toLocaleString()}
+- Top performer: ${d.topAgent}
+
+Write a ~150 word morning brief. Be specific with the numbers. End with one clear action item for today.`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': state.settings.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    out.className = 'ai-output';
+    out.textContent = data.content?.[0]?.text || 'Error generating brief.';
+  } catch(e) {
+    out.className = 'ai-output';
+    out.textContent = 'API error. Check your key in Settings.\n\n' + templateBrief(d, briefTone);
+  }
+}
+
+function templateBrief(d, tone) {
+  const date = new Date().toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long'});
+  if (tone === 'firm') {
+    return `${date}\n\nTeam — here's where we stand:\n\n${d.calls.toLocaleString()} calls made. ${d.connects.toLocaleString()} connects (${d.cRate}%). ${d.payments.toLocaleString()} payments. Collections: UGX ${d.amount.toLocaleString()}.\n\n${d.topAgent} is leading. Everyone else needs to close the gap.\n\nToday's target: push connect rate above ${Math.min(100, parseFloat(d.cRate)+5).toFixed(0)}%. No excuses.`;
+  } else if (tone === 'analytical') {
+    return `${date} — Performance Analysis\n\nCycle-to-date metrics:\n• Call attempts: ${d.calls.toLocaleString()}\n• Connect rate: ${d.cRate}%\n• Payments: ${d.payments.toLocaleString()}\n• Collections: UGX ${d.amount.toLocaleString()}\n\nTop contributor: ${d.topAgent}\n\nAction item: Agents with connect rates below ${(parseFloat(d.cRate)*0.8).toFixed(0)}% should review their call timing and target 9–11am windows today.`;
+  }
+  return `Good morning ${d.teamName}! 🌟\n\n${date}\n\nLook at what we've achieved so far this cycle — ${d.calls.toLocaleString()} calls, ${d.connects.toLocaleString()} connects, and UGX ${d.amount.toLocaleString()} collected! ${d.topAgent} is showing us all what's possible.\n\nToday we push further. Every call is an opportunity. Let's beat yesterday's numbers!\n\nAction item: Make your first 20 calls before 10am. 💪`;
+}
+
+async function generateReport() {
+  const out = document.getElementById('report-output');
+  out.className = 'ai-output loading';
+  out.textContent = 'Building cycle report...';
+  const cycleRecs = getCycleRecords();
+  const allRecs = state.records;
+
+  const agentStats = {};
+  cycleRecs.forEach(r => {
+    if (!agentStats[r.agentName]) agentStats[r.agentName] = {calls:0,connects:0,success:0,payments:0,amount:0};
+    agentStats[r.agentName].calls += r.calls;
+    agentStats[r.agentName].connects += r.connects;
+    agentStats[r.agentName].success += r.successConnects;
+    agentStats[r.agentName].payments += r.payments;
+    agentStats[r.agentName].amount += r.amount;
+  });
+  const sorted = Object.entries(agentStats).sort((a,b)=>b[1].amount-a[1].amount);
+  const totAmount = sorted.reduce((a,[,d])=>a+d.amount,0);
+  const totCalls = sorted.reduce((a,[,d])=>a+d.calls,0);
+  const totPayments = sorted.reduce((a,[,d])=>a+d.payments,0);
+
+  if (!state.settings.apiKey) {
+    out.className = 'ai-output';
+    out.textContent = `CYCLE REPORT — ${new Date().toLocaleDateString('en-GB')}\n${'─'.repeat(50)}\n\n` +
+      `TOTALS\nCollections: UGX ${totAmount.toLocaleString()}\nPayments: ${totPayments.toLocaleString()}\nCall Attempts: ${totCalls.toLocaleString()}\n\n` +
+      `AGENT RANKINGS\n` + sorted.map((([n,d],i)=>`${i+1}. ${n}\n   Collections: UGX ${d.amount.toLocaleString()} | Payments: ${d.payments} | Connect Rate: ${d.calls>0?((d.connects/d.calls)*100).toFixed(1):0}%`)).join('\n') +
+      `\n\nACTION ITEMS\n1. Review top vs bottom performer strategies\n2. Audit call lists for outdated contacts\n3. Set individual targets for next cycle\n\n[Add API key in Settings for AI-generated insights]`;
+    return;
+  }
+  const prompt = `You are a collections manager. Write a cycle-end performance report for ${state.settings.teamName||'Collections Team'}.
+
+Agent performance:
+${sorted.map(([n,d])=>`${n}: UGX ${d.amount.toLocaleString()} collected, ${d.payments} payments, ${d.calls} calls, ${d.calls>0?((d.connects/d.calls)*100).toFixed(1):0}% connect rate`).join('\n')}
+
+Total: UGX ${totAmount.toLocaleString()} across ${totPayments.toLocaleString()} payments.
+
+Write a structured cycle report including: executive summary, top performers, areas of concern, team dynamics observations, and 3 specific action items for next cycle. ~300 words.`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': state.settings.apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 800, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    out.className = 'ai-output';
+    out.textContent = data.content?.[0]?.text || 'Error generating report.';
+  } catch(e) {
+    out.className = 'ai-output';
+    out.textContent = 'API error. Check your key in Settings.';
+  }
+}
+
+// ==================== SETTINGS ====================
+function renderSettings() {
+  document.getElementById('api-key-input').value = state.settings.apiKey || '';
+  document.getElementById('cycle-start-day').value = state.settings.cycleStartDay || 11;
+  document.getElementById('team-name-input').value = state.settings.teamName || '';
+  const list = document.getElementById('agent-mgmt-list');
+  list.innerHTML = state.agents.map((a,i) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border);">
+      <span style="flex:1;font-size:12px;color:var(--text);">${a.name}</span>
+      <span style="font-size:11px;color:var(--text3);">${a.role||''}</span>
+      <button class="btn btn-danger btn-sm" onclick="removeAgent(${i})">Remove</button>
+    </div>
+  `).join('') || '<p style="color:var(--text3);font-size:12px;">No agents yet.</p>';
+}
+function saveApiKey() {
+  state.settings.apiKey = document.getElementById('api-key-input').value.trim();
+  saveState(); showToast('API key saved', 'success');
+}
+function saveSettings() {
+  state.settings.cycleStartDay = parseInt(document.getElementById('cycle-start-day').value) || 11;
+  state.settings.teamName = document.getElementById('team-name-input').value.trim();
+  saveState(); updateCycleBadge(); showToast('Settings saved', 'success');
+}
+function addAgent() {
+  const name = document.getElementById('new-agent-name').value.trim();
+  const role = document.getElementById('new-agent-role').value.trim();
+  if (!name) { showToast('Enter an agent name', 'error'); return; }
+  if (state.agents.find(a => a.name === name)) { showToast('Agent already exists', 'error'); return; }
+  state.agents.push({ name, role: role || 'Collections Agent' });
+  saveState(); renderSettings(); showToast(`Added ${name}`, 'success');
+  document.getElementById('new-agent-name').value = '';
+  document.getElementById('new-agent-role').value = '';
+}
+function removeAgent(i) {
+  state.agents.splice(i, 1);
+  saveState(); renderSettings();
+}
+
+// ==================== DATA MANAGEMENT ====================
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `pulsetrack-export-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+}
+function importData(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const d = JSON.parse(e.target.result);
+      if (d.records) state.records = d.records;
+      if (d.agents) state.agents = d.agents;
+      if (d.settings) state.settings = { ...state.settings, ...d.settings };
+      saveState(); showToast('Data imported', 'success'); renderSettings();
+    } catch { showToast('Invalid JSON file', 'error'); }
+  };
+  reader.readAsText(file);
+}
+function confirmClearAll() {
+  document.getElementById('confirm-msg').textContent = 'Delete ALL records? This cannot be undone.';
+  confirmCallback = () => { state.records = []; saveState(); renderRecentEntries(); showToast('All data cleared', 'success'); };
+  document.getElementById('confirm-modal').style.display = 'flex';
+}
+function confirmAction() {
+  if (confirmCallback) confirmCallback();
+  confirmCallback = null;
+  document.getElementById('confirm-modal').style.display = 'none';
+}
+function closeConfirm() {
+  document.getElementById('confirm-modal').style.display = 'none';
+  confirmCallback = null;
+}
+
+// ==================== UTILS ====================
+function formatUGX(n) {
+  if (!n) return 'UGX 0';
+  if (n >= 1e9) return 'UGX ' + (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return 'UGX ' + (n/1e6).toFixed(1) + 'M';
+  if (n >= 1e3) return 'UGX ' + (n/1e3).toFixed(0) + 'K';
+  return 'UGX ' + Math.round(n).toLocaleString();
+}
+function showToast(msg, type) {
   const t = document.getElementById('toast');
   t.textContent = msg;
-  t.className = `toast ${type} show`;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  t.className = 'toast show ' + (type||'');
+  setTimeout(() => { t.className = 'toast'; }, 3000);
 }
 
-// ════ DEFAULT AGENTS ════
-function loadSampleData() {
-  if (state.agents.length) return;
-  state.agents = [
-    { id: 'a1', name: 'Oliver Natoolo', role: 'Agent' },
-    { id: 'a2', name: 'GraceMary Nakabiito', role: 'Agent' },
-    { id: 'a3', name: 'Milly Nakkazi', role: 'Agent' },
-    { id: 'a4', name: 'Flavia Nangonzi', role: 'Agent' },
-    { id: 'a5', name: 'Patience Nyamwiza', role: 'Agent' },
-    { id: 'a6', name: 'Beatrice Nakkazi', role: 'Agent' },
-    { id: 'a7', name: 'Sarah Akello Flishia', role: 'Agent' },
-    { id: 'a8', name: 'Ankwatsiibwe Angel', role: 'Agent' },
-    { id: 'a9', name: 'Jupiter Atuhaire', role: 'Agent' }
-  ];
-  save();
-}
-
-// ════ INIT ════
-load();
-updateSidebarCycle();
-if (!state.agents.length && !state.records.length) loadSampleData();
-renderDashboard();
+// ==================== INIT ====================
+window.addEventListener('load', () => {
+  loadState();
+  // Set default dates
+  const today = new Date().toISOString().split('T')[0];
+  const csvDateEl = document.getElementById('csv-date');
+  if (csvDateEl) csvDateEl.value = today;
+  updateCycleBadge();
+  renderDashboard();
+});
 </script>
 </body>
 </html>
