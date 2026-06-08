@@ -728,7 +728,7 @@ function renderDashboard() {
     { label: 'Connect Rate', val: rates.connectRate + '%', meta: `${totals.connects} connects`, cls: rates.connectRate < 30 ? 'red' : rates.connectRate < 50 ? 'amber' : 'green' },
     { label: 'Success Rate', val: rates.successRate + '%', meta: `${totals.successfulConnects} successes`, cls: rates.successRate < 20 ? 'red' : rates.successRate < 40 ? 'amber' : 'green' },
     { label: 'Payments', val: totals.payments.toLocaleString(), meta: 'Promises collected', cls: '' },
-    { label: 'Collections', val: '$' + totals.collections.toLocaleString(), meta: `Avg $${rates.avgPayment}/payment`, cls: 'green' }
+    { label: 'Collections', val: 'UGX ' + totals.collections.toLocaleString(), meta: `Avg UGX ${rates.avgPayment}/payment`, cls: 'green' }
   ];
   document.getElementById('kpi-grid').innerHTML = kpis.map(k => `
     <div class="stat">
@@ -784,13 +784,13 @@ function renderDashboard() {
 
   // Leaderboard
   const metric = document.getElementById('lb-metric')?.value || 'payments';
-  const metricLabels = { payments: 'Payments', collections: 'Collections ($)', connectRate: 'Connect Rate', successRate: 'Success Rate' };
+  const metricLabels = { payments: 'Payments', collections: 'Collections (UGX)', connectRate: 'Connect Rate', successRate: 'Success Rate' };
   const agentData = state.agents.map((a, i) => {
     const t = agentTotals(recs, a.id);
     const r = computeRates(t);
     return { agent: a, idx: i, t, r,
       sort: metric === 'payments' ? t.payments : metric === 'collections' ? t.collections : metric === 'connectRate' ? r.connectRate : r.successRate,
-      displayVal: metric === 'payments' ? t.payments : metric === 'collections' ? '$' + t.collections.toLocaleString() : metric === 'connectRate' ? r.connectRate + '%' : r.successRate + '%'
+      displayVal: metric === 'payments' ? t.payments : metric === 'collections' ? 'UGX ' + t.collections.toLocaleString() : metric === 'connectRate' ? r.connectRate + '%' : r.successRate + '%'
     };
   }).sort((a, b) => b.sort - a.sort);
 
@@ -806,7 +806,7 @@ function renderDashboard() {
             <td class="mono">${d.t.connects}</td>
             <td><span class="pill ${d.r.connectRate >= 50 ? 'pill-green' : d.r.connectRate >= 30 ? 'pill-amber' : 'pill-red'}">${d.r.connectRate}%</span></td>
             <td class="mono">${d.t.payments}</td>
-            <td class="mono">$${d.t.collections.toLocaleString()}</td>
+            <td class="mono">UGX ${d.t.collections.toLocaleString()}</td>
             <td style="font-weight:600">${d.displayVal}</td>
           </tr>`).join('')}
       </tbody>
@@ -829,7 +829,7 @@ function generateInsights(recs, totals, rates) {
   // Top performer
   const topA = state.agents.map(a => ({ a, t: agentTotals(recs, a.id) })).sort((x, y) => y.t.payments - x.t.payments)[0];
   if (topA && topA.t.payments > 0) {
-    out.push({ type: 'good', icon: '🏆', title: `Top Performer: ${topA.a.name}`, body: `${topA.a.name} leads with ${topA.t.payments} payments and $${topA.t.collections.toLocaleString()} collected this cycle. Analyze their approach for team coaching.` });
+    out.push({ type: 'good', icon: '🏆', title: `Top Performer: ${topA.a.name}`, body: `${topA.a.name} leads with ${topA.t.payments} payments and UGX ${topA.t.collections.toLocaleString()} collected this cycle. Analyze their approach for team coaching.` });
   }
   // Variance check
   const agentRates = state.agents.map(a => { const t = agentTotals(recs, a.id); return pct(t.connects, t.attempts); }).filter(r => r > 0);
@@ -865,7 +865,7 @@ function buildBulkTable() {
   document.getElementById('bulk-entry-table').innerHTML = `
     <div class="tbl-wrap">
     <table>
-      <thead><tr><th>Agent</th><th>Call Attempts</th><th>Connects</th><th>Successful Connects</th><th>Payments</th><th>Collections ($)</th></tr></thead>
+      <thead><tr><th>Agent</th><th>Call Attempts</th><th>Connects</th><th>Successful Connects</th><th>Payments</th><th>Collections (UGX)</th></tr></thead>
       <tbody>
         ${state.agents.map((a, i) => {
           const ex = existingMap[a.id] || {};
@@ -940,7 +940,7 @@ function renderEntryHistory() {
             <td>${ag ? `<div style="display:flex;align-items:center;gap:6px"><div class="${getAvatarClass(ag.i)}" style="width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">${initials(ag.a.name)}</div>${ag.a.name}</div>` : r.agentId}</td>
             <td>${r.attempts}</td><td>${r.connects}</td><td>${r.successfulConnects}</td>
             <td style="font-weight:600">${r.payments}</td>
-            <td>$${Number(r.collections).toLocaleString()}</td>
+            <td>UGX ${Number(r.collections).toLocaleString()}</td>
             <td><span class="pill ${cr >= 50 ? 'pill-green' : cr >= 30 ? 'pill-amber' : 'pill-red'}">${cr}%</span></td>
             <td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px" onclick="deleteRecord('${r.id}')">✕</button></td>
           </tr>`;
@@ -1005,8 +1005,8 @@ function renderAgentDetail() {
     { l: 'Succ. Connects', v: t.successfulConnects, cls: '' },
     { l: 'Success Rate', v: r.successRate + '%', cls: r.successRate >= 40 ? 'green' : r.successRate >= 20 ? 'amber' : 'red' },
     { l: 'Payments', v: t.payments, cls: 'green' },
-    { l: 'Collections', v: '$' + t.collections.toLocaleString(), cls: 'green' },
-    { l: 'Avg per Payment', v: '$' + r.avgPayment, cls: '' }
+    { l: 'Collections', v: 'UGX ' + t.collections.toLocaleString(), cls: 'green' },
+    { l: 'Avg per Payment', v: 'UGX ' + r.avgPayment, cls: '' }
   ].map(s => `<div class="stat card-sm">
     <div class="stat-label">${s.l}</div>
     <div class="stat-val ${s.cls}" style="font-size:20px">${s.v}</div>
@@ -1218,13 +1218,13 @@ YESTERDAY (${date}):
 - Connects: ${dayTot.connects} (${pct(dayTot.connects, dayTot.attempts)}%)
 - Successful Connects: ${dayTot.successfulConnects}
 - Payments: ${dayTot.payments}
-- Collections: $${dayTot.collections.toLocaleString()}
+- Collections: UGX ${dayTot.collections.toLocaleString()}
 
 CYCLE-TO-DATE:
 - Connect Rate: ${cycleRates.connectRate}%
 - Success Rate: ${cycleRates.successRate}%
 - Total Payments: ${cycleTot.payments}
-- Total Collections: $${cycleTot.collections.toLocaleString()}
+- Total Collections: UGX ${cycleTot.collections.toLocaleString()}
 
 INDIVIDUAL HIGHLIGHTS:
 ${agentSummaries.map(a => `- ${a.name}: Yesterday ${a.day?.payments || 0} payments | Cycle connect rate ${a.cycleRates.connectRate}%`).join('\n')}
@@ -1308,12 +1308,12 @@ TEAM TOTALS:
 - Connects: ${tot.connects} (${rates.connectRate}% connect rate)
 - Successful Connects: ${tot.successfulConnects} (${rates.successRate}% success rate)
 - Payments: ${tot.payments}
-- Collections: $${tot.collections.toLocaleString()}
+- Collections: UGX ${tot.collections.toLocaleString()}
 - Avg Collection per Payment: $${rates.avgPayment}
 ${lowConnectTeam ? '\n⚠️ IMPORTANT: Connect rate is below 30% — likely a systemic/data issue, not agent performance.' : ''}
 
 AGENT RANKINGS (by payments):
-${agentDetails.map((a, i) => `${i + 1}. ${a.name}: ${a.t.payments} payments | $${a.t.collections.toLocaleString()} collected | Connect: ${a.r.connectRate}% | Success: ${a.r.successRate}%${a.weak ? ` | Weaknesses: ${a.weak}` : ''}${a.strong ? ` | Strengths: ${a.strong}` : ''}`).join('\n')}
+${agentDetails.map((a, i) => `${i + 1}. ${a.name}: ${a.t.payments} payments | UGX ${a.t.collections.toLocaleString()} collected | Connect: ${a.r.connectRate}% | Success: ${a.r.successRate}%${a.weak ? ` | Weaknesses: ${a.weak}` : ''}${a.strong ? ` | Strengths: ${a.strong}` : ''}`).join('\n')}
 
 Write a structured report with these sections:
 1. CYCLE SUMMARY — What happened this cycle in 3-4 sentences
@@ -1474,31 +1474,20 @@ function showToast(msg, type = 'success') {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ════ SAMPLE DATA (optional) ════
+// ════ DEFAULT AGENTS ════
 function loadSampleData() {
   if (state.agents.length) return;
   state.agents = [
-    { id: 'a1', name: 'Sarah Nakamura', role: 'Senior Agent' },
-    { id: 'a2', name: 'Marcus Ochieng', role: 'Agent' },
-    { id: 'a3', name: 'Priya Mensah', role: 'Agent' },
-    { id: 'a4', name: 'David Kalule', role: 'Junior Agent' }
+    { id: 'a1', name: 'Oliver Natoolo', role: 'Agent' },
+    { id: 'a2', name: 'GraceMary Nakabiito', role: 'Agent' },
+    { id: 'a3', name: 'Milly Nakkazi', role: 'Agent' },
+    { id: 'a4', name: 'Flavia Nangonzi', role: 'Agent' },
+    { id: 'a5', name: 'Patience Nyamwiza', role: 'Agent' },
+    { id: 'a6', name: 'Beatrice Nakkazi', role: 'Agent' },
+    { id: 'a7', name: 'Sarah Akello Flishia', role: 'Agent' },
+    { id: 'a8', name: 'Ankwatsiibwe Angel', role: 'Agent' },
+    { id: 'a9', name: 'Jupiter Atuhaire', role: 'Agent' }
   ];
-  const { start } = getCycleDates();
-  const baseDate = new Date(start);
-  const data = [
-    ['a1', [85,32,18,9,4200], [90,28,15,7,3100], [92,40,22,11,5100], [80,30,17,8,3700], [88,35,20,10,4600]],
-    ['a2', [70,25,12,5,2100], [65,20,9,4,1800], [72,22,11,5,2200], [68,18,8,3,1400], [75,27,14,6,2700]],
-    ['a3', [60,18,8,3,1200], [55,12,5,2,900], [58,15,7,3,1300], [62,20,9,4,1600], [60,14,6,2,800]],
-    ['a4', [50,10,4,2,700], [48,8,3,1,400], [52,11,5,2,800], [47,9,3,1,350], [55,13,6,2,900]]
-  ];
-  for (let day = 0; day < 5; day++) {
-    const d = new Date(baseDate);
-    d.setDate(d.getDate() + day);
-    const dateStr = d.toISOString().slice(0, 10);
-    data.forEach(([agentId, vals]) => {
-      state.records.push({ id: Date.now() + Math.random(), agentId, date: dateStr, attempts: vals[0], connects: vals[1], successfulConnects: vals[2], payments: vals[3], collections: vals[4] });
-    });
-  }
   save();
 }
 
